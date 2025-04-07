@@ -1,4 +1,4 @@
-namespace WFClassic.Web.Models;
+namespace WFClassic.Web.Logic.Shared;
 
 public class ErrorViewModel
 {

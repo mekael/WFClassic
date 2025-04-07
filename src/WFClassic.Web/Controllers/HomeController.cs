@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using WFClassic.Web.Models;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Controllers;
 
