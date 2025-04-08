@@ -125,6 +125,8 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 string hashedPassword = Utils.GetWhirlpoolHash(Input.Password);
+                user.DisplayName = Input.DisplayName;
+                user.SteamId = Input.SteamId;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
