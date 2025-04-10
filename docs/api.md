@@ -18,7 +18,7 @@
 |worldState.php|[Doco](/endpoints/worldState)||||N|
 |getMessages.php|[Doco](/endpoints/getMessages)||||N|
 |sendMessage.php|[Doco](/endpoints/sendMessage)||||N|
-|login.php|[Doco](/endpoints/login)||||N|
+|login.php|[Doco](/endpoints/login)|WarframeAuth|Authn/Authz|Handles logging in a user for a single session.|Y|
 |logout.php|[Doco](/endpoints/logout)||||N|
 |inventorySlots.php|[Doco](/endpoints/inventorySlots)||||N|
 |updateInventory.php|[Doco](/endpoints/updateInventory)||||N|

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
+using WFClassic.Web.Logic.WFAuth.WFLogin;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +22,9 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = false;
     
 });
+builder.Services.AddRequestDecompression();
 
-
+builder.Services.AddTransient<WarframeLoginHandler>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -45,6 +47,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseRequestDecompression();
 
 app.MapControllerRoute(
     name: "default",

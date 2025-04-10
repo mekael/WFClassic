@@ -5,7 +5,7 @@
 
 ### Request
 
-The password is pre-hashed client side using whirlpool as the algorithm.
+The password is pre-hashed client side using whirlpool as the algorithm. This is passed in lower case. 
 
 
 ```json

@@ -1,4 +1,6 @@
 ﻿using Org.BouncyCastle.Crypto.Digests;
+using Org.BouncyCastle.Crypto.Utilities;
+using System.Text.Json;
 
 namespace WFClassic.Web.Logic.Shared
 {
@@ -13,6 +15,21 @@ namespace WFClassic.Web.Logic.Shared
             var hashOut = new byte[whirlpool.GetDigestSize()];
             whirlpool.DoFinal(hashOut);
             return Convert.ToHexString(hashOut);
+        }
+
+        public static T GetRequestObject<T>(HttpContext httpContext)
+        {
+            string bodyBytes = null;
+
+            using (StreamReader streamReader = new StreamReader(httpContext.Request.Body))
+            {
+                bodyBytes = streamReader.ReadToEndAsync().Result;
+
+            }
+
+
+
+                return JsonSerializer.Deserialize<T>(bodyBytes);
         }
     }
 }

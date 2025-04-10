@@ -13,4 +13,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     }
 
+    public DbSet<LoginTrackingItem> LoginTrackingItems  { get; set; }
+
 }
