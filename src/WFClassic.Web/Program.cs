@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
+using WFClassic.Web.Logic.WFAuth.WFLogout;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddRequestDecompression();
 
 builder.Services.AddTransient<WarframeLoginHandler>();
+builder.Services.AddTransient<WarframeLogoutHandler>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

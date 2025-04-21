@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
+using WFClassic.Web.Logic.WFAuth.WFLogout;
 
 namespace WFClassic.Web.Controllers
 {
@@ -11,10 +12,12 @@ namespace WFClassic.Web.Controllers
     public class WarframeAuthController : ControllerBase
     {
         private readonly WarframeLoginHandler _warframeLoginHandler;
+        private readonly WarframeLogoutHandler _warframeLogoutHandler;
 
-        public WarframeAuthController(WarframeLoginHandler warframeLoginHandler)
+        public WarframeAuthController(WarframeLoginHandler warframeLoginHandler, WarframeLogoutHandler warframeLogoutHandler)
         {
             _warframeLoginHandler = warframeLoginHandler;
+            _warframeLogoutHandler = warframeLogoutHandler;
         }
 
 
@@ -50,10 +53,29 @@ namespace WFClassic.Web.Controllers
 
         [Route("api/logout.php")]
         [HttpGet]
-        public async Task<IActionResult> GetAsync(string accountId, long nonce) 
+        public async Task<IActionResult> GetAsync([FromQuery] WarframeLogoutRequest warframeLogoutRequest)
         {
 
-        return Ok();
+            var result = await _warframeLogoutHandler.Handle(warframeLogoutRequest);
+
+            if (result.WarframeLogoutResultStatus == WarframeLogoutResultStatus.BadRequest)
+            {
+                return BadRequest();
+            }
+            else if (result.WarframeLogoutResultStatus == WarframeLogoutResultStatus.NotFound)
+            {
+                return NotFound();
+            }
+            else if (result.WarframeLogoutResultStatus == WarframeLogoutResultStatus.NonceDoesNotMatch)
+            {
+                return StatusCode(403);
+            }
+            else if (result.WarframeLogoutResultStatus == WarframeLogoutResultStatus.Failure)
+            {
+                return StatusCode(500);
+            }
+
+            return Ok();
 
         }
 
