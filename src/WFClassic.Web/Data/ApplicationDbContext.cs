@@ -14,5 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     }
 
     public DbSet<LoginTrackingItem> LoginTrackingItems  { get; set; }
+    public DbSet<BankAccount> BankAccounts { get; set; }
+    public DbSet<BankAccountTransaction> BankAccountsTransaction { get; set; }
 
 }
