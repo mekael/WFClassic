@@ -10,11 +10,11 @@ using WFClassic.Web.Logic.WFAuth.WFLogout;
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
-    public class CreditController : ControllerBase
+    public class EconomyController : ControllerBase
     {
         private GetCreditsHandler _getCreditsHandler;
 
-        public CreditController(GetCreditsHandler getCreditsHandler)
+        public EconomyController(GetCreditsHandler getCreditsHandler)
         {
             _getCreditsHandler = getCreditsHandler;
         }
@@ -42,7 +42,25 @@ namespace WFClassic.Web.Controllers
             return new JsonResult(result.GetCreditsResultDetails);
         }
 
+        [HttpPost]
+        [Route("/api/purchase.php")]
+        public ActionResult Purchase([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+            return new JsonResult("{}");
+        }
+        [HttpPost]
+        [Route("/api/forcePurchase.php")]
+        public ActionResult ForcePurchase([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+            return new JsonResult("{}");
+        }
 
+        [HttpPost]
+        [Route("/api/sell.php")]
+        public ActionResult Sell([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+            return new JsonResult("{}");
+        }
 
     }
 }
