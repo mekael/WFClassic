@@ -8,9 +8,19 @@ namespace WFClassic.Web.Controllers
     {
         [HttpGet]
         [Route("/api/getMessages.php")]
-        public ActionResult GetMessages([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public string GetMessages([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            return new JsonResult("{}");
+            var response = @"{
+      Messages: [
+            {
+                SenderId: {  
+                    $id:""sdfs""
+                },
+                Content:""sdfsd""
+            }
+        ]
+}";
+            return response;
         }
 
         [HttpPost]

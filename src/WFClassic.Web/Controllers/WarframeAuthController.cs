@@ -46,7 +46,6 @@ namespace WFClassic.Web.Controllers
             {
                 return StatusCode(500);
             }
-
             return new JsonResult(result.WarframeLoginResultDetails,
         new JsonSerializerOptions { PropertyNamingPolicy = null });
         }

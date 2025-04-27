@@ -41,7 +41,7 @@ namespace WFClassic.Web.Controllers
         {
             return new JsonResult("{}");
         }
-        [HttpPost]
+        [HttpGet]
         [Route("/api/getGuild.php")]
         public ActionResult GetGuild([FromQuery] Guid accountId, [FromQuery] long nonce)
         {

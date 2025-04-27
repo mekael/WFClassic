@@ -34,11 +34,41 @@ namespace WFClassic.Web.Controllers
         {
             return new JsonResult("{}");
         }
-        [HttpPost]
+        [HttpGet]
         [Route("/api/getFriends.php")]
-        public ActionResult GetFriends([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public string GetFriends([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            return new JsonResult("{}");
+            var response = @"
+
+{
+ ""Current"": [
+            {
+                ""_id"": {
+                    ""$id"": ""aaa""
+                },
+                ""DisplayName"": ""aaa"",
+                ""Status"": 0
+            },
+            {
+                ""_id"": {
+                    ""$id"": ""bbb""
+                },
+                ""DisplayName"": ""bbb"",
+                ""Status"": 0
+            },
+            {
+                ""_id"": {
+                    ""$id"": ""ccc""
+                },
+                ""DisplayName"": ""ccc"",
+                ""Status"": 0,
+""ChatHistory"" :[]
+            }
+        ]
+}
+";
+
+            return response;
         }
 
     }
