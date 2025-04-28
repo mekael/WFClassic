@@ -80,6 +80,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             user.CurrentNonce = newNonce;
             user.TotalNumberOfDaysLoginCount += user.LastLoginTimestamp.Date < DateTime.Today ? 1 : 0;
             user.LoginStreak = DetermineLoginStreak(user.LastLoginTimestamp, user.LoginStreak);
+            user.CurrentlyLoggedIn = true;
             user.LastLoginTimestamp = loginTimestamp;
             _logger.LogInformation("WarframeLoginHandler => email {email} =>  Updating user login", warframeLoginRequest.email);
 

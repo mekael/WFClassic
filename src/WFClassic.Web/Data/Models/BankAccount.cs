@@ -4,10 +4,10 @@ namespace WFClassic.Web.Data.Models
 {
     public class BankAccount : EntityBase
     {
-        public Guid ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public Guid PlayerId { get; set; }
+        public Player Player { get; set; }
         public BankAccountType BankAccountType { get; set; }
-        public ICollection<BankAccountTransaction> BankAccountTransactions { get; set; }
+        public List<BankAccountTransaction> BankAccountTransactions { get; set; }
         public long CurrentBalance { get; set; }
     }
 }

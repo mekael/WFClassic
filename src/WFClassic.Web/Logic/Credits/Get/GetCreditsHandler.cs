@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Admin.CheckOnline;
@@ -44,7 +45,7 @@ namespace WFClassic.Web.Logic.Credits.Get
             try
             {
                 _logger.LogInformation("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => Querying for bank accounts", getCredits.AccountId, getCredits.Nonce);
-                bankAccounts = _applicationDbContext.BankAccounts.Where(w => w.ApplicationUserId == getCredits.AccountId).ToList();
+                bankAccounts = _applicationDbContext.BankAccounts.Include(i=> i.Player).Where(w => w.Player.ApplicationUserId == getCredits.AccountId).ToList();
                 _logger.LogInformation("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => Query completed", getCredits.AccountId, getCredits.Nonce);
 
             }

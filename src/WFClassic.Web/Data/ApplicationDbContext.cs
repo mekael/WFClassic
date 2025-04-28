@@ -13,8 +13,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     }
 
-    public DbSet<LoginTrackingItem> LoginTrackingItems  { get; set; }
+    public DbSet<LoginTrackingItem> LoginTrackingItems { get; set; }
     public DbSet<BankAccount> BankAccounts { get; set; }
     public DbSet<BankAccountTransaction> BankAccountsTransaction { get; set; }
 
+    public DbSet<InventoryBin> InventoryBins { get; set; }
+    public DbSet<InventoryItem> InventoryItems { get; set; }
+    public DbSet<InventoryItemAttachment> InventoryItemAttachments { get; set; }
+    public DbSet<Mission> Missions { get; set; }
+    public DbSet<Player> Players { get; set; }
+    public DbSet<TauntHistoryItem> TauntHistoryItems
+    {
+        get; set;
+
+    }
 }

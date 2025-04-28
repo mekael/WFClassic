@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared;
+using WFClassic.Web.Logic.WFAuth.Initialize;
 
 namespace WFClassic.Web.Areas.Identity.Pages.Account
 {
@@ -31,13 +32,15 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly CreatePlayerHandler _createPlayerHandler;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            CreatePlayerHandler createPlayerHandler)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +48,7 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _createPlayerHandler = createPlayerHandler;
         }
 
         /// <summary>
@@ -135,7 +139,8 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
+                    //todo: Make platinum amount configurable
+                    _createPlayerHandler.Handle(new CreatePlayer() { ApplicationUserId = user.Id, PlatinumGiftAmount = 50 });
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

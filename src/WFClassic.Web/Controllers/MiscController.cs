@@ -1,17 +1,28 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using WFClassic.Web.Logic.Exp.Training;
 
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
     public class MiscController : ControllerBase
     {
+        AddLevelBasedOnTrainingHandler _addLevelBasedOnTrainingHandler;
+        public MiscController(AddLevelBasedOnTrainingHandler addLevelBasedOnTrainingHandler) {
+        
+        _addLevelBasedOnTrainingHandler = addLevelBasedOnTrainingHandler;   
+        }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/api/trainingResult.php")]
-        public ActionResult TrainingResult([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult TrainingResult([FromQuery] AddLevelBasedOnTraining addLevelBasedOnTraining )
         {
-            return new JsonResult("{}");
+           var result = _addLevelBasedOnTrainingHandler.Handle(addLevelBasedOnTraining);
+
+
+            return new JsonResult(result,
+        new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
 
         [HttpPost]

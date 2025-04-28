@@ -39,7 +39,8 @@ namespace WFClassic.Web.Controllers
                 return BadRequest();
             }
 
-            return new JsonResult(result.GetCreditsResultDetails);
+            return new JsonResult(result.GetCreditsResultDetails,
+        new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
 
         [HttpPost]

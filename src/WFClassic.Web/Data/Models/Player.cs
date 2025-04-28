@@ -10,6 +10,7 @@
         public List<Mission> Missions { get; set; }
         public List<InventoryBin> InventoryBins { get; set; }
         public List<InventoryItem> InventoryItems { get; set; }
+        public List<BankAccount> BankAccounts { get; set; }
 
         public int PlayerXP { get; set; }
         public int AdditionalPlayerXP { get; set; }
@@ -18,7 +19,10 @@
         public DateTime TrainingDate { get;set; }
         public bool ReceivedStartingGear { get; set; }
         public string Founder { get; set; }
- 
+
+        public bool SubscribedToEmails { get; set; }
+
+
     }
 }
 

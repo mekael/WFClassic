@@ -2,6 +2,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
+using WFClassic.Web.Logic.Admin.CheckOnline;
+using WFClassic.Web.Logic.Credits.Get;
+using WFClassic.Web.Logic.Exp.Training;
+using WFClassic.Web.Logic.Inventory.Get;
+using WFClassic.Web.Logic.Inventory.Starting;
+using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
 
@@ -27,6 +33,13 @@ builder.Services.AddRequestDecompression();
 
 builder.Services.AddTransient<WarframeLoginHandler>();
 builder.Services.AddTransient<WarframeLogoutHandler>();
+builder.Services.AddTransient<GiveStartingGearHandler>();
+builder.Services.AddTransient<IsUserOnlineQueryHandler>();
+builder.Services.AddTransient<GetCreditsHandler>();
+builder.Services.AddTransient<CreatePlayerHandler>();
+builder.Services.AddTransient<AddLevelBasedOnTrainingHandler>();
+builder.Services.AddTransient<GetInventoryHandler>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

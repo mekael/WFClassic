@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
 
 namespace WFClassic.Web.Controllers
@@ -7,6 +9,16 @@ namespace WFClassic.Web.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
+
+ 
+
+        GiveStartingGearHandler _giveStartingGearHandler;
+        GetInventoryHandler _getInventoryHandler;
+        public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler)
+        {
+            _giveStartingGearHandler = giveStartingGearHandler;
+            _getInventoryHandler = getInventoryHandler;
+        }
 
         [HttpGet]
         [Route("/api/inventorySlots.php")]
@@ -23,12 +35,33 @@ namespace WFClassic.Web.Controllers
             return new JsonResult(cats);
         }
 
+      
+
         [HttpGet]
         [Route("/api/inventory.php")]
-        public ActionResult Inventory(Guid accountId, long nonce)
+        public ActionResult Inventory([FromQuery] GetInventory getInventory)
         {
+            GetInventoryResult result = _getInventoryHandler.Handle(getInventory);
 
-            return new JsonResult(cats);
+            if (result.GetInventoryResultStatus == GetInventoryResultStatus.Success)
+            {
+                return new JsonResult(result.GetInventoryResultDetails,
+        new JsonSerializerOptions { PropertyNamingPolicy = null });
+            }
+            else if (result.GetInventoryResultStatus == GetInventoryResultStatus.LoginCheckFailure)
+            {
+                return StatusCode(403);
+            }
+            else if (result.GetInventoryResultStatus == GetInventoryResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.GetInventoryResultStatus == GetInventoryResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+
+            return StatusCode(500);
         }
 
         [HttpGet]
@@ -49,37 +82,35 @@ namespace WFClassic.Web.Controllers
 
 
 
-        [HttpPost]
-        [Route("/api/giveStartingGear.php")]
-        public ActionResult GiveStartingGearPost([FromQuery] GiveStartingGear giveStartingGear)
-        {
-            string cats = "";
-
-
-
-            string dogs = "";
-
-
-
-            return new JsonResult(cats);
-        }
-
-
-
         [HttpGet]
         [Route("/api/giveStartingGear.php")]
-        public ActionResult GiveStartingGear([FromQuery]GiveStartingGear giveStartingGear)
+        public ActionResult GiveStartingGear([FromQuery] GiveStartingGear giveStartingGear)
         {
-            string cats = "";
 
 
+            var result = _giveStartingGearHandler.Handle(giveStartingGear);
 
-            string dogs = "";
-
-
+            if (result.Status == GiveStartingGearResultStatus.Success)
+            {
+                return Ok();
+            }
+            else if (result.Status == GiveStartingGearResultStatus.LoginCheckFailure)
+            {
+                return StatusCode(403);
+            }
+            else if (result.Status == GiveStartingGearResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.Status == GiveStartingGearResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(cats);
         }
+
+
 
 
 
@@ -122,4 +153,3 @@ public class Upgrade
     public int Slot { get; set; }
     public Itemid ParentId { get; set; }
 }
- 
