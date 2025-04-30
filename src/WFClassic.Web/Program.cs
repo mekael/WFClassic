@@ -7,6 +7,7 @@ using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Exp.Training;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
+using WFClassic.Web.Logic.Stats.Upload;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
@@ -39,6 +40,7 @@ builder.Services.AddTransient<GetCreditsHandler>();
 builder.Services.AddTransient<CreatePlayerHandler>();
 builder.Services.AddTransient<AddLevelBasedOnTrainingHandler>();
 builder.Services.AddTransient<GetInventoryHandler>();
+builder.Services.AddTransient<UploadStatsHandler>();
 
 builder.Services.AddControllersWithViews();
 
