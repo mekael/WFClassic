@@ -156,7 +156,7 @@ namespace WFClassic.Web.Controllers
         }
     ],
     ""Time"": 1379023743,
-    ""BuildLabel"": ""2013.09.09.17.18/5wK4eIDDXdj7dgv4B9O03g""
+    ""BuildLabel"": ""2013.03.25.11.45/""
 }
 
 ";
