@@ -2,6 +2,7 @@
 
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
+using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Get
@@ -46,8 +47,8 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 ReceivedStartingGear = player.ReceivedStartingGear,
                 SubscribedToEmails = Convert.ToInt32(player.SubscribedToEmails),
                 TrainingDate    =  new MongoDate(player.TrainingDate),
-                PremiumCredits=0,
-                RegularCredits=0
+                PremiumCredits= player.BankAccounts.Where(w=> w.BankAccountType == BankAccountType.Platinum).Select(s=> s.CurrentBalance).Sum() ,
+                RegularCredits= player.BankAccounts.Where(w=> w.BankAccountType == BankAccountType.StandardCredits).Select(s=> s.CurrentBalance).Sum()
 
 
             };

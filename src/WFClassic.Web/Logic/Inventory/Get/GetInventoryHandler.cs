@@ -56,6 +56,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     .Include(i => i.InventoryItems)
                     .Include(i=> i.InventoryBins)
                     .Include(i=> i.Missions)
+                    .Include(i=> i.BankAccounts)
                     .FirstOrDefault(w => w.ApplicationUserId == getInventory.AccountId);
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", getInventory.AccountId, getInventory.Nonce);
 
