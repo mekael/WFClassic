@@ -9,7 +9,7 @@ namespace WFClassic.Web.Logic.Shared.Models
 
         public MongoId(Guid id)
         {
-            this.Id = id.ToString().Replace("-","").Substring(0,24);
+            this.Id = id.ToString();
         }
     }
 }
