@@ -22,9 +22,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<InventoryItemAttachment> InventoryItemAttachments { get; set; }
     public DbSet<Mission> Missions { get; set; }
     public DbSet<Player> Players { get; set; }
-    public DbSet<TauntHistoryItem> TauntHistoryItems
-    {
-        get; set;
-
-    }
+    public DbSet<TauntHistoryItem> TauntHistoryItems { get; set; }
+    public DbSet<MetricItem> MetricItems { get; set; }
 }
