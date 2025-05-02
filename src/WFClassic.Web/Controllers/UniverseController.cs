@@ -12,9 +12,13 @@ namespace WFClassic.Web.Controllers
         public ActionResult LoginRewards([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
 
+            //mRewardType mTier
 
+            return new JsonResult(@"{
+""RewardType"" : ""Recipe"",
+""Tier"":""1""
 
-            return new JsonResult("{}");
+}");
         }
 
         [HttpGet]
@@ -31,7 +35,7 @@ namespace WFClassic.Web.Controllers
 
             string ws = @"
 {
-    ""Events"": [
+    ""Events"": [   
         {
             ""_id"": {
                 ""$id"": ""5187e9393f9a5b131c66f528""

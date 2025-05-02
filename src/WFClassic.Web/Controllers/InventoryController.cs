@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using WFClassic.Web.Logic.Inventory.Attach;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
+using WFClassic.Web.Logic.Inventory.Update;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Controllers
 {
@@ -10,14 +13,20 @@ namespace WFClassic.Web.Controllers
     public class InventoryController : ControllerBase
     {
 
- 
 
+        UpdateInventoryHandler _updateInventoryHandler;
         GiveStartingGearHandler _giveStartingGearHandler;
         GetInventoryHandler _getInventoryHandler;
-        public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler)
+        AttachModsHandler _attachModsHandler;
+        
+        
+        public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler,
+            UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler)
         {
             _giveStartingGearHandler = giveStartingGearHandler;
             _getInventoryHandler = getInventoryHandler;
+            _updateInventoryHandler = updateInventoryHandler;
+            _attachModsHandler = attachModsHandler; 
         }
 
         [HttpGet]
@@ -25,23 +34,34 @@ namespace WFClassic.Web.Controllers
         public ActionResult InventorySlots(Guid accountId, long nonce)
         {
 
-            return new JsonResult(cats);
+            return new JsonResult("{cats}");
         }
-        [HttpGet]
+        [HttpPost]
         [Route("/api/updateInventory.php")]
-        public ActionResult UpdateInventory(Guid accountId, long nonce)
+        public ActionResult UpdateInventoryEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
+            UpdateInventory updateInventory = new UpdateInventory()
+            {
+                AccountId = accountId,
+                Nonce = nonce,
+                UpdateInventoryFromMissionObject = Utils.GetRequestObject<UpdateInventoryFromMissionObject>(this.HttpContext)
+            };
 
-            return new JsonResult(cats);
+            var result = _updateInventoryHandler.Handle(updateInventory);
+
+
+            return new JsonResult("{cats}");
         }
 
-      
+
 
         [HttpGet]
         [Route("/api/inventory.php")]
         public ActionResult Inventory([FromQuery] GetInventory getInventory)
         {
             GetInventoryResult result = _getInventoryHandler.Handle(getInventory);
+
+            Console.WriteLine( JsonSerializer.Serialize(result.GetInventoryResultDetails));
 
             if (result.GetInventoryResultStatus == GetInventoryResultStatus.Success)
             {
@@ -69,15 +89,39 @@ namespace WFClassic.Web.Controllers
         public ActionResult Artifacts(Guid accountId, long nonce)
         {
 
-            return new JsonResult(cats);
+            return new JsonResult("{cats}");
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/api/upgrades.php")]
-        public ActionResult AttachMods(Guid accountId, long nonce)
+        public ActionResult AttachModsEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
+            IncomingAttachRequest incomingAttachRequest = Utils.GetRequestObject<IncomingAttachRequest>(this.HttpContext);
 
-            return new JsonResult(cats);
+            AttachMods attachMods = new AttachMods() { 
+              AccountId = accountId,
+              Nonce = nonce ,
+              IncomingAttachRequest = incomingAttachRequest 
+            }
+            ;
+
+              var result  = _attachModsHandler.Handle(attachMods);
+
+            if(result.AttachModsResultStatus == AttachModsResultStatus.LoginCheckFailure)
+            {
+                return StatusCode(403) ;
+            }
+            else if (result.AttachModsResultStatus == AttachModsResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.AttachModsResultStatus == AttachModsResultStatus.MappingFailure 
+                || result.AttachModsResultStatus == AttachModsResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500); 
+            }
+
+            return new JsonResult("");
         }
 
 
@@ -107,49 +151,11 @@ namespace WFClassic.Web.Controllers
                 return StatusCode(500);
             }
 
-            return new JsonResult(cats);
+            return StatusCode(500);
         }
 
 
-
-
-
-        string cats = @"{}";
     }
 
 }
 
-public class Rootobject
-{
-    public string Category { get; set; }
-    public Weapon Weapon { get; set; }
-    public Upgrade[] UpgradesToAttach { get; set; }
-    public Upgrade[] UpgradesToDetach { get; set; }
-    public int Cost { get; set; }
-    public string UpgradeReq { get; set; }
-}
-
-public class Weapon
-{
-    public string ItemType { get; set; }
-    public Itemid ItemId { get; set; }
-    public int XP { get; set; }
-    public int UpgradeVer { get; set; }
-    public int UnlockLevel { get; set; }
-    public int ExtraCapacity { get; set; }
-    public int ExtraRemaining { get; set; }
-}
-
-public class Itemid
-{
-    public string id { get; set; }
-}
-
-public class Upgrade
-{
-    public string ItemType { get; set; }
-    public Itemid ItemId { get; set; }
-    public string UpgradeFingerprint { get; set; }
-    public int Slot { get; set; }
-    public Itemid ParentId { get; set; }
-}

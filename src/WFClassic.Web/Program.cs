@@ -3,11 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Admin.CheckOnline;
+using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Exp.Training;
+using WFClassic.Web.Logic.Inventory.Attach;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
+using WFClassic.Web.Logic.Inventory.Update;
 using WFClassic.Web.Logic.Stats.Upload;
+using WFClassic.Web.Logic.Taunt;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
@@ -41,6 +45,13 @@ builder.Services.AddTransient<CreatePlayerHandler>();
 builder.Services.AddTransient<AddLevelBasedOnTrainingHandler>();
 builder.Services.AddTransient<GetInventoryHandler>();
 builder.Services.AddTransient<UploadStatsHandler>();
+builder.Services.AddTransient<UpdateInventoryHandler>();
+builder.Services.AddTransient<AddAccountTransactionHandler>();
+builder.Services.AddTransient<AttachModsHandler>();
+builder.Services.AddTransient<AddTauntHandler>();
+
+
+
 
 builder.Services.AddControllersWithViews();
 
