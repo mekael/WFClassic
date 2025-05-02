@@ -1,4 +1,6 @@
 
+Allows one to attach/detach mods from warframes and weapons. 
+
 
 
 ```json

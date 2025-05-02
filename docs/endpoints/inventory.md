@@ -1,6 +1,8 @@
 
 
+at first login, the user gets returned an empty json object
 
+Founder is an unsigned int , not a string
 
 
 ```json

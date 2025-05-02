@@ -8,20 +8,14 @@
 |tauntHistory.php|[Doco](/endpoints/tauntHistory)||||N|
 
 
-
 |loginRewards.php|[Doco](/endpoints/loginRewards)||||N|
 |checkDailyMissionBonus.php|[Doco](/endpoints/checkDailyMissionBonus)||||N|
 |worldState.php|[Doco](/endpoints/worldState)||||N|
 |goals.php|[Doco](/endpoints/goals)||||N|
-
 |credits.php|[Doco](/endpoints/credits)||||Y|
 |purchase.php|[Doco](/endpoints/purchase)||||N|
 |forcePurchase.php|[Doco](/endpoints/forcePurchase)||||N|
 |sell.php|[Doco](/endpoints/sell)||||N|
-
-
-
-
 |getMessages.php|[Doco](/endpoints/getMessages)||||N|
 |sendMessage.php|[Doco](/endpoints/sendMessage)||||N|
 |leaderboard.php|[Doco](/endpoints/leaderboard)||||N|
