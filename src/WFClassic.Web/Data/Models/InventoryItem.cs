@@ -5,6 +5,8 @@ namespace WFClassic.Web.Data.Models
 {
     public class InventoryItem : EntityBase
     {
+        public Guid PlayerId { get; set; }
+        public Player Player { get; set; }
         public InternalInventoryItemType InternalInventoryItemType { get; set; }
         public string ItemType { get; set; }
         public string ItemName { get; set; }    

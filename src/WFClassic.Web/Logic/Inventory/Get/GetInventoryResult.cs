@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Org.BouncyCastle.Bcpg.Sig;
+using System.Text.Json.Serialization;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared.Models;
 
@@ -17,83 +18,89 @@ namespace WFClassic.Web.Logic.Inventory.Get
     {
        
 
-        [JsonProperty("SubscribedToEmails")]
+        [JsonPropertyName("SubscribedToEmails")]
         public int SubscribedToEmails { get; set; }
 
-        [JsonProperty("RewardSeed")]
+        [JsonPropertyName("RewardSeed")]
         public long RewardSeed { get; set; }
 
-        [JsonProperty("RegularCredits")]
+        [JsonPropertyName("RegularCredits")]
         public long RegularCredits { get; set; }
 
-        [JsonProperty("PremiumCredits")]
+        [JsonPropertyName("PremiumCredits")]
         public long PremiumCredits { get; set; }
 
-        [JsonProperty("ReceivedStartingGear")]
+        [JsonPropertyName("ReceivedStartingGear")]
         public bool ReceivedStartingGear { get; set; }
 
-        [JsonProperty("Founder")]
+        [JsonPropertyName("Founder")]
         public string Founder { get; set; }
 
-        [JsonProperty("TrainingDate")]
+        [JsonPropertyName("TrainingDate")]
         public MongoDate TrainingDate { get; set; }
 
-        [JsonProperty("PlayerLevel")]
+        [JsonPropertyName("PlayerLevel")]
         public int PlayerLevel { get; set; }
 
-        [JsonProperty("PlayerXP")]
+        [JsonPropertyName("PlayerXP")]
         public long PlayerXP { get; set; }
 
-        [JsonProperty("AdditionalPlayerXP")]
+        [JsonPropertyName("AdditionalPlayerXP")]
         public long AdditionalPlayerXP { get; set; }
 
-        [JsonProperty("Rating")]
+        [JsonPropertyName("Rating")]
         public int Rating { get; set; }
 
-        [JsonProperty("SuitBin")]
+        [JsonPropertyName("SuitBin")]
         public JsonInventoryBin SuitBin { get; set; }
 
-        [JsonProperty("WeaponBin")]
+        [JsonPropertyName("WeaponBin")]
         public JsonInventoryBin WeaponBin { get; set; }
 
-        [JsonProperty("MiscBin")]
+        [JsonPropertyName("MiscBin")]
         public JsonInventoryBin MiscBin { get; set; }
 
-        [JsonProperty("SentinelBin")]
+        [JsonPropertyName("SentinelBin")]
         public JsonInventoryBin SentinelBin { get; set; }
 
-        [JsonProperty("InvalidBin")]
+        [JsonPropertyName("InvalidBin")]
         public JsonInventoryBin InvalidBin { get; set; }
 
-        [JsonProperty("LongGuns")]
+        [JsonPropertyName("LongGuns")]
         public List<JsonEquipmentItem> LongGuns { get; set; }
 
-        [JsonProperty("Pistols")]
+        [JsonPropertyName("Pistols")]
         public List<JsonEquipmentItem> Pistols { get; set; }
 
-        [JsonProperty("Suits")]
+        [JsonPropertyName("Suits")]
         public List<JsonEquipmentItem> Suits { get; set; }
 
-        [JsonProperty("Melee")]
+        [JsonPropertyName("Melee")]
         public List<JsonEquipmentItem> Melee { get; set; }
 
-        [JsonProperty("Sentinels")]
+        [JsonPropertyName("Sentinels")]
         public List<JsonEquipmentItem> Sentinels { get; set; }
 
-        [JsonProperty("SentinelWeapons")]
+        [JsonPropertyName("SentinelWeapons")]
         public List<JsonEquipmentItem> SentinelWeapons { get; set; }
 
-        [JsonProperty("Missions")]
+        [JsonPropertyName("Missions")]
         public List<JsonMission> Missions { get; set; }
 
-        [JsonProperty("DeathMarks")]
+        [JsonPropertyName("DeathMarks")]
         public List<string> DeathMarks { get; set; }
 
-        [JsonProperty("CompletedAlerts")]
+        [JsonPropertyName("CompletedAlerts")]
         public List<string> CompletedAlerts { get; set; }
 
-        [JsonProperty("XPInfo")]
+        [JsonPropertyName("XPInfo")]
         public List<JsonXpInfoItem> XPInfo { get; set; }
+
+        [JsonPropertyName("TauntHistory")]
+        public List<JsonTauntHistoryItem> TauntHistory { get; set; }
+
+        [JsonPropertyName("Upgrades")]
+        public List<JsonUpgradeItem> Upgrades { get; set; }
     }
 
 

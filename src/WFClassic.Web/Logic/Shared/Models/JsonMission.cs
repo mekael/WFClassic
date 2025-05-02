@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace WFClassic.Web.Logic.Shared.Models
 {
     public class JsonMission
     {
-        [JsonProperty("Tag")]
+        [JsonPropertyName("Tag")]
         public string Tag { get; set; }
 
-        [JsonProperty("Completes")]
+        [JsonPropertyName("Completes")]
         public int Completes { get; set; }
 
-        [JsonProperty("BestRating")] 
+        [JsonPropertyName("BestRating")] 
         public float BestRating { get; set; }
 
     }

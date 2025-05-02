@@ -47,7 +47,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
 
             Player player = null;
-
+            List<InventoryItemAttachment> attachments = null;
 
             try
             {
@@ -57,7 +57,13 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     .Include(i=> i.InventoryBins)
                     .Include(i=> i.Missions)
                     .Include(i=> i.BankAccounts)
+                    .Include(i=> i.TauntHistoryItems)
                     .FirstOrDefault(w => w.ApplicationUserId == getInventory.AccountId);
+
+
+                attachments = _applicationDbContext.InventoryItemAttachments.Include(i=> i.AttachedInventoryItem).Where(w=> w.AttachedInventoryItem.PlayerId == player.Id).ToList();
+
+
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", getInventory.AccountId, getInventory.Nonce);
 
             }
@@ -70,7 +76,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
             try
             {
-                result.GetInventoryResultDetails = GetInventoryMapper.Map(player);
+                result.GetInventoryResultDetails = GetInventoryMapper.Map(player, attachments);
                 result.GetInventoryResultStatus = GetInventoryResultStatus.Success;
             }
             catch (Exception ex)
@@ -78,13 +84,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 result.GetInventoryResultStatus = GetInventoryResultStatus.MappingFailure   ;
             }
 
-
-            _logger.LogInformation(
-                JsonSerializer.Serialize(result.GetInventoryResultDetails)
-                );
-
-
-
+ 
 
             return result;
         }

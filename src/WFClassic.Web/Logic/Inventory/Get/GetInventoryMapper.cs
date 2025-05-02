@@ -9,7 +9,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 {
     public static class GetInventoryMapper
     {
-        static List<InternalInventoryItemType> xpItems = new List<InternalInventoryItemType>() { InternalInventoryItemType.Sentinels, 
+        static List<InternalInventoryItemType> xpItems = new List<InternalInventoryItemType>() { InternalInventoryItemType.Sentinels,
                                                                                            InternalInventoryItemType.SentinelWeapons,
                                                                                            InternalInventoryItemType.Suits,
                                                                                            InternalInventoryItemType.LongGuns,
@@ -17,8 +17,32 @@ namespace WFClassic.Web.Logic.Inventory.Get
                                                                                            InternalInventoryItemType.Melee
          };
 
-        public static GetInventoryResultDetails Map(Player player)
+        public static GetInventoryResultDetails Map(Player player, List<InventoryItemAttachment> attachments)
         {
+
+            List<JsonUpgradeItem> JsonUpgradeItems = new List<JsonUpgradeItem>();
+
+
+            foreach (var upgrade in player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades))
+            {
+
+                InventoryItemAttachment attachment = attachments.FirstOrDefault(w => w.AttachedInventoryItemId == upgrade.Id);
+
+                JsonUpgradeItems.Add(new JsonUpgradeItem()
+                {
+                    ItemId = new MongoId(upgrade.Id),
+                    ItemType = upgrade.ItemType,
+                    UpgradeFingerPrint = upgrade.UpgradeFingerprint,
+                    ParentId = attachment !=null ? new MongoId(attachment.ParentInventoryItemId) : null,
+                    Slot = attachment != null ? attachment.Slot: null
+                });
+            }
+
+
+            var whateve = player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades).Select(
+                s => new JsonUpgradeItem() { ItemId = new MongoId(s.Id), ItemType = s.ItemType, UpgradeFingerPrint = s.UpgradeFingerprint }
+                ); ;
+
             return new GetInventoryResultDetails()
 
             {
@@ -46,11 +70,11 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 XPInfo = player.InventoryItems.Where(w => xpItems.Contains(w.InternalInventoryItemType)).Select(s => new JsonXpInfoItem() { ItemType = s.ItemType, XP = s.XP }).ToList(),
                 ReceivedStartingGear = player.ReceivedStartingGear,
                 SubscribedToEmails = Convert.ToInt32(player.SubscribedToEmails),
-                TrainingDate    =  new MongoDate(player.TrainingDate),
-                PremiumCredits= player.BankAccounts.Where(w=> w.BankAccountType == BankAccountType.Platinum).Select(s=> s.CurrentBalance).Sum() ,
-                RegularCredits= player.BankAccounts.Where(w=> w.BankAccountType == BankAccountType.StandardCredits).Select(s=> s.CurrentBalance).Sum()
-
-
+                TrainingDate = new MongoDate(player.TrainingDate),
+                PremiumCredits = player.BankAccounts.Where(w => w.BankAccountType == BankAccountType.Platinum).Select(s => s.CurrentBalance).Sum(),
+                RegularCredits = player.BankAccounts.Where(w => w.BankAccountType == BankAccountType.StandardCredits).Select(s => s.CurrentBalance).Sum(),
+                TauntHistory = player.TauntHistoryItems.Select(s => new JsonTauntHistoryItem() { node = s.Node }).ToList(),
+                Upgrades = JsonUpgradeItems
             };
 
         }
@@ -59,7 +83,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         static JsonInventoryBin GetBin(InventoryBinType inventoryBinType, List<InventoryBin> inventoryBins)
         {
             InventoryBin inventoryBin = inventoryBins.FirstOrDefault(fod => fod.InventoryBinType == inventoryBinType);
-            return inventoryBin == null ? new JsonInventoryBin() {   Slots=2} : new JsonInventoryBin() { Extra = inventoryBin.Extra, Slots = inventoryBin.Slots };
+            return inventoryBin == null ? new JsonInventoryBin() { Slots = 2 } : new JsonInventoryBin() { Extra = inventoryBin.Extra, Slots = inventoryBin.Slots };
         }
 
 
@@ -75,7 +99,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     ItemType = s.ItemType,
                     UnlockLevel = s.UnlockLevel,
                     UpgradeVer = 101,
-                    XP = s.XP 
+                    XP = s.XP
                 }).ToList();
         }
 
