@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Exp.Training;
+using WFClassic.Web.Logic.Shared;
+using WFClassic.Web.Logic.Taunt;
 
 namespace WFClassic.Web.Controllers
 {
@@ -9,9 +11,11 @@ namespace WFClassic.Web.Controllers
     public class MiscController : ControllerBase
     {
         AddLevelBasedOnTrainingHandler _addLevelBasedOnTrainingHandler;
-        public MiscController(AddLevelBasedOnTrainingHandler addLevelBasedOnTrainingHandler) {
+        AddTauntHandler _addTauntHandler;
+        public MiscController(AddLevelBasedOnTrainingHandler addLevelBasedOnTrainingHandler, AddTauntHandler addTauntHandler) {
         
         _addLevelBasedOnTrainingHandler = addLevelBasedOnTrainingHandler;   
+            _addTauntHandler= addTauntHandler;    
         }
 
         [HttpGet]
@@ -53,6 +57,34 @@ namespace WFClassic.Web.Controllers
         [Route("/api/tauntHistory.php")]
         public ActionResult TauntHistory([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
+
+            IncomingAddTaunt incomingAddTaunt = Utils.GetRequestObject<IncomingAddTaunt>(this.HttpContext);
+            AddTaunt addTaunt = new AddTaunt()
+            {
+                AccountId = accountId,
+                IncomingAddTaunt = incomingAddTaunt,
+                Nonce = nonce
+            };
+
+            var result = _addTauntHandler.Handle(addTaunt);
+
+            if (result.AddTauntResultStatus == AddTauntResultStatus.Success)
+            {
+                return Ok();
+            }
+            else if (result.AddTauntResultStatus == AddTauntResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.AddTauntResultStatus == AddTauntResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+            else if (result.AddTauntResultStatus == AddTauntResultStatus.LoginCheckFailure)
+            {
+                return StatusCode(403);
+            }
+
             return new JsonResult("{}");
         }
 
