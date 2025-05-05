@@ -26,6 +26,7 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
+        Utils.GetRequestObject<string>(this.HttpContext);
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

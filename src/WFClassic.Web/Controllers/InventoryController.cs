@@ -5,6 +5,7 @@ using WFClassic.Web.Logic.Inventory.Attach;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
 using WFClassic.Web.Logic.Inventory.Update;
+using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Controllers
@@ -12,8 +13,6 @@ namespace WFClassic.Web.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
-
-
         UpdateInventoryHandler _updateInventoryHandler;
         GiveStartingGearHandler _giveStartingGearHandler;
         GetInventoryHandler _getInventoryHandler;
@@ -36,8 +35,12 @@ namespace WFClassic.Web.Controllers
 
             return new JsonResult("{cats}");
         }
+
+
+
         [HttpPost]
         [Route("/api/updateInventory.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult UpdateInventoryEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             UpdateInventory updateInventory = new UpdateInventory()
@@ -57,6 +60,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/inventory.php")]
+        [TypeFilter(typeof( LoginVerificationActionFilter))]
         public ActionResult Inventory([FromQuery] GetInventory getInventory)
         {
             GetInventoryResult result = _getInventoryHandler.Handle(getInventory);
@@ -65,8 +69,7 @@ namespace WFClassic.Web.Controllers
 
             if (result.GetInventoryResultStatus == GetInventoryResultStatus.Success)
             {
-                return new JsonResult(result.GetInventoryResultDetails,
-        new JsonSerializerOptions { PropertyNamingPolicy = null });
+                return new JsonResult(result.GetInventoryResultDetails, new JsonSerializerOptions { PropertyNamingPolicy = null });
             }
             else if (result.GetInventoryResultStatus == GetInventoryResultStatus.LoginCheckFailure)
             {
@@ -83,17 +86,21 @@ namespace WFClassic.Web.Controllers
 
             return StatusCode(500);
         }
-
-        [HttpGet]
+         
+        //accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=5060132779479405351&steamId=0
+        [HttpPost]
         [Route("/api/artifacts.php")]
-        public ActionResult Artifacts(Guid accountId, long nonce)
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
+        public ActionResult Artifacts(Guid accountId, long nonce, long steamId)
         {
+            Utils.GetRequestObject<string>(this.HttpContext);
 
             return new JsonResult("{cats}");
         }
 
         [HttpPost]
         [Route("/api/upgrades.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult AttachModsEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             IncomingAttachRequest incomingAttachRequest = Utils.GetRequestObject<IncomingAttachRequest>(this.HttpContext);
@@ -128,6 +135,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/giveStartingGear.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult GiveStartingGear([FromQuery] GiveStartingGear giveStartingGear)
         {
 

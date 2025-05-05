@@ -43,9 +43,9 @@ namespace WFClassic.Web.Controllers
         new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/api/purchase.php")]
-        public ActionResult Purchase([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult Purchase([FromQuery] Guid accountId, [FromQuery] long nonce, [FromQuery] string productName, [FromQuery] int usePremium)
         {
             return new JsonResult("{}");
         }

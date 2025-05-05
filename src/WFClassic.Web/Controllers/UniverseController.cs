@@ -15,8 +15,11 @@ namespace WFClassic.Web.Controllers
             //mRewardType mTier
 
             return new JsonResult(@"{
-""RewardType"" : ""Recipe"",
-""Tier"":""1""
+""RewardType"" : ""/Lotus/Types/Items/MiscItems/OrokinReactor "",
+""ItemType"" : ""/Lotus/Types/Items/MiscItems/OrokinReactor "",
+""ProductCategory"" :"",
+""Amount"" :0,
+""Tier"": 3
 
 }");
         }
@@ -160,7 +163,7 @@ namespace WFClassic.Web.Controllers
         }
     ],
     ""Time"": 1379023743,
-    ""BuildLabel"": ""2013.03.25.11.45/""
+    ""BuildLabel"": ""2013.04.26.17.24/""
 }
 
 ";

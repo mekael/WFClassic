@@ -18,9 +18,27 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/stats/leaderboard.php")]
-        public ActionResult leaderboard([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public string leaderboard([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            return new JsonResult("{}");
+            string cats = @"
+""players"" :[
+{
+""DisplayName"" :""mekael"",
+""score"":124,
+""rank"":111
+},
+{
+""DisplayName"" :""bixby"",
+""score"":1000000,
+""rank"":1
+}
+]
+";
+            //
+            // score is "kills
+
+
+            return cats;
         }
 
         [HttpPost]
