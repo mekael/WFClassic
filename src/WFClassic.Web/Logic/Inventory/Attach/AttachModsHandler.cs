@@ -58,7 +58,7 @@ namespace WFClassic.Web.Logic.Inventory.Attach
 
             foreach (var upgradeToDetach in attachMods.IncomingAttachRequest.UpgradesToDetach)
             {
-                InventoryItemAttachment attachment = modAttachments.Find(w => w.Id == Guid.Parse(upgradeToDetach.ItemId.Id));
+                InventoryItemAttachment attachment = modAttachments.Find(w => w.AttachedInventoryItemId == Guid.Parse(upgradeToDetach.ItemId.Id));
                 _applicationDbContext.Entry(attachment).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             }
 
