@@ -71,10 +71,6 @@ namespace WFClassic.Web.Controllers
             {
                 return new JsonResult(result.GetInventoryResultDetails, new JsonSerializerOptions { PropertyNamingPolicy = null });
             }
-            else if (result.GetInventoryResultStatus == GetInventoryResultStatus.LoginCheckFailure)
-            {
-                return StatusCode(403);
-            }
             else if (result.GetInventoryResultStatus == GetInventoryResultStatus.ValidationErrors)
             {
                 return BadRequest();
@@ -114,11 +110,7 @@ namespace WFClassic.Web.Controllers
 
               var result  = _attachModsHandler.Handle(attachMods);
 
-            if(result.AttachModsResultStatus == AttachModsResultStatus.LoginCheckFailure)
-            {
-                return StatusCode(403) ;
-            }
-            else if (result.AttachModsResultStatus == AttachModsResultStatus.ValidationErrors)
+            if (result.AttachModsResultStatus == AttachModsResultStatus.ValidationErrors)
             {
                 return BadRequest();
             }
@@ -145,10 +137,6 @@ namespace WFClassic.Web.Controllers
             if (result.Status == GiveStartingGearResultStatus.Success)
             {
                 return Ok();
-            }
-            else if (result.Status == GiveStartingGearResultStatus.LoginCheckFailure)
-            {
-                return StatusCode(403);
             }
             else if (result.Status == GiveStartingGearResultStatus.ValidationErrors)
             {

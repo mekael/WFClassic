@@ -13,14 +13,12 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         private ApplicationDbContext _applicationDbContext;
         private ILogger<GetInventoryHandler> _logger;
-        private IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
         private GetCreditsHandler _getCreditsHandler;
 
-        public GetInventoryHandler(ApplicationDbContext applicationDbContext, ILogger<GetInventoryHandler> logger, IsUserOnlineQueryHandler isUserOnlineQueryHandler, GetCreditsHandler getCreditsHandler)
+        public GetInventoryHandler(ApplicationDbContext applicationDbContext, ILogger<GetInventoryHandler> logger,  GetCreditsHandler getCreditsHandler)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-            _isUserOnlineQueryHandler = isUserOnlineQueryHandler;
             _getCreditsHandler = getCreditsHandler;
         }
 
@@ -35,16 +33,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 result.GetInventoryResultStatus = GetInventoryResultStatus.ValidationErrors;
                 return result;
             }
-
-
-            var isLoggedInResult = _isUserOnlineQueryHandler.Handle(new IsUserOnlineQuery(getInventory.AccountId, getInventory.Nonce) { });
-            if (isLoggedInResult.IsUserOnlineQueryResultStatus != IsUserOnlineQueryResultStatus.IsLoggedIn)
-            {
-                _logger.LogError("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => User is not currently logged in with current nonce", getInventory.AccountId, getInventory.Nonce);
-                result.GetInventoryResultStatus = GetInventoryResultStatus.LoginCheckFailure;
-                return result;
-            }
-
 
             Player player = null;
             List<InventoryItemAttachment> attachments = null;
@@ -70,7 +58,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
             catch (Exception ex)
             {
                 _logger.LogError("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Exception while querying for player object : {Ex}", getInventory.AccountId, getInventory.Nonce, ex);
-                result.GetInventoryResultStatus = GetInventoryResultStatus.LoginCheckFailure;
+                result.GetInventoryResultStatus = GetInventoryResultStatus.DatabaseErrors;
                 return result;
             }
 

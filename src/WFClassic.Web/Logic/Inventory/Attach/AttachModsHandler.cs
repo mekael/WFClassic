@@ -11,14 +11,11 @@ namespace WFClassic.Web.Logic.Inventory.Attach
 
         private ApplicationDbContext _applicationDbContext;
         private ILogger<AttachModsHandler> _logger;
-        private IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
  
-        public AttachModsHandler(ApplicationDbContext applicationDbContext, ILogger<AttachModsHandler> logger,
-            IsUserOnlineQueryHandler isUserOnlineQueryHandler )
+        public AttachModsHandler(ApplicationDbContext applicationDbContext, ILogger<AttachModsHandler> logger)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-            _isUserOnlineQueryHandler = isUserOnlineQueryHandler;
          }
 
         public AttachModsResult Handle(AttachMods attachMods)
@@ -32,16 +29,6 @@ namespace WFClassic.Web.Logic.Inventory.Attach
                 result.AttachModsResultStatus = AttachModsResultStatus.ValidationErrors;
                 return result;
             }
-
-
-            var isLoggedInResult = _isUserOnlineQueryHandler.Handle(new IsUserOnlineQuery(attachMods.AccountId, attachMods.Nonce) { });
-            if (isLoggedInResult.IsUserOnlineQueryResultStatus != IsUserOnlineQueryResultStatus.IsLoggedIn)
-            {
-                _logger.LogError("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => User is not currently logged in with current nonce", attachMods.AccountId, attachMods.Nonce);
-                result.AttachModsResultStatus = AttachModsResultStatus.LoginCheckFailure;
-                return result;
-            }
- 
 
             List<InventoryItemAttachment> modAttachments = null;
 

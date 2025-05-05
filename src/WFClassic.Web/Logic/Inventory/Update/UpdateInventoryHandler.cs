@@ -11,15 +11,12 @@ namespace WFClassic.Web.Logic.Inventory.Update
     {
         private ApplicationDbContext _applicationDbContext;
         private ILogger<UpdateInventoryHandler> _logger;
-        private IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
         private AddAccountTransactionHandler _addAccountTransactionHandler;
 
-        public UpdateInventoryHandler(ApplicationDbContext applicationDbContext, ILogger<UpdateInventoryHandler> logger,
-                                      IsUserOnlineQueryHandler isUserOnlineQueryHandler, AddAccountTransactionHandler addAccountTransactionHandler)
+        public UpdateInventoryHandler(ApplicationDbContext applicationDbContext, ILogger<UpdateInventoryHandler> logger, AddAccountTransactionHandler addAccountTransactionHandler)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-            _isUserOnlineQueryHandler = isUserOnlineQueryHandler;
             _addAccountTransactionHandler = addAccountTransactionHandler;
         }
 
@@ -34,16 +31,6 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 result.UpdateInventoryResultStatus = UpdateInventoryResultStatus.ValidationErrors;
                 return result;
             }
-
-
-            var isLoggedInResult = _isUserOnlineQueryHandler.Handle(new IsUserOnlineQuery(updateInventory.AccountId, updateInventory.Nonce) { });
-            if (isLoggedInResult.IsUserOnlineQueryResultStatus != IsUserOnlineQueryResultStatus.IsLoggedIn)
-            {
-                _logger.LogError("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => User is not currently logged in with current nonce", updateInventory.AccountId, updateInventory.Nonce);
-                result.UpdateInventoryResultStatus = UpdateInventoryResultStatus.LoginCheckFailure;
-                return result;
-            }
-
 
             Player player = null;
 

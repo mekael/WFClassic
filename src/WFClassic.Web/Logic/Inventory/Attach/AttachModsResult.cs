@@ -7,8 +7,6 @@
     public enum AttachModsResultStatus
     {
         ValidationErrors,
-        LoginCheckFailure,
-        AlreadyReceivedStartingGear,
         DatabaseErrors,
         MappingFailure,
         Success

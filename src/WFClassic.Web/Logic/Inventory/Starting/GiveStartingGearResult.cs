@@ -10,7 +10,6 @@ namespace WFClassic.Web.Logic.Inventory.Starting
     public enum GiveStartingGearResultStatus
     {
         ValidationErrors,
-        LoginCheckFailure,
         AlreadyReceivedStartingGear,
         DatabaseErrors,
         Success

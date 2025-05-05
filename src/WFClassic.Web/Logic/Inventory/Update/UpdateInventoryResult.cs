@@ -9,8 +9,6 @@
     public enum UpdateInventoryResultStatus
     {
         ValidationErrors,
-        LoginCheckFailure,
-        AlreadyReceivedStartingGear,
         DatabaseErrors,
         MappingFailure,
         Success

@@ -107,8 +107,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
     public enum GetInventoryResultStatus
     {
         ValidationErrors,
-        LoginCheckFailure,
-        AlreadyReceivedStartingGear,
         DatabaseErrors,
         MappingFailure,
         Success

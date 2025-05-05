@@ -12,13 +12,12 @@ namespace WFClassic.Web.Logic.Inventory.Starting
 
         private ApplicationDbContext _applicationDbContext;
         private ILogger<GiveStartingGearHandler> _logger;
-        private IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
 
-        public GiveStartingGearHandler(ApplicationDbContext applicationDbContext, ILogger<GiveStartingGearHandler> logger, IsUserOnlineQueryHandler isUserOnlineQueryHandler)
+        public GiveStartingGearHandler(ApplicationDbContext applicationDbContext, ILogger<GiveStartingGearHandler> logger
+            )
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-            _isUserOnlineQueryHandler = isUserOnlineQueryHandler;
         }
 
         public GiveStartingGearResult Handle(GiveStartingGear giveStartingGear)
@@ -32,16 +31,6 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 result.Status = GiveStartingGearResultStatus.ValidationErrors;
                 return result;
             }
-
-
-            var isLoggedInResult = _isUserOnlineQueryHandler.Handle(new IsUserOnlineQuery(giveStartingGear.AccountId, giveStartingGear.Nonce) { });
-            if (isLoggedInResult.IsUserOnlineQueryResultStatus != IsUserOnlineQueryResultStatus.IsLoggedIn)
-            {
-                _logger.LogError("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => User is not currently logged in with current nonce", giveStartingGear.AccountId, giveStartingGear.Nonce);
-                result.Status = GiveStartingGearResultStatus.LoginCheckFailure;
-                return result;
-            }
-
 
             Player player = null;
 
