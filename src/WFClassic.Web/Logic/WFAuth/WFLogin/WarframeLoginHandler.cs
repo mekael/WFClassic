@@ -111,9 +111,10 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 warframeLoginResult.WarframeLoginResultDetails = new WarframeLoginResultDetails()
                 {
                     id = user.Id.ToString(),
-                    BuildLabel = "2013.03.25.11.45/",
+                     BuildLabel = "2013.04.26.17.24/",
+                   // BuildLabel = "2013.03.25.11.45/",
                     DisplayName = user.DisplayName,
-                    NatHash = "0",
+                    NatHash = "0098089",
                     Nonce = user.CurrentNonce,
                     SteamId = user.SteamId
                 };
