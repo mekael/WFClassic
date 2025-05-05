@@ -12,7 +12,6 @@
     {
         ValidationErrors,
         Failure,
-        LoginCheckFailure,
         Success,
 
     }

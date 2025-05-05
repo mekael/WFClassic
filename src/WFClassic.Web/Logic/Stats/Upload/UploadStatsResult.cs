@@ -7,7 +7,6 @@
     public enum UploadStatsResultStatus
     {
         ValidationErrors,
-        LoginCheckFailure,
         DatabaseErrors,
         Success
     }

@@ -20,7 +20,6 @@ namespace WFClassic.Web.Logic.Exp.Training
     {
         Success,
         ValidationErrors,
-        DatabaseErrors,
-        LoginCheckFailure
+        DatabaseErrors
     }
 }

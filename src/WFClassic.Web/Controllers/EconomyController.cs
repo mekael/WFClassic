@@ -30,10 +30,6 @@ namespace WFClassic.Web.Controllers
             {
                 return StatusCode(500);
             }
-            else if (result.GetCreditsResultStatus == GetCreditsResultStatus.LoginCheckFailure)
-            {
-                return StatusCode(403);
-            }
             else if (result.GetCreditsResultStatus == GetCreditsResultStatus.ValidationErrors)
             {
                 return BadRequest();

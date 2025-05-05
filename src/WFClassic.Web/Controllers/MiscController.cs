@@ -80,10 +80,6 @@ namespace WFClassic.Web.Controllers
             {
                 return StatusCode(500);
             }
-            else if (result.AddTauntResultStatus == AddTauntResultStatus.LoginCheckFailure)
-            {
-                return StatusCode(403);
-            }
 
             return new JsonResult("{}");
         }

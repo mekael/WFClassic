@@ -10,13 +10,11 @@ namespace WFClassic.Web.Logic.Credits.Get
     {
         private ApplicationDbContext _applicationDbContext;
         private ILogger<GetCreditsHandler> _logger;
-        private IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
 
-        public GetCreditsHandler(ApplicationDbContext applicationDbContext, ILogger<GetCreditsHandler> logger, IsUserOnlineQueryHandler isUserOnlineQueryHandler)
+        public GetCreditsHandler(ApplicationDbContext applicationDbContext, ILogger<GetCreditsHandler> logger)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-            _isUserOnlineQueryHandler = isUserOnlineQueryHandler;
         }
 
         public GetCreditsResult Handle(GetCredits getCredits)
@@ -29,15 +27,6 @@ namespace WFClassic.Web.Logic.Credits.Get
             {
                 _logger.LogError("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", getCredits.AccountId, getCredits.Nonce, string.Join(";", validationResults.Errors.Select(s=> $"{s.ErrorCode} {s.ErrorMessage}")));
                 result.GetCreditsResultStatus = GetCreditsResultStatus.ValidationErrors;
-                return result;
-            }
-
-
-            var isLoggedInResult = _isUserOnlineQueryHandler.Handle(new IsUserOnlineQuery(getCredits.AccountId, getCredits.Nonce) { });
-            if(isLoggedInResult.IsUserOnlineQueryResultStatus != IsUserOnlineQueryResultStatus.IsLoggedIn)
-            {
-                _logger.LogError("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => User is not currently logged in with current nonce", getCredits.AccountId, getCredits.Nonce);
-                result.GetCreditsResultStatus = GetCreditsResultStatus.LoginCheckFailure;
                 return result;
             }
 

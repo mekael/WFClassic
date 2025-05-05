@@ -10,13 +10,11 @@ namespace WFClassic.Web.Logic.Taunt
 
         private ApplicationDbContext _applicationDbContext;
         private ILogger<AddTauntHandler> _logger;
-        private IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
 
-        public AddTauntHandler(ApplicationDbContext applicationDbContext, ILogger<AddTauntHandler> logger, IsUserOnlineQueryHandler isUserOnlineQueryHandler)
+        public AddTauntHandler(ApplicationDbContext applicationDbContext, ILogger<AddTauntHandler> logger)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-            _isUserOnlineQueryHandler = isUserOnlineQueryHandler;
         }
 
         public AddTauntResult Handle(AddTaunt addTaunt)
@@ -28,15 +26,6 @@ namespace WFClassic.Web.Logic.Taunt
             {
                 _logger.LogError("AddTauntHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", addTaunt.AccountId, addTaunt.Nonce, string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
                 result.AddTauntResultStatus = AddTauntResultStatus.ValidationErrors;
-                return result;
-            }
-
-
-            var isLoggedInResult = _isUserOnlineQueryHandler.Handle(new IsUserOnlineQuery(addTaunt.AccountId, addTaunt.Nonce) { });
-            if (isLoggedInResult.IsUserOnlineQueryResultStatus != IsUserOnlineQueryResultStatus.IsLoggedIn)
-            {
-                _logger.LogError("AddTauntHandler => accountId {AccountID} nonce {Nonce} => User is not currently logged in with current nonce", addTaunt.AccountId, addTaunt.Nonce);
-                result.AddTauntResultStatus = AddTauntResultStatus.LoginCheckFailure;
                 return result;
             }
 
@@ -54,7 +43,7 @@ namespace WFClassic.Web.Logic.Taunt
             catch (Exception ex)
             {
                 _logger.LogError("AddTauntHandler => accountId {AccountID} nonce {Nonce} => Exception while querying for player object : {Ex}", addTaunt.AccountId, addTaunt.Nonce, ex);
-                result.AddTauntResultStatus = AddTauntResultStatus.LoginCheckFailure;
+                result.AddTauntResultStatus = AddTauntResultStatus.DatabaseErrors;
                 return result;
             }
 
@@ -85,7 +74,7 @@ namespace WFClassic.Web.Logic.Taunt
                 catch (Exception ex)
                 {
                     _logger.LogError("AddTauntHandler => accountId {AccountID} nonce {Nonce} => Exception while adding taunt history item : {Ex}", addTaunt.AccountId, addTaunt.Nonce, ex);
-                    result.AddTauntResultStatus = AddTauntResultStatus.LoginCheckFailure;
+                    result.AddTauntResultStatus = AddTauntResultStatus.DatabaseErrors;
                 }
 
             }

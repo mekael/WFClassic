@@ -10,13 +10,11 @@ namespace WFClassic.Web.Logic.Exp.Training
     {
         private ApplicationDbContext _applicationDbContext;
         private ILogger<AddLevelBasedOnTrainingHandler> _logger;
-        private IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
 
-        public AddLevelBasedOnTrainingHandler(ApplicationDbContext applicationDbContext, ILogger<AddLevelBasedOnTrainingHandler> logger, IsUserOnlineQueryHandler isUserOnlineQueryHandler)
+        public AddLevelBasedOnTrainingHandler(ApplicationDbContext applicationDbContext, ILogger<AddLevelBasedOnTrainingHandler> logger)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-            _isUserOnlineQueryHandler = isUserOnlineQueryHandler;
         }
 
 
@@ -30,15 +28,6 @@ namespace WFClassic.Web.Logic.Exp.Training
             {
                 _logger.LogError("AddLevelBasedOnTrainingHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", addLevelBasedOnTraining.AccountId, addLevelBasedOnTraining.Nonce, string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
                 result.AddLevelBasedOnTrainingResultStatus = AddLevelBasedOnTrainingResultStatus.ValidationErrors;
-                return result;
-            }
-
-
-            var isLoggedInResult = _isUserOnlineQueryHandler.Handle(new IsUserOnlineQuery(addLevelBasedOnTraining.AccountId, addLevelBasedOnTraining.Nonce) { });
-            if (isLoggedInResult.IsUserOnlineQueryResultStatus != IsUserOnlineQueryResultStatus.IsLoggedIn)
-            {
-                _logger.LogError("AddLevelBasedOnTrainingHandler => accountId {AccountID} nonce {Nonce} => User is not currently logged in with current nonce", addLevelBasedOnTraining.AccountId, addLevelBasedOnTraining.Nonce);
-                result.AddLevelBasedOnTrainingResultStatus = AddLevelBasedOnTrainingResultStatus.LoginCheckFailure;
                 return result;
             }
 

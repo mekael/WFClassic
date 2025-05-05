@@ -68,10 +68,6 @@ namespace WFClassic.Web.Controllers
             {
                 return StatusCode(500);
             }
-            else if (result.UploadStatsResultStatus == UploadStatsResultStatus.LoginCheckFailure)
-            {
-                return new ForbidResult();
-            }
 
             return StatusCode(500);
         }

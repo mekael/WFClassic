@@ -11,16 +11,13 @@ namespace WFClassic.Web.Logic.Stats.Upload
 
         private ApplicationDbContext _applicationDbContext;
         private ILogger<UploadStatsHandler> _logger;
-        private IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
 
 
         public UploadStatsHandler(ApplicationDbContext applicationDbContext, 
-                                    ILogger<UploadStatsHandler> logger, 
-                                    IsUserOnlineQueryHandler isUserOnlineQueryHandler )
+                                    ILogger<UploadStatsHandler> logger)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-            _isUserOnlineQueryHandler = isUserOnlineQueryHandler;
         }
 
         public UploadStatsResult Handle(UploadStats uploadStats)
@@ -32,15 +29,6 @@ namespace WFClassic.Web.Logic.Stats.Upload
             {
                 _logger.LogError("UploadStatsHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", uploadStats.AccountId, uploadStats.Nonce, string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
                 result.UploadStatsResultStatus = UploadStatsResultStatus.ValidationErrors;
-                return result;
-            }
-
-
-            var isLoggedInResult = _isUserOnlineQueryHandler.Handle(new IsUserOnlineQuery(uploadStats.AccountId, uploadStats.Nonce) { });
-            if (isLoggedInResult.IsUserOnlineQueryResultStatus != IsUserOnlineQueryResultStatus.IsLoggedIn)
-            {
-                _logger.LogError("UploadStatsHandler => accountId {AccountID} nonce {Nonce} => User is not currently logged in with current nonce", uploadStats.AccountId, uploadStats.Nonce);
-                result.UploadStatsResultStatus = UploadStatsResultStatus.LoginCheckFailure;
                 return result;
             }
 
