@@ -5,6 +5,7 @@ using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Admin.CheckOnline;
 using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.Credits.Get;
+using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Exp.Training;
 using WFClassic.Web.Logic.Inventory.Attach;
 using WFClassic.Web.Logic.Inventory.Get;
@@ -49,6 +50,7 @@ builder.Services.AddTransient<UpdateInventoryHandler>();
 builder.Services.AddTransient<AddAccountTransactionHandler>();
 builder.Services.AddTransient<AttachModsHandler>();
 builder.Services.AddTransient<AddTauntHandler>();
+builder.Services.AddTransient<UpgradeArtifactHandler>();
 
 
 

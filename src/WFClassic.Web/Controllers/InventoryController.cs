@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Inventory.Attach;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
@@ -17,15 +18,16 @@ namespace WFClassic.Web.Controllers
         GiveStartingGearHandler _giveStartingGearHandler;
         GetInventoryHandler _getInventoryHandler;
         AttachModsHandler _attachModsHandler;
-        
-        
+        UpgradeArtifactHandler _upgradeArtifactHandler;
+
         public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler,
-            UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler)
+            UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler, UpgradeArtifactHandler upgradeArtifactHandler)
         {
             _giveStartingGearHandler = giveStartingGearHandler;
             _getInventoryHandler = getInventoryHandler;
             _updateInventoryHandler = updateInventoryHandler;
-            _attachModsHandler = attachModsHandler; 
+            _attachModsHandler = attachModsHandler;
+            _upgradeArtifactHandler = upgradeArtifactHandler;
         }
 
         [HttpGet]
@@ -37,6 +39,146 @@ namespace WFClassic.Web.Controllers
         }
 
 
+        [HttpPost]
+        [Route("/api/saveLoadout.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
+        public ActionResult SaveCurrentLoadout(Guid accountId, long nonce)
+        {
+
+            // 
+            /*
+             {
+    "ItemId" : {
+        "$id" : "Current"
+    },
+    "Name" : "",
+    "Presets" : [
+        {
+            "ItemId" : {
+                "$id" : "47d4ed2d-8a11-4375-89f3-fb51e84dd972"
+            },
+            "Customization" : {
+                "Emblem" : "",
+                "Colors" : [
+                    -6904668,
+                    -7378852,
+                    -8113345,
+                    -4277585,
+                    -7696737
+                ],
+                "Skins" : [
+                    "/Lotus/Upgrades/Skins/Excalibur/ExcaliburHelmet",
+                    "",
+                    ""
+                ]
+            }
+        },
+        {
+            "ItemId" : {
+                "$id" : "31dace59-46aa-4491-b1cd-9e98147b0d08"
+            },
+            "Customization" : {
+                "Emblem" : "",
+                "Colors" : [
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -1
+                ],
+                "Skins" : [
+                    "",
+                    "",
+                    ""
+                ]
+            }
+        },
+        {
+            "ItemId" : {
+                "$id" : "b63257eb-2cb4-4970-ab1e-7e568a4f9c2c"
+            },
+            "Customization" : {
+                "Emblem" : "",
+                "Colors" : [
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -1
+                ],
+                "Skins" : [
+                    "",
+                    "",
+                    ""
+                ]
+            }
+        },
+        {
+            "ItemId" : {
+                "$id" : "ffffffffffffffffffffffff"
+            },
+            "Customization" : {
+                "Emblem" : "",
+                "Colors" : [
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -1
+                ],
+                "Skins" : [
+                    "",
+                    "",
+                    ""
+                ]
+            }
+        },
+        {
+            "ItemId" : {
+                "$id" : "ffffffffffffffffffffffff"
+            },
+            "Customization" : {
+                "Emblem" : "",
+                "Colors" : [
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -1
+                ],
+                "Skins" : [
+                    "",
+                    "",
+                    ""
+                ]
+            }
+        },
+        {
+            "ItemId" : {
+                "$id" : "ffffffffffffffffffffffff"
+            },
+            "Customization" : {
+                "Emblem" : "",
+                "Colors" : [
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -4539718,
+                    -1
+                ],
+                "Skins" : [
+                    "",
+                    "",
+                    ""
+                ]
+            }
+        }
+    ]
+}
+             
+             */
+            return null;
+        }
 
         [HttpPost]
         [Route("/api/updateInventory.php")]
@@ -60,12 +202,12 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/inventory.php")]
-        [TypeFilter(typeof( LoginVerificationActionFilter))]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Inventory([FromQuery] GetInventory getInventory)
         {
             GetInventoryResult result = _getInventoryHandler.Handle(getInventory);
 
-            Console.WriteLine( JsonSerializer.Serialize(result.GetInventoryResultDetails));
+            Console.WriteLine(JsonSerializer.Serialize(result.GetInventoryResultDetails));
 
             if (result.GetInventoryResultStatus == GetInventoryResultStatus.Success)
             {
@@ -82,16 +224,40 @@ namespace WFClassic.Web.Controllers
 
             return StatusCode(500);
         }
-         
+
         //accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=5060132779479405351&steamId=0
         [HttpPost]
         [Route("/api/artifacts.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Artifacts(Guid accountId, long nonce, long steamId)
         {
-            Utils.GetRequestObject<string>(this.HttpContext);
 
-            return new JsonResult("{cats}");
+            UpgradeArtifact upgradeArtifact = new UpgradeArtifact()
+            {
+                AccountId = accountId,
+                Nonce = nonce,
+                IncomingUpgradeArtifactRequest = Utils.GetRequestObject<IncomingUpgradeArtifactRequest>(this.HttpContext)
+            };
+
+            var result = _upgradeArtifactHandler.Handle(upgradeArtifact);
+
+            if (result.UpgradeArtifactResultStatus == UpgradeArtifactResultStatus.Success)
+            {
+                return Ok();
+            }
+            else if (result.UpgradeArtifactResultStatus == UpgradeArtifactResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.UpgradeArtifactResultStatus == UpgradeArtifactResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+
+
+
+
+            return StatusCode(500);
         }
 
         [HttpPost]
@@ -101,23 +267,24 @@ namespace WFClassic.Web.Controllers
         {
             IncomingAttachRequest incomingAttachRequest = Utils.GetRequestObject<IncomingAttachRequest>(this.HttpContext);
 
-            AttachMods attachMods = new AttachMods() { 
-              AccountId = accountId,
-              Nonce = nonce ,
-              IncomingAttachRequest = incomingAttachRequest 
+            AttachMods attachMods = new AttachMods()
+            {
+                AccountId = accountId,
+                Nonce = nonce,
+                IncomingAttachRequest = incomingAttachRequest
             }
             ;
 
-              var result  = _attachModsHandler.Handle(attachMods);
+            var result = _attachModsHandler.Handle(attachMods);
 
             if (result.AttachModsResultStatus == AttachModsResultStatus.ValidationErrors)
             {
                 return BadRequest();
             }
-            else if (result.AttachModsResultStatus == AttachModsResultStatus.MappingFailure 
+            else if (result.AttachModsResultStatus == AttachModsResultStatus.MappingFailure
                 || result.AttachModsResultStatus == AttachModsResultStatus.DatabaseErrors)
             {
-                return StatusCode(500); 
+                return StatusCode(500);
             }
 
             return new JsonResult("");
