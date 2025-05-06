@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Credits.Get;
+using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
@@ -21,6 +22,7 @@ namespace WFClassic.Web.Controllers
 
         [Route("api/credits.php")]
         [HttpGet]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public async Task<IActionResult> GetAsync([FromQuery] GetCredits getCredits)
         {
 
@@ -41,12 +43,15 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/purchase.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Purchase([FromQuery] Guid accountId, [FromQuery] long nonce, [FromQuery] string productName, [FromQuery] int usePremium)
         {
             return new JsonResult("{}");
         }
+        
         [HttpPost]
         [Route("/api/forcePurchase.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult ForcePurchase([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             return new JsonResult("{}");
@@ -54,6 +59,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/sell.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Sell([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             return new JsonResult("{}");
