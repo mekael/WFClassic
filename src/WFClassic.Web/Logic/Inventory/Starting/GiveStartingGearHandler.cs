@@ -79,7 +79,15 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 ItemType = "/Lotus/Weapons/Tenno/Pistol/Pistol",
                 ItemName = "Lato",
             })
+
                ;
+            player.InventoryItems.Add(new InventoryItem()
+            {
+                ItemCount = 1,
+                InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Melee,
+                ItemType = "/Lotus/Weapons/Tenno/Melee/LongSword/LongSword",
+                ItemName = "LongSword",
+            });
 
             player.ReceivedStartingGear = true;
 
