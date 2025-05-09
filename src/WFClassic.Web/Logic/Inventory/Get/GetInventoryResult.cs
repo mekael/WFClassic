@@ -208,9 +208,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonPropertyName("ExtraRemaining")]
         public int ExtraRemaining { get; set; }
-
-        [JsonPropertyName("PowersuitAbilities")]
-        public List<GetInventoryResultJsonUpgradeItem> PowersuitAbilities { get; set; }
+        
     }
     public enum GetInventoryResultStatus
     {

@@ -48,8 +48,8 @@ namespace WFClassic.Web.Logic.Inventory.Get
             {
                 AdditionalPlayerXP = player.AdditionalPlayerXP,
                 CompletedAlerts = new List<string>(),
-                DeathMarks = new List<string>(),
-                Founder = 1,
+                DeathMarks = new List<string>() {"Stalker" },
+                Founder = 2,
                 InvalidBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
                 MiscBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
                 SuitBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
@@ -65,7 +65,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 Consumables = GetJsonTypeCount(InternalInventoryItemType.Consumables, player.InventoryItems),
                 MiscItems = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
                 Recipes = GetJsonTypeCount(InternalInventoryItemType.Recipes, player.InventoryItems),
-                Components = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
+                //Components = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
 
                 Missions = player.Missions == null ? new List<GetInventoryResultJsonMission>() : player.Missions.Select(s => new GetInventoryResultJsonMission() { BestRating = s.BestRatings, Completes = s.Completes, Tag = s.Tag }).ToList(),
                 PlayerLevel = player.PlayerLevel,
@@ -110,12 +110,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     ItemType = s.ItemType,
                     UnlockLevel = s.UnlockLevel,
                     UpgradeVer = s.UpgradeVer,
-                    XP = s.XP, 
-                    PowersuitAbilities = new List<GetInventoryResultJsonUpgradeItem>() { new GetInventoryResultJsonUpgradeItem() { 
-                    ItemId= new MongoId( Guid.Parse( "21DACE59-46AA-4491-B1CD-9E98147B0D08")),
-                    ItemType ="/Lotus/Powersuits/PowersuitAbilities/SuperJumpAbility",
-                    
-                    } }
+                    XP = s.XP
                 }).ToList();
         }
 

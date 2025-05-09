@@ -37,6 +37,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
             Player player = null;
             List<InventoryItemAttachment> attachments = null;
 
+            ///Lotus/Powersuits/Saryn/PoisonAbilityCard
             try
             {
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", getInventory.AccountId, getInventory.Nonce);
