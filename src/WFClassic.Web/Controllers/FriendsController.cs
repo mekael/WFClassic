@@ -1,11 +1,30 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using WFClassic.Web.Logic.Friendship.Add;
+using WFClassic.Web.Logic.Friendship.AddPending;
+using WFClassic.Web.Logic.Friendship.Get;
+using WFClassic.Web.Logic.Friendship.Remove;
+using WFClassic.Web.Logic.Middleware;
 
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
     public class FriendsController : ControllerBase
     {
+        AddPendingFriendHandler _addPendingFriendHandler;
+        GetFriendsRequestHandler _getFriendsRequestHandler;
+        AcceptFriendRequestHandler _acceptFriendRequestHandler;
+        RemoveFriendRequestHandler _removeFriendRequestHandler;
+        public FriendsController(AddPendingFriendHandler addPendingFriendHandler, GetFriendsRequestHandler getFriendsRequestHandler,
+            AcceptFriendRequestHandler acceptFriendRequestHandler, RemoveFriendRequestHandler removeFriendRequestHandler)
+        {
+            _addPendingFriendHandler = addPendingFriendHandler;
+            _getFriendsRequestHandler = getFriendsRequestHandler;
+            _acceptFriendRequestHandler = acceptFriendRequestHandler;
+            _removeFriendRequestHandler = removeFriendRequestHandler;
+        }
 
         [HttpPost]
         [Route("/api/addFriendImage.php")]
@@ -14,61 +33,99 @@ namespace WFClassic.Web.Controllers
             return new JsonResult("{}");
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/api/addPendingFriend.php")]
-        public ActionResult AddPendingFriend([FromQuery] Guid accountId, [FromQuery] long nonce)
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
+        public ActionResult AddPendingFriend([FromQuery] AddPendingFriend addPendingFriend)
         {
-            return new JsonResult("{}");
+            var result = _addPendingFriendHandler.Handle(addPendingFriend);
+
+            if (result.AddPendingFriendResultStatus == AddPendingFriendResultStatus.Success)
+            {
+                return Ok();
+            }
+            else if (result.AddPendingFriendResultStatus == AddPendingFriendResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.AddPendingFriendResultStatus == AddPendingFriendResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+
+            return StatusCode(500);
         }
 
-        [HttpPost]
+        // approve a friend request
+        [HttpGet]
         [Route("/api/addFriend.php")]
-        public ActionResult AddFriend([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult AddFriend([FromQuery] AcceptFriendRequest acceptFriendRequest)
+
         {
-            return new JsonResult("{}");
+            var result = _acceptFriendRequestHandler.Handle(acceptFriendRequest);
+
+            if (result.AcceptFriendResultStatus == AcceptFriendResultStatus.Success)
+            {
+                return Ok();
+            }
+            else if (result.AcceptFriendResultStatus == AcceptFriendResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.AcceptFriendResultStatus == AcceptFriendResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+
+            return StatusCode(500);
         }
 
         [HttpPost]
         [Route("/api/removeFriend.php")]
-        public ActionResult RemoveFriend([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult RemoveFriend([FromQuery] RemoveFriendRequest removeFriendRequest)
         {
-            return new JsonResult("{}");
+           var result = _removeFriendRequestHandler.Handle(removeFriendRequest);
+            if (result.RemoveFriendResultStatus == RemoveFriendResultStatus.Success)
+            {
+                return Ok();
+            }
+            else if (result.RemoveFriendResultStatus == RemoveFriendResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.RemoveFriendResultStatus == RemoveFriendResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+
+            return StatusCode(500);
         }
+
+
         [HttpGet]
         [Route("/api/getFriends.php")]
-        public string GetFriends([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult GetFriends([FromQuery] GetFriendsRequest getFriendsRequest)
         {
-            var response = @"
 
-{
- ""Current"": [
+            var result = _getFriendsRequestHandler.Handle(getFriendsRequest);
+
+            if (result.GetFriendsResultStatus == GetFriendsResultStatus.DatabaseErrors ||
+                result.GetFriendsResultStatus == GetFriendsResultStatus.MappingFailure)
             {
-                ""_id"": {
-                    ""$id"": ""aaa""
-                },
-                ""DisplayName"": ""aaa"",
-                ""Status"": 0
-            },
-            {
-                ""_id"": {
-                    ""$id"": ""bbb""
-                },
-                ""DisplayName"": ""bbb"",
-                ""Status"": 0
-            },
-            {
-                ""_id"": {
-                    ""$id"": ""ccc""
-                },
-                ""DisplayName"": ""ccc"",
-                ""Status"": 0,
-""ChatHistory"" :[]
+                return StatusCode(500);
             }
-        ]
-}
-";
+            else if (result.GetFriendsResultStatus == GetFriendsResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.GetFriendsResultStatus == GetFriendsResultStatus.Success)
+            {
+                return new JsonResult(result.JsonGetFriendsResult,
+        new JsonSerializerOptions { PropertyNamingPolicy = null });
+            }
 
-            return response;
+            return StatusCode(500);
+
         }
 
     }

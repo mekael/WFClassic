@@ -7,6 +7,10 @@ using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Exp.Training;
+using WFClassic.Web.Logic.Friendship.Add;
+using WFClassic.Web.Logic.Friendship.AddPending;
+using WFClassic.Web.Logic.Friendship.Get;
+using WFClassic.Web.Logic.Friendship.Remove;
 using WFClassic.Web.Logic.Inventory.Attach;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
@@ -16,6 +20,11 @@ using WFClassic.Web.Logic.Taunt;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
+ 
+ 
+ 
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +60,10 @@ builder.Services.AddTransient<AddAccountTransactionHandler>();
 builder.Services.AddTransient<AttachModsHandler>();
 builder.Services.AddTransient<AddTauntHandler>();
 builder.Services.AddTransient<UpgradeArtifactHandler>();
+builder.Services.AddTransient<AddPendingFriendHandler>();
+builder.Services.AddTransient<AcceptFriendRequestHandler>();
+builder.Services.AddTransient<GetFriendsRequestHandler>();
+builder.Services.AddTransient<RemoveFriendRequestHandler>();
 
 
 

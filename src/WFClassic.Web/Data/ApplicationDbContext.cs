@@ -24,4 +24,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Player> Players { get; set; }
     public DbSet<TauntHistoryItem> TauntHistoryItems { get; set; }
     public DbSet<MetricItem> MetricItems { get; set; }
+
+    public DbSet<FriendshipRequest> FriendshipRequests { get; set; }
+
+    public DbSet<PersonRelationship> PersonRelationships { get; set; }
 }

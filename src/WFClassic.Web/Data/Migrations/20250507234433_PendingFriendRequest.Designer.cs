@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WFClassic.Web.Data;
 
@@ -10,9 +11,11 @@ using WFClassic.Web.Data;
 namespace WFClassic.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250507234433_PendingFriendRequest")]
+    partial class PendingFriendRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -555,36 +558,6 @@ namespace WFClassic.Web.Data.Migrations
                     b.ToTable("Missions");
                 });
 
-            modelBuilder.Entity("WFClassic.Web.Data.Models.PersonRelationship", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTimeOffset>("CreationTimestamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("FriendId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTimeOffset>("LastModificationTimestamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PersonRelationshipType")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FriendId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PersonRelationships");
-                });
-
             modelBuilder.Entity("WFClassic.Web.Data.Models.Player", b =>
                 {
                     b.Property<Guid>("Id")
@@ -820,25 +793,6 @@ namespace WFClassic.Web.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Player");
-                });
-
-            modelBuilder.Entity("WFClassic.Web.Data.Models.PersonRelationship", b =>
-                {
-                    b.HasOne("WFClassic.Web.Data.Models.ApplicationUser", "Friend")
-                        .WithMany()
-                        .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WFClassic.Web.Data.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Friend");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WFClassic.Web.Data.Models.Player", b =>
