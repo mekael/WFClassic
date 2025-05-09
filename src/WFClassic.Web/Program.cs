@@ -15,6 +15,8 @@ using WFClassic.Web.Logic.Inventory.Attach;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
 using WFClassic.Web.Logic.Inventory.Update;
+using WFClassic.Web.Logic.Stats.Leaderboard;
+using WFClassic.Web.Logic.Stats.ProfileStats;
 using WFClassic.Web.Logic.Stats.Upload;
 using WFClassic.Web.Logic.Taunt;
 using WFClassic.Web.Logic.WFAuth.Initialize;
@@ -64,6 +66,8 @@ builder.Services.AddTransient<AddPendingFriendHandler>();
 builder.Services.AddTransient<AcceptFriendRequestHandler>();
 builder.Services.AddTransient<GetFriendsRequestHandler>();
 builder.Services.AddTransient<RemoveFriendRequestHandler>();
+builder.Services.AddTransient<GetLeaderboardStatsHandler>();
+builder.Services.AddTransient<GetProfileStatsHandler>();
 
 
 
