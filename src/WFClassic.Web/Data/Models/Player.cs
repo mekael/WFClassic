@@ -11,6 +11,9 @@
         public List<InventoryBin> InventoryBins { get; set; }
         public List<InventoryItem> InventoryItems { get; set; }
         public List<BankAccount> BankAccounts { get; set; }
+        public List<PendingRecipe> PendingRecipes { get; set; }
+
+
 
         public int PlayerXP { get; set; }
         public int AdditionalPlayerXP { get; set; }

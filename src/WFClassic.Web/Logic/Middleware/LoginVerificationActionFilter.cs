@@ -22,8 +22,8 @@ namespace WFClassic.Web.Logic.Middleware
          }
 
         public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            _logger.LogInformation("CASFDASDASD");
+        {{
+            _logger.LogInformation("Verifying call => {RouteValues}", context.HttpContext.Request.RouteValues);
              var accountId = Guid.Parse(context.HttpContext.Request.Query["accountId"].First());
             var nonce = long.Parse(context.HttpContext.Request.Query["nonce"].First());
 
