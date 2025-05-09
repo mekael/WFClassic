@@ -11,7 +11,7 @@ namespace WFClassic.Web.Logic.Exp.Training
         public long Nonce { get; set; }
 
         [JsonProperty("numLevelsGained")]
-        public int NumberOfLevelsGained { get; set; }
+        public int NumLevelsGained { get; set; }
     }
 }
 

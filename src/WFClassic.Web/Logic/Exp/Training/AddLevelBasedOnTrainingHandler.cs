@@ -55,7 +55,7 @@ namespace WFClassic.Web.Logic.Exp.Training
             _logger.LogInformation("AddLevelBasedOnTrainingHandler => accountId {AccountID} nonce {Nonce} => Current Player Level {Level} ", addLevelBasedOnTraining.AccountId, addLevelBasedOnTraining.Nonce, player.PlayerLevel);
             // Number of levels gained is always 0 for some reason in the older version 
             //TODO: Add in a bugfix for this? 
-            player.PlayerLevel += addLevelBasedOnTraining.NumberOfLevelsGained;
+            player.PlayerLevel += addLevelBasedOnTraining.NumLevelsGained;
             player.TrainingDate = DateTime.Now;
             _logger.LogInformation("AddLevelBasedOnTrainingHandler => accountId {AccountID} nonce {Nonce} => New Player Level {Level} ", addLevelBasedOnTraining.AccountId, addLevelBasedOnTraining.Nonce, player.PlayerLevel);
 
