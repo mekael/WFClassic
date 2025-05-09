@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Bcpg.Sig;
+﻿using Newtonsoft.Json;
+using Org.BouncyCastle.Bcpg.Sig;
 using System.Text.Json.Serialization;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared.Models;
@@ -34,7 +35,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public bool ReceivedStartingGear { get; set; }
 
         [JsonPropertyName("Founder")]
-        public string Founder { get; set; }
+        public int Founder { get; set; }
 
         [JsonPropertyName("TrainingDate")]
         public MongoDate TrainingDate { get; set; }
@@ -52,40 +53,43 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public int Rating { get; set; }
 
         [JsonPropertyName("SuitBin")]
-        public JsonInventoryBin SuitBin { get; set; }
+        public GetInventoryResultJsonInventoryBin SuitBin { get; set; }
 
         [JsonPropertyName("WeaponBin")]
-        public JsonInventoryBin WeaponBin { get; set; }
+        public GetInventoryResultJsonInventoryBin WeaponBin { get; set; }
 
         [JsonPropertyName("MiscBin")]
-        public JsonInventoryBin MiscBin { get; set; }
+        public GetInventoryResultJsonInventoryBin MiscBin { get; set; }
 
         [JsonPropertyName("SentinelBin")]
-        public JsonInventoryBin SentinelBin { get; set; }
+        public GetInventoryResultJsonInventoryBin SentinelBin { get; set; }
 
         [JsonPropertyName("InvalidBin")]
-        public JsonInventoryBin InvalidBin { get; set; }
+        public GetInventoryResultJsonInventoryBin InvalidBin { get; set; }
 
         [JsonPropertyName("LongGuns")]
-        public List<JsonEquipmentItem> LongGuns { get; set; }
+        public List<GetInventoryResultJsonEquipmentItem> LongGuns { get; set; }
+
+        [JsonPropertyName("Cards")]
+        public List<GetInventoryResultJsonEquipmentItem> Cards { get; set; }
 
         [JsonPropertyName("Pistols")]
-        public List<JsonEquipmentItem> Pistols { get; set; }
+        public List<GetInventoryResultJsonEquipmentItem> Pistols { get; set; }
 
         [JsonPropertyName("Suits")]
-        public List<JsonEquipmentItem> Suits { get; set; }
+        public List<GetInventoryResultJsonEquipmentItem> Suits { get; set; }
 
         [JsonPropertyName("Melee")]
-        public List<JsonEquipmentItem> Melee { get; set; }
+        public List<GetInventoryResultJsonEquipmentItem> Melee { get; set; }
 
         [JsonPropertyName("Sentinels")]
-        public List<JsonEquipmentItem> Sentinels { get; set; }
+        public List<GetInventoryResultJsonEquipmentItem> Sentinels { get; set; }
 
         [JsonPropertyName("SentinelWeapons")]
-        public List<JsonEquipmentItem> SentinelWeapons { get; set; }
+        public List<GetInventoryResultJsonEquipmentItem> SentinelWeapons { get; set; }
 
         [JsonPropertyName("Missions")]
-        public List<JsonMission> Missions { get; set; }
+        public List<GetInventoryResultJsonMission> Missions { get; set; }
 
         [JsonPropertyName("DeathMarks")]
         public List<string> DeathMarks { get; set; }
@@ -93,17 +97,121 @@ namespace WFClassic.Web.Logic.Inventory.Get
         [JsonPropertyName("CompletedAlerts")]
         public List<string> CompletedAlerts { get; set; }
 
+        [JsonPropertyName("Consumables")]
+        public List<GetInventoryResultJsonTypeCount> Consumables { get; set; }
+
+        [JsonPropertyName("MiscItems")]
+        public List<GetInventoryResultJsonTypeCount> MiscItems { get; set; }
+        [JsonPropertyName("Recipes")]
+        public List<GetInventoryResultJsonTypeCount> Recipes { get; set; }
+
+        [JsonPropertyName("Components")]
+        public List<GetInventoryResultJsonTypeCount> Components { get; set; }
+
+
         [JsonPropertyName("XPInfo")]
-        public List<JsonXpInfoItem> XPInfo { get; set; }
+        public List<GetInventoryResultJsonXpInfoItem> XPInfo { get; set; }
 
         [JsonPropertyName("TauntHistory")]
-        public List<JsonTauntHistoryItem> TauntHistory { get; set; }
+        public List<GetInventoryResultJsonTauntHistoryItem> TauntHistory { get; set; }
 
         [JsonPropertyName("Upgrades")]
-        public List<JsonUpgradeItem> Upgrades { get; set; }
+        public List<GetInventoryResultJsonUpgradeItem> Upgrades { get; set; }
+    }
+
+    public class GetInventoryResultJsonXpInfoItem
+    {
+        [JsonProperty("ItemType")]
+        public string ItemType { get; set; }
+
+        [JsonProperty("XP")]
+        public long XP { get; set; }
     }
 
 
+    public class GetInventoryResultJsonUpgradeItem
+    {
+        [JsonPropertyName("ItemType")]
+        public string ItemType { get; set; }
+
+        [JsonPropertyName("ItemId")]
+        public MongoId ItemId { get; set; }
+
+        [JsonPropertyName("ParentId")]
+        public MongoId ParentId { get; set; }
+
+        [JsonPropertyName("Slot")]
+        public int? Slot { get; set; }
+
+        [JsonPropertyName("UpgradeFingerprint")]
+        public string UpgradeFingerPrint { get; set; }
+
+    }
+
+    public class GetInventoryResultJsonTypeCount
+    {
+        [JsonProperty("ItemType")]
+        public string ItemType { get; set; }
+
+        [JsonProperty("ItemCount")]
+        public int ItemCount { get; set; }
+    }
+
+    public class GetInventoryResultJsonTauntHistoryItem
+    {
+        [JsonPropertyName("node")]
+        public string node { get; set; }
+    }
+
+
+    public class GetInventoryResultJsonMission
+    {
+        [JsonPropertyName("Tag")]
+        public string Tag { get; set; }
+
+        [JsonPropertyName("Completes")]
+        public int Completes { get; set; }
+
+        [JsonPropertyName("BestRating")]
+        public float BestRating { get; set; }
+
+    }
+
+    public class GetInventoryResultJsonInventoryBin
+    {
+        [JsonProperty("Slots")]
+        public int Slots { get; set; }
+        [JsonProperty("Extra")]
+        public int Extra { get; set; }
+    }
+
+
+    public class GetInventoryResultJsonEquipmentItem
+    {
+        [JsonPropertyName("ItemType")]
+        public string ItemType { get; set; }
+
+        [JsonPropertyName("ItemId")]
+        public MongoId ItemId { get; set; }
+
+        [JsonPropertyName("XP")]
+        public long XP { get; set; }
+
+        [JsonPropertyName("UpgradeVer")]
+        public long UpgradeVer { get; set; }
+
+        [JsonPropertyName("UnlockLevel")]
+        public int UnlockLevel { get; set; }
+
+        [JsonPropertyName("ExtraCapacity")]
+        public int ExtraCapacity { get; set; }
+
+        [JsonPropertyName("ExtraRemaining")]
+        public int ExtraRemaining { get; set; }
+
+        [JsonPropertyName("PowersuitAbilities")]
+        public List<GetInventoryResultJsonUpgradeItem> PowersuitAbilities { get; set; }
+    }
     public enum GetInventoryResultStatus
     {
         ValidationErrors,
