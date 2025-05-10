@@ -17,9 +17,15 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
             _logger = logger;
         }
 
-
-        //GET http://localhost/stats/leaderboard.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=5239627016210914759&steamId=0&field=Kills&before=0&after=10 HTTP/1.1
-        // GET http://localhost/stats/leaderboard.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=5239627016210914759&steamId=0&field=Kills&before=4&after=6&pivotAccountId=c64c1e01-34d6-4311-ae40-7baa5eba3016 HTTP/1.1
+        List<string> weaponEventNames = new List<string>()
+        {
+            "FIRE_WEAPON",
+            "HEADSHOT_ITEM",
+            "EQUIP_WEAPON",
+            "KILL_ENEMY_ITEM",
+            "WEAPON_XP",
+            "HIT_ENTITY_ITEM",
+        };
 
         public GetProfileStatsResult Handle(GetProfileStats getProfileStats)
         {
@@ -51,6 +57,24 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
 
 
             try {
+
+                var weaponAndSuitMetrics = metricItems.Where(w => w.ItemName != null && (w.ItemName.StartsWith("/Lotus/Powersuits") || w.ItemName.StartsWith("/Lotus/Weapons"))).GroupBy(gb => gb.ItemName);
+                List<Weapon> weapons = new List<Weapon>();
+                foreach (var item in weaponAndSuitMetrics)
+                {
+                    weapons.Add( new Weapon()
+                    {
+                        assists = 0,
+                        equipTime = item.Where(w => w.EventName == "EQUIP_WEAPON").Sum(s => s.Seconds.HasValue ? s.Seconds.Value : 0),
+                        fired = item.Where(w => w.EventName == "FIRE_WEAPON").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
+                        headshots = item.Where(w => w.EventName == "HEADSHOT_ITEM").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
+                        hits = item.Where(w => w.EventName == "HIT_ENTITY_ITEM").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
+                        kills = item.Where(w => w.EventName == "KILL_ENEMY_ITEM").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
+                        xp = item.Where(w => w.EventName == "WEAPON_XP").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
+                        type =item.Key
+                    });
+                }
+                 
                 result.ProfileStatsItem = new ProfileStatsItem()
                 {
 
@@ -71,8 +95,8 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
                     Enemies = metricItems.Where(w => w.EventName == "KILL_ENEMY" && w.ItemName.StartsWith("/Lotus/Types/Enemies/"))
                              .GroupBy(gb => gb.ItemName)
                              .Select(s => new Enemy() { type = s.Key, deaths = s.Sum(si => si.ItemCount.HasValue ? si.ItemCount.Value : 0) })
-                             .ToList()
-
+                             .ToList() ,
+                    Weapons = weapons
                 }
 
         ;
