@@ -28,6 +28,7 @@ namespace WFClassic.Web.Logic.Credits.Add
                 return result;
             }
 
+ 
 
             Player player = null;
 
@@ -52,7 +53,7 @@ namespace WFClassic.Web.Logic.Credits.Add
 
             if (bankAccount == null)
             {
-                _logger.LogInformation("AddAccountTransactionHandler => accountId {AccountID}  => Querying for player with bank accounts", addAccountTransaction.AccountId);
+                _logger.LogInformation("AddAccountTransactionHandler => accountId {AccountID}  => Account not found for credit type, adding new bank account", addAccountTransaction.AccountId);
                 bankAccount = new BankAccount()
 
                 { 
