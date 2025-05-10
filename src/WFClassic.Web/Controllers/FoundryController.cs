@@ -3,21 +3,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Text.Json;
 using WFClassic.Web.Logic.Foundry.Pending;
+using WFClassic.Web.Logic.Foundry.Start;
 using WFClassic.Web.Logic.Friendship.Get;
 using WFClassic.Web.Logic.Middleware;
 
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
-    public class RecipeController : ControllerBase
+    public class FoundryController : ControllerBase
     {
         CheckPendingRecipesQueryHandler _checkPendingRecipesQueryHandler;
-        ILogger<RecipeController> _logger;
+        StartRecipeBuildHandler _startRecipeBuildHandler;
+        ILogger<FoundryController> _logger;
 
-        public RecipeController(ILogger<RecipeController> logger, CheckPendingRecipesQueryHandler checkPendingRecipesQueryHandler)
+        public FoundryController(ILogger<FoundryController> logger, CheckPendingRecipesQueryHandler checkPendingRecipesQueryHandler,
+            StartRecipeBuildHandler startRecipeBuildHandler )
         {
             _logger = logger;
             _checkPendingRecipesQueryHandler = checkPendingRecipesQueryHandler;
+            _startRecipeBuildHandler = startRecipeBuildHandler;
         }
 
         [HttpPost]
@@ -38,13 +42,30 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/startRecipe.php")]
-        public ActionResult StartRecipe([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult StartRecipe([FromQuery] StartRecipeBuild startRecipeBuild)
         {
             //   Utils.GetRequestObject<string>(this.HttpContext);
             // Seems like the array is always empty ? 
+  
 
             _logger.LogInformation("RecipeController => in action startRecipe");
-            return new JsonResult("{}");
+            var result = _startRecipeBuildHandler.Handle(startRecipeBuild);
+
+            if (result.StartRecipeBuildResultStatus == StartRecipeBuildResultStatus.DatabaseErrors ||
+                result.StartRecipeBuildResultStatus == StartRecipeBuildResultStatus.MappingFailure)
+            {
+                return StatusCode(500);
+            }
+            else if (result.StartRecipeBuildResultStatus == StartRecipeBuildResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.StartRecipeBuildResultStatus == StartRecipeBuildResultStatus.Success)
+            {
+                    return Ok();
+            }
+
+            return StatusCode(500);
         }
 
         [HttpGet]

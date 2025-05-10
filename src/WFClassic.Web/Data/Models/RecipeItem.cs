@@ -6,6 +6,6 @@
         public Recipe Recipe { get; set; }
         public string ItemName { get; set; }
         public string PrettyName { get; set; }
-        public string ItemCountNeeded { get; set; }
+        public int ItemCountNeeded { get; set; }
     }
 }

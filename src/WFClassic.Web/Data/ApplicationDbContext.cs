@@ -28,4 +28,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<FriendshipRequest> FriendshipRequests { get; set; }
 
     public DbSet<PersonRelationship> PersonRelationships { get; set; }
+
+
+    public DbSet<PendingRecipe> PendingRecipes { get; set; }
+    public DbSet<Recipe> Recipes { get; set; }
+    public DbSet<RecipeItem>  RecipeItems { get; set; }
 }

@@ -8,6 +8,7 @@ using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Exp.Training;
 using WFClassic.Web.Logic.Foundry.Pending;
+using WFClassic.Web.Logic.Foundry.Start;
 using WFClassic.Web.Logic.Friendship.Add;
 using WFClassic.Web.Logic.Friendship.AddPending;
 using WFClassic.Web.Logic.Friendship.Get;
@@ -71,6 +72,7 @@ builder.Services.AddTransient<GetLeaderboardStatsHandler>();
 builder.Services.AddTransient<GetProfileStatsHandler>();
 
 builder.Services.AddTransient<CheckPendingRecipesQueryHandler>();
+builder.Services.AddTransient<StartRecipeBuildHandler>();
 
 
 

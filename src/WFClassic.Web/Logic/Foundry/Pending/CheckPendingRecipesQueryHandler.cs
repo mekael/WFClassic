@@ -56,7 +56,7 @@ namespace WFClassic.Web.Logic.Foundry.Pending
 
                 checkPendingRecipesResult.JsonCheckPendingRecipesResult = new JsonCheckPendingRecipesResult()
                 {
-                    PendingRecipes = pendingRecipes.Select(s => new JsonCheckPendingRecipesResultItem() { ItemType = s.Recipe.RecipeItemName, SecondsRemaining = (long)(s.EndingTime - s.StartingTime).TotalSeconds }).ToList()
+                    PendingRecipes = pendingRecipes.Select(s => new JsonCheckPendingRecipesResultItem() { ItemType = s.Recipe.RecipeItemName, SecondsRemaining =  Math.Max(0, (long)(s.EndingTime - DateTimeOffset.Now).TotalSeconds )}).ToList()
                 };
                 checkPendingRecipesResult.CheckPendingRecipesResultStatus = CheckPendingRecipesResultStatus.Success;
             }

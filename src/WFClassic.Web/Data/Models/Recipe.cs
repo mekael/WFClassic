@@ -15,6 +15,6 @@ namespace WFClassic.Web.Data.Models
         public long PriceInStandardCredits { get; set; }
         public long SkipBuildPriceInPlatinum { get; set; }
 
-        public List<RecipeItem> Items { get; set; }
+        public List<RecipeItem> RecipeComponentItems { get; set; }
     }
 }

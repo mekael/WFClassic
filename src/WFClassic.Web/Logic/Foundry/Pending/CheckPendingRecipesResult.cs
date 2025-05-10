@@ -19,7 +19,7 @@ namespace WFClassic.Web.Logic.Foundry.Pending
 
     public class JsonCheckPendingRecipesResultItem
     {
-        [JsonPropertyName("PendingRecipes")]
+        [JsonPropertyName("ItemType")]
         public string ItemType { get; set; }
 
         [JsonPropertyName("SecondsRemaining")]
