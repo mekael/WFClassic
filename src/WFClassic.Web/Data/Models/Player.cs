@@ -12,7 +12,7 @@
         public List<InventoryItem> InventoryItems { get; set; }
         public List<BankAccount> BankAccounts { get; set; }
         public List<PendingRecipe> PendingRecipes { get; set; }
-
+        public List<MissionReport> MissionReports { get; set; }
 
 
         public int PlayerXP { get; set; }

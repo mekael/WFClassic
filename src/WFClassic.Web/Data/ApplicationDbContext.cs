@@ -32,5 +32,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<PendingRecipe> PendingRecipes { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
-    public DbSet<RecipeItem>  RecipeItems { get; set; }
+    public DbSet<RecipeItem> RecipeItems { get; set; }
+    public DbSet<MissionReport> MissionReports { get; set; }
+    public DbSet<PlayerReport> PlayerReports { get; set; }
+
+
+
 }

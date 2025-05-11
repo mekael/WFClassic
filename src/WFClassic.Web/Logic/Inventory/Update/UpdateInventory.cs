@@ -46,7 +46,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
         public object[] AssignedMissions { get; set; }
         public object[] CompletedAlerts { get; set; }
         public object[] DeathMarks { get; set; }
-        public Missionreport MissionReport { get; set; }
+        public IncomingMissionreport MissionReport { get; set; }
     }
 
     public class Bin
@@ -68,7 +68,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
         public float BestRating { get; set; }
     }
 
-    public class Missionreport
+    public class IncomingMissionreport
     {
         public string HostId { get; set; }
         public string MishStartTime { get; set; }
@@ -80,7 +80,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
     {
         public string ReporterId { get; set; }
         public bool FullReport { get; set; }
-        public Playermishinfo[] PlayerMishInfos { get; set; }
+        public List<Playermishinfo> PlayerMishInfos { get; set; }
     }
 
     public class Playermishinfo

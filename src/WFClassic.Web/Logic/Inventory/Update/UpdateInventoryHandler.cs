@@ -100,6 +100,9 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 UpdateItemCountInventory(updateInventory.UpdateInventoryFromMissionObject.Consumables, player.InventoryItems, InternalInventoryItemType.Consumables, player.Id);
                 UpdateItemCountInventory(updateInventory.UpdateInventoryFromMissionObject.Recipes, player.InventoryItems, InternalInventoryItemType.Recipes, player.Id);
 
+                MissionReport missionReport = CreateMissionReport(updateInventory.UpdateInventoryFromMissionObject.MissionReport, player.Id, updateInventory.Nonce);
+ 
+                _applicationDbContext.MissionReports.Add(missionReport);
 
                 _addAccountTransactionHandler.Handle(new AddAccountTransaction()
                 {
@@ -186,10 +189,49 @@ namespace WFClassic.Web.Logic.Inventory.Update
         }
 
 
-        void UpdateMissions(List<Mission> existingMissions, JsonIncomingMission incomingMission)
+        MissionReport CreateMissionReport(IncomingMissionreport incomingMissionReport, Guid playerId, long nonce )
         {
+            MissionReport report = new MissionReport()
+            {
+                PlayerId = playerId,
+                Nonce = nonce
+            };
 
-       
+            try {
+                  report = new MissionReport()
+                {
+                    PlayerId = playerId,
+                    Nonce = nonce,
+                    FullReport = incomingMissionReport.PlayerReport.FullReport,
+                    HostId = incomingMissionReport.HostId,
+                    MissionName = incomingMissionReport.MishName,
+                    MissionStartTime = incomingMissionReport.MishStartTime,
+                    ReporterId = incomingMissionReport.PlayerReport.ReporterId,
+                    PlayerReports = incomingMissionReport.PlayerReport.PlayerMishInfos.Select(report => new PlayerReport()
+                    {
+                        AssociatedAccountId = report.Pid,
+                        CredtBonus = report.CredBonus,
+                        Credits = report.Creds,
+                        MeleeXpBonus = report.MeleeXpBonus,
+                        PistolXpBonus = report.PistolXpBonus,
+                        Rating = report.Rating,
+                        RifleXpBonus = report.RfileXpBonus,
+                        SentinelWeaponXpBonus = report.SentnlWepXpBonus,
+                        SentinelXPBonus = report.SentnlXPBonus,
+                        SuitXpBonus = report.SuitXpBonus,
+                        Xp = report.Xp,
+                        XpBonus = report.XpBonus,
+                        Upgrades = report.Upgrades != null ? string.Join(";", report.Upgrades) : ""
+                    }).ToList()
+                };
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("UpdateInventoryHandler => playerId {playerId} nonce {Nonce} => Exception while creating missionreport : {Ex}", playerId, nonce, ex);
+
+            }
+            return report;
+
 
         }
 
