@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Crypto.Digests;
+﻿using Microsoft.AspNetCore.Http;
+using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Utilities;
 using System.Text.Json;
 
@@ -18,17 +19,22 @@ namespace WFClassic.Web.Logic.Shared
         }
 
         public static T GetRequestObject<T>(HttpContext httpContext)
+        {           
+            return JsonSerializer.Deserialize<T>(Utils.GetRequestObjectAsString(httpContext));
+        }
+
+
+        // used for GetRequestObject and SaveLoadout
+        public static string GetRequestObjectAsString(HttpContext httpContext)
         {
             string bodyBytes = null;
 
             using (StreamReader streamReader = new StreamReader(httpContext.Request.Body))
             {
                 bodyBytes = streamReader.ReadToEndAsync().Result;
-
             }
-                return JsonSerializer.Deserialize<T>(bodyBytes);
+            return bodyBytes;
         }
-
 
 
 

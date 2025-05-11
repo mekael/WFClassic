@@ -41,11 +41,10 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 player = _applicationDbContext.Players.Include(i => i.InventoryItems).FirstOrDefault(w => w.ApplicationUserId == giveStartingGear.AccountId);
                 _logger.LogInformation("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", giveStartingGear.AccountId, giveStartingGear.Nonce);
 
-            }
+            }   
             catch (Exception ex)
             {
                 _logger.LogError("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => Exception while querying for player object : {Ex}", giveStartingGear.AccountId, giveStartingGear.Nonce, ex);
-
             }
 
 
@@ -56,6 +55,7 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 return result;
             }
 
+            string warframeName = giveStartingGear.WarframeName.Split("/").Last();
 
             player.InventoryItems.Add(new InventoryItem()
             {
@@ -63,34 +63,12 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Suits,
                 ItemType = giveStartingGear.WarframeName,
                 ItemName = giveStartingGear.WarframeName.Split("/").Last(),
-
-            });
-            player.InventoryItems.Add(new InventoryItem()
-            {
-                ItemCount = 1,
-                InternalInventoryItemType = Data.Enums.InternalInventoryItemType.LongGuns,
-                ItemType = "/Lotus/Weapons/Tenno/Rifle/Rifle",
-                ItemName = "MK1-Braton",
-            });
-            player.InventoryItems.Add(new InventoryItem()
-            {
-                ItemCount = 1,
-                InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Pistols,
-                ItemType = "/Lotus/Weapons/Tenno/Pistol/Pistol",
-                ItemName = "Lato",
-            })
-
-               ;
-            player.InventoryItems.Add(new InventoryItem()
-            {
-                ItemCount = 1,
-                InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Melee,
-                ItemType = "/Lotus/Weapons/Tenno/Melee/LongSword/LongSword",
-                ItemName = "LongSword",
             });
 
+            player.InventoryItems.AddRange(StartingGearDefinitions.GetStartingCards(warframeName));
+            player.InventoryItems.AddRange(StartingGearDefinitions.GetStartingWeapons());
+            
             player.ReceivedStartingGear = true;
-
 
             try
             {
