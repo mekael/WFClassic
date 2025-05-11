@@ -12,21 +12,32 @@ namespace WFClassic.Web.Controllers
     {
         AddLevelBasedOnTrainingHandler _addLevelBasedOnTrainingHandler;
         AddTauntHandler _addTauntHandler;
-        public MiscController(AddLevelBasedOnTrainingHandler addLevelBasedOnTrainingHandler, AddTauntHandler addTauntHandler) {
-        
-        _addLevelBasedOnTrainingHandler = addLevelBasedOnTrainingHandler;   
-            _addTauntHandler= addTauntHandler;    
+        public MiscController(AddLevelBasedOnTrainingHandler addLevelBasedOnTrainingHandler, AddTauntHandler addTauntHandler)
+        {
+
+            _addLevelBasedOnTrainingHandler = addLevelBasedOnTrainingHandler;
+            _addTauntHandler = addTauntHandler;
         }
 
         [HttpGet]
         [Route("/api/trainingResult.php")]
-        public ActionResult TrainingResult([FromQuery] AddLevelBasedOnTraining addLevelBasedOnTraining )
+        public ActionResult TrainingResult([FromQuery] AddLevelBasedOnTraining addLevelBasedOnTraining)
         {
-           var result = _addLevelBasedOnTrainingHandler.Handle(addLevelBasedOnTraining);
+            var result = _addLevelBasedOnTrainingHandler.Handle(addLevelBasedOnTraining);
+            if (result.AddLevelBasedOnTrainingResultStatus == AddLevelBasedOnTrainingResultStatus.Success)
+            {
 
-
-            return new JsonResult(result,
-        new JsonSerializerOptions { PropertyNamingPolicy = null });
+                return new JsonResult(result, new JsonSerializerOptions { PropertyNamingPolicy = null });
+            }
+            else if (result.AddLevelBasedOnTrainingResultStatus == AddLevelBasedOnTrainingResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.AddLevelBasedOnTrainingResultStatus == AddLevelBasedOnTrainingResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+            return StatusCode(500);
         }
 
         [HttpPost]
