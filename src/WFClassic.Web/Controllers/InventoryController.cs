@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Inventory.Attach;
 using WFClassic.Web.Logic.Inventory.Get;
+using WFClassic.Web.Logic.Inventory.Loadout;
 using WFClassic.Web.Logic.Inventory.Starting;
 using WFClassic.Web.Logic.Inventory.Update;
 using WFClassic.Web.Logic.Middleware;
@@ -19,21 +21,27 @@ namespace WFClassic.Web.Controllers
         GetInventoryHandler _getInventoryHandler;
         AttachModsHandler _attachModsHandler;
         UpgradeArtifactHandler _upgradeArtifactHandler;
-
+        UpdateLoadoutHandler _updateLoadoutHandler;
         public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler,
-            UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler, UpgradeArtifactHandler upgradeArtifactHandler)
+            UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler, UpgradeArtifactHandler upgradeArtifactHandler,
+            UpdateLoadoutHandler updateLoadoutHandler)
         {
             _giveStartingGearHandler = giveStartingGearHandler;
             _getInventoryHandler = getInventoryHandler;
             _updateInventoryHandler = updateInventoryHandler;
             _attachModsHandler = attachModsHandler;
             _upgradeArtifactHandler = upgradeArtifactHandler;
+            _updateLoadoutHandler = updateLoadoutHandler;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/api/inventorySlots.php")]
         public ActionResult InventorySlots(Guid accountId, long nonce)
         {
+            Console.WriteLine("InventorySlots");
+            Utils.GetRequestObjectAsString(this.HttpContext);
+
+            // Buy new inventory slots
 
             return new JsonResult("{cats}");
         }
@@ -42,142 +50,25 @@ namespace WFClassic.Web.Controllers
         [HttpPost]
         [Route("/api/saveLoadout.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
-        public ActionResult SaveCurrentLoadout(Guid accountId, long nonce)
+        public ActionResult SaveCurrentLoadout([FromQuery] UpdateLoadout updateLoadout)
         {
 
-            // 
-            /*
-             {
-    "ItemId" : {
-        "$id" : "Current"
-    },
-    "Name" : "",
-    "Presets" : [
-        {
-            "ItemId" : {
-                "$id" : "47d4ed2d-8a11-4375-89f3-fb51e84dd972"
-            },
-            "Customization" : {
-                "Emblem" : "",
-                "Colors" : [
-                    -6904668,
-                    -7378852,
-                    -8113345,
-                    -4277585,
-                    -7696737
-                ],
-                "Skins" : [
-                    "/Lotus/Upgrades/Skins/Excalibur/ExcaliburHelmet",
-                    "",
-                    ""
-                ]
+            updateLoadout.LoadoutState = Utils.GetRequestObjectAsString(this.HttpContext);
+            var result = _updateLoadoutHandler.Handle(updateLoadout);
+            if (result.UpdateLoadoutResultStatus == UpdateLoadoutResultStatus.Success)
+            {
+                return Ok();
             }
-        },
-        {
-            "ItemId" : {
-                "$id" : "31dace59-46aa-4491-b1cd-9e98147b0d08"
-            },
-            "Customization" : {
-                "Emblem" : "",
-                "Colors" : [
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -1
-                ],
-                "Skins" : [
-                    "",
-                    "",
-                    ""
-                ]
+            else if (result.UpdateLoadoutResultStatus == UpdateLoadoutResultStatus.ValidationErrors)
+            {
+                return BadRequest();
             }
-        },
-        {
-            "ItemId" : {
-                "$id" : "b63257eb-2cb4-4970-ab1e-7e568a4f9c2c"
-            },
-            "Customization" : {
-                "Emblem" : "",
-                "Colors" : [
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -1
-                ],
-                "Skins" : [
-                    "",
-                    "",
-                    ""
-                ]
+            else if (result.UpdateLoadoutResultStatus == UpdateLoadoutResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
             }
-        },
-        {
-            "ItemId" : {
-                "$id" : "ffffffffffffffffffffffff"
-            },
-            "Customization" : {
-                "Emblem" : "",
-                "Colors" : [
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -1
-                ],
-                "Skins" : [
-                    "",
-                    "",
-                    ""
-                ]
-            }
-        },
-        {
-            "ItemId" : {
-                "$id" : "ffffffffffffffffffffffff"
-            },
-            "Customization" : {
-                "Emblem" : "",
-                "Colors" : [
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -1
-                ],
-                "Skins" : [
-                    "",
-                    "",
-                    ""
-                ]
-            }
-        },
-        {
-            "ItemId" : {
-                "$id" : "ffffffffffffffffffffffff"
-            },
-            "Customization" : {
-                "Emblem" : "",
-                "Colors" : [
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -4539718,
-                    -1
-                ],
-                "Skins" : [
-                    "",
-                    "",
-                    ""
-                ]
-            }
-        }
-    ]
-}
-             
-             */
-            return null;
+            return StatusCode(500);
+            
         }
 
         [HttpPost]
@@ -321,4 +212,9 @@ namespace WFClassic.Web.Controllers
     }
 
 }
+
+
+
+
+
 

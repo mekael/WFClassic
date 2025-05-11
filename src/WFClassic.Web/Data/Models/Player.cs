@@ -25,6 +25,8 @@
 
         public bool SubscribedToEmails { get; set; }
 
+        public string CurrentLoadout { get; set; }
+
 
     }
 }

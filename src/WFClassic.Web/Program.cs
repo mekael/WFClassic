@@ -75,6 +75,7 @@ builder.Services.AddTransient<GetProfileStatsHandler>();
 builder.Services.AddTransient<CheckPendingRecipesQueryHandler>();
 builder.Services.AddTransient<StartRecipeBuildHandler>();
 builder.Services.AddTransient<ClaimCompletedRecipeHandler>();
+builder.Services.AddTransient<UpdateLoadoutHandler>();
 
 
 
