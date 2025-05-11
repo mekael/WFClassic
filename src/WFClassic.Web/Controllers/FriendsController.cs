@@ -59,6 +59,7 @@ namespace WFClassic.Web.Controllers
         // approve a friend request
         [HttpGet]
         [Route("/api/addFriend.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult AddFriend([FromQuery] AcceptFriendRequest acceptFriendRequest)
 
         {
@@ -82,6 +83,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/removeFriend.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult RemoveFriend([FromQuery] RemoveFriendRequest removeFriendRequest)
         {
            var result = _removeFriendRequestHandler.Handle(removeFriendRequest);
@@ -104,6 +106,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/getFriends.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult GetFriends([FromQuery] GetFriendsRequest getFriendsRequest)
         {
 

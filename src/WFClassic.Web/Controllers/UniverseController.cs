@@ -15,20 +15,26 @@ namespace WFClassic.Web.Controllers
             //mRewardType mTier
 
             return new JsonResult(@"{
-""RewardType"" : ""/Lotus/Types/Items/MiscItems/OrokinReactor "",
+""Rewards"" :[
+{""RewardType"" : ""/Lotus/Types/Items/MiscItems/OrokinReactor "",
 ""ItemType"" : ""/Lotus/Types/Items/MiscItems/OrokinReactor "",
 ""ProductCategory"" :"",
 ""Amount"" :0,
-""Tier"": 3
+""Tier"": 3,
+""Rarity"": ""cat""
+}
+]
+
 
 }");
         }
 
         [HttpGet]
         [Route("/api/checkDailyMissionBonus.php")]
-        public ActionResult CheckDailyMissionBonus([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public string CheckDailyMissionBonus([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            return new JsonResult("{}");
+            var cat = "{DailyMissionBonus:1}";
+            return cat; 
         }
 
         [HttpGet]
@@ -62,22 +68,23 @@ namespace WFClassic.Web.Controllers
             }
         }
     ],
-    ""Goals"": [],
-    ""Alerts"": [
-        {
+
+    ""Goals"": [
+{
             ""Activation"": {
-                ""sec"": 1379021582,
-                ""usec"": 610000
+                ""sec"": 1746814027,
+                ""usec"": 0
             },
-            ""AllowReplay"": 0,
+            ""AllowReplay"": 1,
             ""Expiry"": {
-                ""sec"": 1379024257,
-                ""usec"": 982000
+                ""sec"": 1746894027,
+                ""usec"": 0
             },
+            ""Desc"": ""CATSAASDASD"",
             ""MissionInfo"": {
                 ""descText"": ""/Lotus/Language/Alerts/DefenseDesc3"",
-                ""location"": ""SolNode214"",
-                ""missionType"": ""MT_MOBILE_DEFENSE"",
+                ""location"": ""SolNode119"",
+                ""missionType"": ""MT_EXTERMINATION"",
                 ""faction"": ""FC_GRINEER"",
                 ""seed"": 94368,
                 ""difficulty"": 0.59836683270987,
@@ -92,83 +99,70 @@ namespace WFClassic.Web.Controllers
                         }
                     ]
                 },
-                ""levelOverride"": ""/Lotus/Levels/Proc/Grineer/GrineerAsteroid"",
+                ""levelOverride"": ""/Lotus/Levels/Proc/Grineer/SimpleCaveLevel"",
                 ""enemySpec"": ""/Lotus/Types/Game/GrineerSquadThree"",
                 ""vipAgent"": """",
-                ""maxWaveNum"": 0,
-                ""nightmare"": false
+                ""maxWaveNum"": 0
             },
-            ""TweetText"": ""Sorath (Europa): Mining Facility Ambush - 45m - 3400cr - Morphics (Resource)"",
-            ""Twitter"": 1,
             ""_id"": {
                 ""$id"": ""521d98e9bb5768395e92594c""
             }
-        },
+        }],
+    ""Alerts"": [
         {
-            ""_id"": {
-                ""$id"": ""521d98e9bb5768395e92594d""
-            },
             ""Activation"": {
-                ""sec"": 1379025611,
-                ""usec"": 10000
+                ""sec"": 1746805902,
+                ""usec"": 610000
             },
+            ""AllowReplay"": 1,
             ""Expiry"": {
-                ""sec"": 1379028300,
-                ""usec"": 976000
+                ""sec"": 2746805992,
+                ""usec"": 982000
             },
             ""MissionInfo"": {
-                ""descText"": ""/Lotus/Language/Alerts/RaidDesc18"",
-                ""location"": ""SolNode139"",
-                ""missionType"": ""MT_RAID"",
-                ""faction"": ""FC_CORPUS"",
-                ""seed"": 67145,
-                ""difficulty"": 0.99693190993275,
+                ""descText"": ""/Lotus/Language/Alerts/DefenseDesc3"",
+                ""location"": ""SolNode119"",
+                ""missionType"": ""MT_EXTERMINATION"",
+                ""faction"": ""FC_GRINEER"",
+""uniqueName"" :""cats"",
+""unlocked"" :1,
+""introText"": ""CatIntroText"",
+""completionText"": ""CatCompletionText"",
+""minEnemyLevel"" :1,
+""maxEnemyLevel"" :99,
+
+                ""seed"": 94368,
+                ""difficulty"": 0.59836683270987,
                 ""missionReward"": {
-                    ""credits"": 3300,
+                    ""credits"": 3400,
                     ""xp"": 0,
-                    ""items"": [
-                        ""/Lotus/Types/StoreItems/Recipes/PangolinSwordBlueprintStoreItem""
-                    ],
-                    ""countedItems"": []
+                    ""items"": [],
+                    ""countedItems"": [
+                        {
+                            ""ItemType"": ""/Lotus/Types/Items/MiscItems/Morphic"",
+                            ""ItemCount"": 1
+                        }
+                    ]
                 },
-                ""levelOverride"": ""/Lotus/Levels/Proc/Corpus/CorpusShip"",
-                ""enemySpec"": ""/Lotus/Types/Game/CorpusSquadB"",
+                ""levelOverride"": ""/Lotus/Levels/Proc/Grineer/SimpleCaveLevel"",
+                ""enemySpec"": ""/Lotus/Types/Game/GrineerSquadThree"",
                 ""vipAgent"": """",
                 ""maxWaveNum"": 0,
-                ""nightmare"": false
-            },
-            ""TweetText"": ""Lex (Ceres): Armory Depot Discovered - 45m - 3300cr - Pangolin Sword (Blueprint)"",
-            ""AllowReplay"": 0
-        }
-    ],
-    ""GlobalUpgrades"": [
-        {
-            ""_id"": {
-                ""$id"": ""51faa0803f9a5b35a8a59903""
-            },
-            ""Activation"": {
-                ""sec"": 1375455600,
-                ""usec"": 0
-            },
-            ""ExpiryDate"": {
-                ""sec"": 1375804800,
-                ""usec"": 0
-            },
-            ""UpgradeType"": ""GAMEPLAY_KILL_XP_AMOUNT"",
-            ""OperationType"": ""MULTIPLY"",
-            ""Value"": 2,
-            ""LocalizeTag"": ""DOUBLE XP"",
-            ""LocalizeDescTag"": ""Double XP Event. Starts at 2PM EST and ends at 3PM EST"",
-            ""IconTexture"": ""/Lotus/Interface/Icons/Store/AffinityBooster.png""
-        }
+            ""alertId"": {
+                ""$id"": ""521d98e9bb5768395e92594c""
+            }
+            } 
+        } 
     ],
     ""Time"": 1379023743,
-    ""BuildLabel"": ""2013.04.26.17.24/""
+""BuildLabel"": ""2013.04.26.17.24/""
 }
 
 ";
+            //goals is operations
 
-
+            //    ""BuildLabel"": ""2013.04.26.17.24/""
+            //""BuildLabel"": ""2013.04.26.17.24/""
             return ws;
         }
 

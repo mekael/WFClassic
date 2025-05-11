@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Exp.Training;
+using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.Taunt;
 
@@ -21,6 +22,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/trainingResult.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult TrainingResult([FromQuery] AddLevelBasedOnTraining addLevelBasedOnTraining)
         {
             var result = _addLevelBasedOnTrainingHandler.Handle(addLevelBasedOnTraining);
@@ -66,6 +68,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/tauntHistory.php")]
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult TauntHistory([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
 

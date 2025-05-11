@@ -101,50 +101,7 @@ namespace WFClassic.Web.Controllers
                 return StatusCode(500);
             }
 
-
-
-
-            // Dumped and quit both count as quits, 
-            // interupted must be something else (network issues?) 
-            var cat = @"
-{
-""TimePlayedSec"": 10,
-""Rating"" :2,
-""Rank"" : 22,
-""MissionsCompleted"" :1,
-""MissionsFailed"" :1,
-""MissionsInterrupted"" :1,  
-""MissionsDumped"" :1,
-""MissionsQuit"" :1,
-""CiphersSolved"" :1,
-""CiphersFailed"" :1,
-""CipherTime"" :1,
- 
-""ReviveCount"" :1,
-""HealCount"" :1,
-""Enemies"" : [
-{
-""type"" :""/Lotus/Types/Enemies/Corpus/BipedRobot/AIWeek/ShockwaveBipedAvatar"",
-""deaths"": 1,
-}
-]
-}
-
-";
-
-
-
             return StatusCode(500);
         }
     }
 }
-/*
-stats/profileStats.php?
-accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016
-nonce=8495907343374567873
-steamId=0
-lookupId=c64c1e01-34d6-4311-ae40-7baa5eba3016  
-
- 
- */
-// 

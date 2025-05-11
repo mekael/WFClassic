@@ -11,12 +11,12 @@ namespace WFClassic.Web.Controllers
         public string GetMessages([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             var response = @"{
-      Messages: [
+      ""Messages"": [
             {
-                SenderId: {  
-                    $id:""sdfs""
+                ""SenderId"": {  
+                    ""$id"":""sdfs""
                 },
-                Content:""sdfsd""
+                ""Content"":""sdfsd""
             }
         ]
 }";

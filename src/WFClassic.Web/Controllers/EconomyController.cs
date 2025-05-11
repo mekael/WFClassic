@@ -46,6 +46,7 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Purchase([FromQuery] Guid accountId, [FromQuery] long nonce, [FromQuery] string productName, [FromQuery] int usePremium)
         {
+            // purchase something from the shop
             return new JsonResult("{}");
         }
         
@@ -54,6 +55,7 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult ForcePurchase([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
+            // maybe trade? 
             return new JsonResult("{}");
         }
 
@@ -62,6 +64,7 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Sell([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
+            // Sell an inventory item back to the lotus 
             return new JsonResult("{}");
         }
 

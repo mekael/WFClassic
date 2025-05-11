@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Controllers
 {
@@ -42,9 +43,28 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/aggregateSessions.php")]
-        public ActionResult AggregateSessions([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public string AggregateSessions([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            return new JsonResult("{}");
+            /*
+             {
+    "buildId" : 1324716850,
+    "regionId" : 0
+}
+             */
+
+            string resp = @"
+{
+  ""Results"": [
+    {
+      ""gameModeId"": 0,
+      ""map"": ""caa"",
+      ""count"" :111111
+    }
+  ]
+}
+
+";
+            return resp;
         }
       
         [HttpPost]
