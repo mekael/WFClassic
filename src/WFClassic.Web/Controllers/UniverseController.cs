@@ -1,32 +1,47 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using WFClassic.Web.Logic.Bonus.Rewards;
+using WFClassic.Web.Logic.Inventory.Loadout;
+using WFClassic.Web.Logic.Middleware;
 
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
     public class UniverseController : ControllerBase
     {
+        GetLoginRewardsHandler _getLoginRewardsHandler;
+
+        public UniverseController(GetLoginRewardsHandler getLoginRewardsHandler)
+        {
+            _getLoginRewardsHandler = getLoginRewardsHandler;
+        }
 
         [HttpGet]
         [Route("/api/loginRewards.php")]
-        public ActionResult LoginRewards([FromQuery] Guid accountId, [FromQuery] long nonce)
+        [TypeFilter(typeof(LoginVerificationActionFilter))]
+        public ActionResult LoginRewards([FromQuery] GetLoginRewards getLoginRewards)
         {
+            var result =   _getLoginRewardsHandler.HandleAsync(getLoginRewards).Result;
 
-            //mRewardType mTier
-
-            return new JsonResult(@"{
-""Rewards"" :[
-{""RewardType"" : ""/Lotus/Types/Items/MiscItems/OrokinReactor "",
-""ItemType"" : ""/Lotus/Types/Items/MiscItems/OrokinReactor "",
-""ProductCategory"" :"",
-""Amount"" :0,
-""Tier"": 3,
-""Rarity"": ""cat""
-}
-]
-
-
-}");
+            if (result.GetLoginRewardsResultStatus == GetLoginRewardsResultStatus.Success)
+            {
+                return new JsonResult(result.GetLoginRewardsResultReturnJson, new JsonSerializerOptions { PropertyNamingPolicy = null });
+            }
+            else if(result.GetLoginRewardsResultStatus == GetLoginRewardsResultStatus.AlreadyProvided)
+            {
+                return Ok();
+            }
+            else if (result.GetLoginRewardsResultStatus == GetLoginRewardsResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.GetLoginRewardsResultStatus == GetLoginRewardsResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+            return StatusCode(500);
+ 
         }
 
         [HttpGet]

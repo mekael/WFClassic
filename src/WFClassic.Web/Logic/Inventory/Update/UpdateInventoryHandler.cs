@@ -100,9 +100,16 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 UpdateItemCountInventory(updateInventory.UpdateInventoryFromMissionObject.Consumables, player.InventoryItems, InternalInventoryItemType.Consumables, player.Id);
                 UpdateItemCountInventory(updateInventory.UpdateInventoryFromMissionObject.Recipes, player.InventoryItems, InternalInventoryItemType.Recipes, player.Id);
 
-                MissionReport missionReport = CreateMissionReport(updateInventory.UpdateInventoryFromMissionObject.MissionReport, player.Id, updateInventory.Nonce);
- 
-                _applicationDbContext.MissionReports.Add(missionReport);
+
+                if(updateInventory.UpdateInventoryFromMissionObject.MissionReport != null)
+                {
+                    MissionReport missionReport = CreateMissionReport(updateInventory.UpdateInventoryFromMissionObject.MissionReport, player.Id, updateInventory.Nonce);
+
+                    _applicationDbContext.MissionReports.Add(missionReport);
+                }
+
+
+
 
                 _addAccountTransactionHandler.Handle(new AddAccountTransaction()
                 {
@@ -113,25 +120,31 @@ namespace WFClassic.Web.Logic.Inventory.Update
                     MemoCode = "Mission"
                 });
 
-                var existingMission = player.Missions.FirstOrDefault(f => f.Tag == updateInventory.UpdateInventoryFromMissionObject.Missions.Tag);
+                // when we claim the daily reward we get a blank mission 
 
-                if (existingMission != null)
+                if (updateInventory.UpdateInventoryFromMissionObject.Missions != null  )
                 {
-                    existingMission.Completes = updateInventory.UpdateInventoryFromMissionObject.Missions.Completes;
-                    existingMission.BestRatings = updateInventory.UpdateInventoryFromMissionObject.Missions.BestRating;
-                    _applicationDbContext.Entry(existingMission).State = EntityState.Modified;
-                }
-                else
-                {
-                    Mission mission = new Mission()
+                    var existingMission = player.Missions.FirstOrDefault(f => f.Tag == updateInventory.UpdateInventoryFromMissionObject.Missions.Tag);
+
+                    if (existingMission != null)
                     {
-                        PlayerId= player.Id,
-                        Tag = updateInventory.UpdateInventoryFromMissionObject.Missions.Tag,
-                        Completes = updateInventory.UpdateInventoryFromMissionObject.Missions.Completes,
-                        BestRatings = updateInventory.UpdateInventoryFromMissionObject.Missions.BestRating
-                    };
-                    _applicationDbContext.Missions.Add(mission);
+                        existingMission.Completes = updateInventory.UpdateInventoryFromMissionObject.Missions.Completes;
+                        existingMission.BestRatings = updateInventory.UpdateInventoryFromMissionObject.Missions.BestRating;
+                        _applicationDbContext.Entry(existingMission).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        Mission mission = new Mission()
+                        {
+                            PlayerId = player.Id,
+                            Tag = updateInventory.UpdateInventoryFromMissionObject.Missions.Tag,
+                            Completes = updateInventory.UpdateInventoryFromMissionObject.Missions.Completes,
+                            BestRatings = updateInventory.UpdateInventoryFromMissionObject.Missions.BestRating
+                        };
+                        _applicationDbContext.Missions.Add(mission);
+                    }
                 }
+              
 
             }
             catch (Exception ex)

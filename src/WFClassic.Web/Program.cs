@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Admin.CheckOnline;
+using WFClassic.Web.Logic.Bonus.Rewards;
 using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Exp.Artifact;
@@ -76,6 +77,7 @@ builder.Services.AddTransient<CheckPendingRecipesQueryHandler>();
 builder.Services.AddTransient<StartRecipeBuildHandler>();
 builder.Services.AddTransient<ClaimCompletedRecipeHandler>();
 builder.Services.AddTransient<UpdateLoadoutHandler>();
+builder.Services.AddTransient<GetLoginRewardsHandler>();
 
 
 
