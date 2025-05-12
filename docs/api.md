@@ -36,11 +36,13 @@
 |getIgnoredUsers.php|[Doco](/endpoints/getIgnoredUsers)||||N|
 |addIgnoredUser.php|[Doco](/endpoints/addIgnoredUser)||||N|
 |removeIgnoredUser.php|[Doco](/endpoints/removeIgnoredUser)||||N|
+
 |addFriendImage.php|[Doco](/endpoints/addFriendImage)||||N|
 |addPendingFriend.php|[Doco](/endpoints/addPendingFriend)||||N|
 |addFriend.php|[Doco](/endpoints/addFriend)||||N|
 |removeFriend.php|[Doco](/endpoints/removeFriend)||||N|
 |getFriends.php|[Doco](/endpoints/getFriends)||||N|
+
 |createGuild.php|[Doco](/endpoints/createGuild)||||N|
 |removeFromGuild.php|[Doco](/endpoints/removeFromGuild)||||N|
 |addToGuild.php|[Doco](/endpoints/addToGuild)||||N|
