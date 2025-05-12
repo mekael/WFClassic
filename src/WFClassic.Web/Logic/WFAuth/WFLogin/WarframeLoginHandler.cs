@@ -83,13 +83,21 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             user.CurrentlyLoggedIn = true;
             user.LastLoginTimestamp = loginTimestamp;
             _logger.LogInformation("WarframeLoginHandler => email {email} =>  Updating user login", warframeLoginRequest.email);
-
+            LoginTrackingItem loginTrackingItem = new LoginTrackingItem()
+            {
+                ApplicationUserId = user.Id,
+                Nonce = newNonce,
+                IPAddress = warframeLoginRequest.HostName,
+                LoginTimestamp = DateTimeOffset.Now
+            };
+            _applicationDbContext.LoginTrackingItems.Add(loginTrackingItem);
 
             IdentityResult identityResult = null;
             try
             {
                 _logger.LogInformation("WarframeLoginHandler => email {email} =>  Updating user login", warframeLoginRequest.email);
                 identityResult = await _userManager.UpdateAsync(user);
+                _applicationDbContext.SaveChanges();
                 _logger.LogInformation("WarframeLoginHandler => email {email} =>  User updated", warframeLoginRequest.email);
             }
             catch (Exception ex)
