@@ -10,6 +10,7 @@ using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Exp.Training;
 using WFClassic.Web.Logic.Foundry.Claim;
 using WFClassic.Web.Logic.Foundry.Pending;
+using WFClassic.Web.Logic.Foundry.Rush;
 using WFClassic.Web.Logic.Foundry.Start;
 using WFClassic.Web.Logic.Friendship.Add;
 using WFClassic.Web.Logic.Friendship.AddPending;
@@ -78,6 +79,7 @@ builder.Services.AddTransient<StartRecipeBuildHandler>();
 builder.Services.AddTransient<ClaimCompletedRecipeHandler>();
 builder.Services.AddTransient<UpdateLoadoutHandler>();
 builder.Services.AddTransient<GetLoginRewardsHandler>();
+builder.Services.AddTransient<RushRecipeHandler>();
 
 
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System.Text.Json;
 using WFClassic.Web.Logic.Foundry.Claim;
 using WFClassic.Web.Logic.Foundry.Pending;
+using WFClassic.Web.Logic.Foundry.Rush;
 using WFClassic.Web.Logic.Foundry.Start;
 using WFClassic.Web.Logic.Friendship.Get;
 using WFClassic.Web.Logic.Middleware;
@@ -16,24 +17,44 @@ namespace WFClassic.Web.Controllers
         CheckPendingRecipesQueryHandler _checkPendingRecipesQueryHandler;
         StartRecipeBuildHandler _startRecipeBuildHandler;
         ClaimCompletedRecipeHandler _claimCompletedRecipeHandler;
+        RushRecipeHandler _rushRecipeHandler;
         ILogger<FoundryController> _logger;
 
         public FoundryController(ILogger<FoundryController> logger, CheckPendingRecipesQueryHandler checkPendingRecipesQueryHandler,
-            StartRecipeBuildHandler startRecipeBuildHandler, ClaimCompletedRecipeHandler claimCompletedRecipeHandler)
+            StartRecipeBuildHandler startRecipeBuildHandler, ClaimCompletedRecipeHandler claimCompletedRecipeHandler,
+            RushRecipeHandler rushRecipeHandler)
         {
             _logger = logger;
             _checkPendingRecipesQueryHandler = checkPendingRecipesQueryHandler;
             _startRecipeBuildHandler = startRecipeBuildHandler;
             _claimCompletedRecipeHandler = claimCompletedRecipeHandler;
+            _rushRecipeHandler = rushRecipeHandler;
         }
 
         [HttpPost]
         [Route("/api/instantCompleteRecipe.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
-        public ActionResult InstantCompleteRecipe([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult InstantCompleteRecipe([FromQuery] RushRecipe rushRecipe)
         {
+
+            var result = _rushRecipeHandler.Handle(rushRecipe);
             _logger.LogInformation("RecipeController => in action InstantCompleteRecipe");
-            return new JsonResult("{}");
+
+            if (result.RushRecipeResultStatus == RushRecipeResultStatus.DatabaseErrors  )
+            {
+                return StatusCode(500);
+            }
+            else if (result.RushRecipeResultStatus == RushRecipeResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.RushRecipeResultStatus == RushRecipeResultStatus.Success)
+            {
+                return  Ok();
+            }
+
+            return StatusCode(500);
+ 
         }
 
         [HttpPost]
