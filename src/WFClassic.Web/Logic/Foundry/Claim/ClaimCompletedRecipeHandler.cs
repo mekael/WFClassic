@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
+using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Credits.Add;
 
@@ -11,6 +12,15 @@ namespace WFClassic.Web.Logic.Foundry.Claim
         private ApplicationDbContext _applicationDbContext;
         private ILogger<ClaimCompletedRecipeHandler> _logger;
         private AddAccountTransactionHandler _addAccountTransactionHandler;
+        private List<InternalInventoryItemType> _uniqueTypes = new List<InternalInventoryItemType>() {
+                InternalInventoryItemType.Suits,
+                InternalInventoryItemType.LongGuns,
+                InternalInventoryItemType.Melee,
+                InternalInventoryItemType.Pistols,
+                InternalInventoryItemType.Sentinels,
+                InternalInventoryItemType.SentinelWeapons
+
+            };
 
         public ClaimCompletedRecipeHandler(ApplicationDbContext applicationDbContext, ILogger<ClaimCompletedRecipeHandler> logger,
             AddAccountTransactionHandler addAccountTransactionHandler)
@@ -86,29 +96,51 @@ namespace WFClassic.Web.Logic.Foundry.Claim
             InventoryItem recipeItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == recipe.RecipeItemName);
             PendingRecipe pendingRecipe = player.PendingRecipes.FirstOrDefault(fod => fod.RecipeId == recipe.Id);
 
-            InventoryItem builtItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == recipe.ResultItemName);
 
-            if (builtItem == null)
+            InventoryItem builtItem = null;
+
+            if (_uniqueTypes.Contains(recipe.InternalInventoryItemType))
             {
-                _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item does not already exist creating new record    ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
-
                 builtItem = new InventoryItem()
                 {
                     ItemCount = 1,
                     ItemType = recipe.ResultItemName,
                     ItemName = recipe.ResultItemPrettyName,
                     PlayerId = player.Id,
-                    InternalInventoryItemType = recipe.InternalInventoryItemType
+                    InternalInventoryItemType = recipe.InternalInventoryItemType,
+                    UpgradeVer =100
                 };
                 _applicationDbContext.InventoryItems.Add(builtItem);
+
             }
             else
             {
-                _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item exists incrementing counter    ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
-                builtItem.ItemCount++;
-                _applicationDbContext.Entry(builtItem).State = EntityState.Modified;
+               
+                builtItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == recipe.ResultItemName);
+
+                if (builtItem == null)
+                {
+                    _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item does not already exist creating new record    ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
+
+                    builtItem = new InventoryItem()
+                    {
+                        ItemCount = 1,
+                        ItemType = recipe.ResultItemName,
+                        ItemName = recipe.ResultItemPrettyName,
+                        PlayerId = player.Id,
+                        InternalInventoryItemType = recipe.InternalInventoryItemType
+                    };
+                    _applicationDbContext.InventoryItems.Add(builtItem);
+                }
+                else
+                {
+                    _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item exists incrementing counter    ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
+                    builtItem.ItemCount++;
+                    _applicationDbContext.Entry(builtItem).State = EntityState.Modified;
+
+                }
             }
-            _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item does not already exist creating new record   ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
+
 
             _applicationDbContext.Entry(pendingRecipe).State = EntityState.Deleted;
             recipeItem.ItemCount--;
