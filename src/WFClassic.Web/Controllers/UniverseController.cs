@@ -181,6 +181,7 @@ namespace WFClassic.Web.Controllers
         [Route("/api/goals.php")]
         public ActionResult Goals([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
+            Console.WriteLine("In Goals");
             return new JsonResult("{}");
         }
     }

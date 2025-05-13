@@ -11,14 +11,16 @@ namespace WFClassic.Web.Controllers
         {
             var response = @"{
       ""Messages"": [
+
             {
                 ""SenderId"": {
-                    ""$id"":""sdfs""
+                    ""$id"":""4FAD6BF1-5BB5-4C8F-9078-92A2827E221D""
                 },
-                ""Content"":""sdfsd""
+                ""Content"":""asdfhjasldfkjlkj""
             }
         ]
 }";
+            response = "{}";
             return response;
         }
 
@@ -26,6 +28,9 @@ namespace WFClassic.Web.Controllers
         [Route("/api/sendMessage.php")]
         public ActionResult SendMessage([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
+
+            Console.WriteLine("in SendMessage");
+
             return new JsonResult("{}");
         }
     }
