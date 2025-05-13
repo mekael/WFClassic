@@ -1,0 +1,57 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    name: Release
+    strategy:
+      matrix:
+        kind: ['windows']
+        include:
+       #   - kind: linux
+        #    os: ubuntu-latest
+         #   target: linux-x64
+          - kind: windows
+            os: windows-latest
+            target: win-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '9.0.x'
+          dotnet-quality: 'ga'
+
+      - name: Build
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+
+          release_name="WFClassic-$tag-${{ matrix.target }}"
+
+          # Build everything
+          dotnet publish src/WFClassic.Web/WFClassic.Web.csproj --self-contained --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" -p:PublishTrimmed=true
+
+          # Pack files
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            # Pack to zip for Windows
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+          tar czvf "${release_name}.tar.gz" "$release_name"
+          fi
+
+          # Delete output directory
+          rm -r "$release_name"
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "WFClassic*"
