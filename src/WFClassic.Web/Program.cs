@@ -6,6 +6,7 @@ using WFClassic.Web.Logic.Admin.CheckOnline;
 using WFClassic.Web.Logic.Bonus.Rewards;
 using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.Credits.Get;
+using WFClassic.Web.Logic.Economics.Sell;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Exp.Training;
 using WFClassic.Web.Logic.Foundry.Claim;
@@ -80,6 +81,7 @@ builder.Services.AddTransient<ClaimCompletedRecipeHandler>();
 builder.Services.AddTransient<UpdateLoadoutHandler>();
 builder.Services.AddTransient<GetLoginRewardsHandler>();
 builder.Services.AddTransient<RushRecipeHandler>();
+builder.Services.AddTransient<SellItemHandler>();
 
 
 

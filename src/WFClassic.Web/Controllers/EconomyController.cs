@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Credits.Get;
+using WFClassic.Web.Logic.Economics.Sell;
 using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
@@ -14,11 +15,13 @@ namespace WFClassic.Web.Controllers
     public class EconomyController : ControllerBase
     {
         private GetCreditsHandler _getCreditsHandler;
-
-        public EconomyController(GetCreditsHandler getCreditsHandler)
+        private SellItemHandler _sellItemHandler;
+        public EconomyController(GetCreditsHandler getCreditsHandler, SellItemHandler sellItemHandler)
         {
             _getCreditsHandler = getCreditsHandler;
+            _sellItemHandler = sellItemHandler;
         }
+
 
         [Route("api/credits.php")]
         [HttpGet]
@@ -49,7 +52,7 @@ namespace WFClassic.Web.Controllers
             // purchase something from the shop
             return new JsonResult("{}");
         }
-        
+
         [HttpPost]
         [Route("/api/forcePurchase.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
@@ -62,11 +65,35 @@ namespace WFClassic.Web.Controllers
         [HttpPost]
         [Route("/api/sell.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
-        public ActionResult Sell([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult SellItemToLotus([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            // Sell an inventory item back to the lotus 
-            return new JsonResult("{}");
+
+            SellItem sellItem = new SellItem()
+            {
+                AccountId = accountId,
+                Nonce = nonce,
+                IncomingSaleJson = Utils.GetRequestObject<IncomingSaleJson>(this.HttpContext)
+            };
+            var result = _sellItemHandler.Handle(sellItem);
+            if (result.SellItemResultStatus == SellItemResultStatus.DatabaseErrors ||
+                result.SellItemResultStatus == SellItemResultStatus.MappingFailure)
+            {
+                return StatusCode(500);
+            }
+            else if (result.SellItemResultStatus == SellItemResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.SellItemResultStatus == SellItemResultStatus.Success)
+            {
+                return Ok();
+            }
+
+
+            return StatusCode(500);
         }
+
 
     }
 }
+
