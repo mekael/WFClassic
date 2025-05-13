@@ -7,7 +7,6 @@ namespace WFClassic.Web.Logic.Foundry.Start
 {
     public class StartRecipeBuildHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<StartRecipeBuildHandler> _logger;
         private AddAccountTransactionHandler _addAccountTransactionHandler;
@@ -20,7 +19,6 @@ namespace WFClassic.Web.Logic.Foundry.Start
             _addAccountTransactionHandler = addAccountTransactionHandler;
         }
 
-
         public StartRecipeBuildResult Handle(StartRecipeBuild startRecipeBuild)
         {
             StartRecipeBuildResult StartRecipeBuildResult = new StartRecipeBuildResult();
@@ -32,7 +30,6 @@ namespace WFClassic.Web.Logic.Foundry.Start
                 StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.ValidationErrors;
                 return StartRecipeBuildResult;
             }
-
 
             Player player = null;
             Recipe recipe = null;
@@ -47,7 +44,6 @@ namespace WFClassic.Web.Logic.Foundry.Start
                 recipe = _applicationDbContext.Recipes.AsNoTracking()
                                                       .Include(i => i.RecipeComponentItems)
                                                       .FirstOrDefault(fod => fod.RecipeItemName == startRecipeBuild.RecipeName);
-
             }
             catch (Exception ex)
             {
@@ -55,7 +51,6 @@ namespace WFClassic.Web.Logic.Foundry.Start
                 StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.DatabaseErrors;
                 return StartRecipeBuildResult;
             }
-
 
             if (recipe == null)
             {
@@ -66,27 +61,24 @@ namespace WFClassic.Web.Logic.Foundry.Start
             }
             else if (player.PendingRecipes.Count == 4)
             {
-                // we can only have 4 pending recipes it looks like 
+                // we can only have 4 pending recipes it looks like
                 _logger.LogError("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => Already have 4 builds in process   ", startRecipeBuild.AccountId, startRecipeBuild.Nonce, startRecipeBuild.RecipeName);
                 StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.ValidationErrors;
                 return StartRecipeBuildResult;
             }
             else if (player.PendingRecipes.Any(a => a.RecipeId == recipe.Id))
             {
-                // we can only have 4 pending recipes it looks like 
+                // we can only have 4 pending recipes it looks like
                 _logger.LogError("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => Already have a pending build for recipe  ", startRecipeBuild.AccountId, startRecipeBuild.Nonce, startRecipeBuild.RecipeName);
                 StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.ValidationErrors;
                 return StartRecipeBuildResult;
-
             }
 
             _logger.LogInformation("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => Recipe found, checking component list ", startRecipeBuild.AccountId, startRecipeBuild.Nonce, startRecipeBuild.RecipeName);
             List<InventoryItem> inventoryItemsToUpdate = new List<InventoryItem>();
 
-
             foreach (RecipeItem recipeItem in recipe.RecipeComponentItems)
             {
-
                 InventoryItem inventoryItem = player.InventoryItems.Where(w => w.ItemType == recipeItem.ItemName).FirstOrDefault();
                 if (inventoryItem == null || inventoryItem.ItemCount < recipeItem.ItemCountNeeded)
                 {
@@ -101,7 +93,6 @@ namespace WFClassic.Web.Logic.Foundry.Start
                 inventoryItemsToUpdate.Add(inventoryItem);
             }
 
-
             PendingRecipe pendingRecipe = new PendingRecipe()
             {
                 PlayerId = player.Id,
@@ -112,19 +103,21 @@ namespace WFClassic.Web.Logic.Foundry.Start
 
             // add new bank account transaction
             // we will reverse this if our db save fails
-            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { 
-                                                                                                                AccountId = startRecipeBuild.AccountId, Amount = recipe.PriceInStandardCredits, 
-                                                                                                                BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit, 
-                                                                                                                BankAccountType = Data.Enums.BankAccountType.StandardCredits,
-                                                                                                                MemoCode = $"Build of {recipe.RecipeItemName}" });
+            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction()
+            {
+                AccountId = startRecipeBuild.AccountId,
+                Amount = recipe.PriceInStandardCredits,
+                BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit,
+                BankAccountType = Data.Enums.BankAccountType.StandardCredits,
+                MemoCode = $"Build of {recipe.RecipeItemName}"
+            });
 
-            if(addAccountTransactionResult.AddAccountTransactionResultStatus != AddAccountTransactionResultStatus.Success)
+            if (addAccountTransactionResult.AddAccountTransactionResultStatus != AddAccountTransactionResultStatus.Success)
             {
                 _logger.LogError("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName}  => Error while adding new bacnk account transaction ", startRecipeBuild.AccountId, startRecipeBuild.Nonce, startRecipeBuild.RecipeName);
                 StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.ValidationErrors;
                 return StartRecipeBuildResult;
             }
-
 
             try
             {
@@ -142,14 +135,9 @@ namespace WFClassic.Web.Logic.Foundry.Start
             {
                 _logger.LogError("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} => Exception while searching for recipe definition {RecipeName} :  {Ex}", startRecipeBuild.AccountId, startRecipeBuild.RecipeName, startRecipeBuild.Nonce, ex);
                 StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.DatabaseErrors;
-
             }
-            
-     
-
 
             return StartRecipeBuildResult;
         }
-
     }
 }

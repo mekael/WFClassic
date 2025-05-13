@@ -1,14 +1,11 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace WFClassic.Web.Logic.Stats.ProfileStats
+﻿namespace WFClassic.Web.Logic.Stats.ProfileStats
 {
     public class GetProfileStatsResult
     {
-
         public GetProfileStatsResultsStatus GetProfileStatsResultsStatus { get; set; }
-        public ProfileStatsItem ProfileStatsItem { get; set; }   
+        public ProfileStatsItem ProfileStatsItem { get; set; }
     }
-    
+
     public enum GetProfileStatsResultsStatus
     {
         ValidationErrors,
@@ -16,7 +13,6 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
         Success,
         MappingErrors
     }
-
 
     public class ProfileStatsItem
     {
@@ -53,8 +49,5 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
         public long assists { get; set; }
         public long headshots { get; set; }
         public long fired { get; set; }
-
     }
-
- 
 }

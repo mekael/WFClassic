@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Exp.Training;
 using WFClassic.Web.Logic.Middleware;
@@ -11,11 +10,11 @@ namespace WFClassic.Web.Controllers
     [ApiController]
     public class MiscController : ControllerBase
     {
-        AddLevelBasedOnTrainingHandler _addLevelBasedOnTrainingHandler;
-        AddTauntHandler _addTauntHandler;
+        private AddLevelBasedOnTrainingHandler _addLevelBasedOnTrainingHandler;
+        private AddTauntHandler _addTauntHandler;
+
         public MiscController(AddLevelBasedOnTrainingHandler addLevelBasedOnTrainingHandler, AddTauntHandler addTauntHandler)
         {
-
             _addLevelBasedOnTrainingHandler = addLevelBasedOnTrainingHandler;
             _addTauntHandler = addTauntHandler;
         }
@@ -28,7 +27,6 @@ namespace WFClassic.Web.Controllers
             var result = _addLevelBasedOnTrainingHandler.Handle(addLevelBasedOnTraining);
             if (result.AddLevelBasedOnTrainingResultStatus == AddLevelBasedOnTrainingResultStatus.Success)
             {
-
                 return new JsonResult(result, new JsonSerializerOptions { PropertyNamingPolicy = null });
             }
             else if (result.AddLevelBasedOnTrainingResultStatus == AddLevelBasedOnTrainingResultStatus.ValidationErrors)
@@ -49,14 +47,12 @@ namespace WFClassic.Web.Controllers
             return new JsonResult("{}");
         }
 
-
         [HttpPost]
         [Route("/api/refillRevives.php")]
         public ActionResult RefillRevives([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             return new JsonResult("{}");
         }
-
 
         [HttpPost]
         [Route("/api/recharge.php")]
@@ -65,13 +61,11 @@ namespace WFClassic.Web.Controllers
             return new JsonResult("{}");
         }
 
-
         [HttpPost]
         [Route("/api/tauntHistory.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult TauntHistory([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-
             IncomingAddTaunt incomingAddTaunt = Utils.GetRequestObject<IncomingAddTaunt>(this.HttpContext);
             AddTaunt addTaunt = new AddTaunt()
             {
@@ -97,7 +91,5 @@ namespace WFClassic.Web.Controllers
 
             return new JsonResult("{}");
         }
-
     }
-
 }

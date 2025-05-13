@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Admin.CheckOnline;
 
 namespace WFClassic.Web.Logic.Taunt
 {
     public class AddTauntHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<AddTauntHandler> _logger;
 
@@ -38,7 +36,6 @@ namespace WFClassic.Web.Logic.Taunt
                 player = _applicationDbContext.Players.Include(i => i.TauntHistoryItems).FirstOrDefault(fod => fod.ApplicationUserId == addTaunt.AccountId);
 
                 _logger.LogInformation("AddTauntHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", addTaunt.AccountId, addTaunt.Nonce);
-
             }
             catch (Exception ex)
             {
@@ -47,10 +44,8 @@ namespace WFClassic.Web.Logic.Taunt
                 return result;
             }
 
-
             if (player.TauntHistoryItems.Any(a => a.Node == addTaunt.IncomingAddTaunt.Node))
             {
-
                 result.AddTauntResultStatus = AddTauntResultStatus.Success;
             }
             else
@@ -69,18 +64,14 @@ namespace WFClassic.Web.Logic.Taunt
                     _applicationDbContext.SaveChanges();
                     _logger.LogInformation("AddTauntHandler => accountId {AccountID} nonce {Nonce} => taunt history item added ", addTaunt.AccountId, addTaunt.Nonce);
                     result.AddTauntResultStatus = AddTauntResultStatus.Success;
-
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError("AddTauntHandler => accountId {AccountID} nonce {Nonce} => Exception while adding taunt history item : {Ex}", addTaunt.AccountId, addTaunt.Nonce, ex);
                     result.AddTauntResultStatus = AddTauntResultStatus.DatabaseErrors;
                 }
-
             }
             return result;
         }
-
-
     }
 }

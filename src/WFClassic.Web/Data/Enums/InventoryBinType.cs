@@ -5,7 +5,7 @@
         Suit,
         Weapon,
         Misc,
-        Sentinel, 
+        Sentinel,
         Invalid
     }
 }

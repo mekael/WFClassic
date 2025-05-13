@@ -5,7 +5,6 @@ namespace WFClassic.Web.Logic.Exp.Training
 {
     public class AddLevelBasedOnTrainingResult
     {
-
         [JsonProperty("NewLevel")]
         public int NewLevel { get; set; }
 

@@ -2,8 +2,7 @@
 {
     public class GetCreditsResult
     {
-
-        public GetCreditsResultDetails GetCreditsResultDetails { get; set; } 
+        public GetCreditsResultDetails GetCreditsResultDetails { get; set; }
 
         public GetCreditsResultStatus GetCreditsResultStatus { get; set; }
     }
@@ -13,12 +12,10 @@
         ValidationErrors,
         Failure,
         Success,
-
     }
 
     public class GetCreditsResultDetails
     {
-
         public long PremiumCredits { get; set; }
         public long RegularCredits { get; set; }
     }

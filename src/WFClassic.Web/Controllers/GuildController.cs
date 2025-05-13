@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
     public class GuildController : ControllerBase
     {
-
         [HttpGet]
         [Route("/api/createGuild.php")]
         public ActionResult CreateGuild([FromQuery] Guid accountId, [FromQuery] long nonce)
@@ -41,6 +39,7 @@ namespace WFClassic.Web.Controllers
         {
             return new JsonResult("{}");
         }
+
         [HttpGet]
         [Route("/api/getGuild.php")]
         public string GetGuild([FromQuery] Guid accountId, [FromQuery] long nonce)
@@ -56,19 +55,18 @@ namespace WFClassic.Web.Controllers
 
 ";
 
-
             return cat;
         }
     }
 }
+
 //Ranks
 //Members
 /*
      message: string;
     authorName: string;
     authorGuildName?: string;
- 
- */
 
+ */
 
 //GET http://localhost/api/getGuild.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=3245491210690471581&steamId=0 HTTP/1.1

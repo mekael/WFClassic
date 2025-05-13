@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using WFClassic.Web.Data;
+﻿using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Inventory.Attach;
-using WFClassic.Web.Logic.Inventory.Get;
 
 namespace WFClassic.Web.Logic.Friendship.Add
 {
     public class AcceptFriendRequestHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<AcceptFriendRequestHandler> _logger;
 
@@ -37,7 +33,6 @@ namespace WFClassic.Web.Logic.Friendship.Add
             {
                 _logger.LogInformation("AcceptFriendRequestHandler => accountId {AccountID} nonce {Nonce} => Querying for friendship request for {FriendUsername}", acceptFriendRequest.AccountId, acceptFriendRequest.Nonce, acceptFriendRequest.Friend);
                 friendshipRequest = _applicationDbContext.FriendshipRequests.Where(w => w.RequestorId == acceptFriendRequest.Friend && w.FriendId == acceptFriendRequest.AccountId).FirstOrDefault();
-
             }
             catch (Exception ex)
             {
@@ -48,7 +43,7 @@ namespace WFClassic.Web.Logic.Friendship.Add
 
             if (friendshipRequest == null)
             {
-                // no friendship request present. 
+                // no friendship request present.
                 _logger.LogError("AcceptFriendRequestHandler => accountId {AccountID} nonce {Nonce} =>  No friendship request exists", acceptFriendRequest.AccountId, acceptFriendRequest.Nonce);
                 result.AcceptFriendResultStatus = AcceptFriendResultStatus.ValidationErrors;
                 return result;
@@ -78,7 +73,6 @@ namespace WFClassic.Web.Logic.Friendship.Add
                 _applicationDbContext.SaveChanges();
                 result.AcceptFriendResultStatus = AcceptFriendResultStatus.Success;
                 _logger.LogInformation("AcceptFriendRequestHandler => accountId {AccountID} nonce {Nonce} =>  Created new friendship and removed request", acceptFriendRequest.AccountId, acceptFriendRequest.Nonce);
-
             }
             catch (Exception ex)
             {
@@ -86,7 +80,6 @@ namespace WFClassic.Web.Logic.Friendship.Add
                 result.AcceptFriendResultStatus = AcceptFriendResultStatus.DatabaseErrors;
             }
             return result;
-
         }
     }
 }

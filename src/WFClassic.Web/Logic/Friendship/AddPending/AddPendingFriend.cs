@@ -15,9 +15,5 @@ namespace WFClassic.Web.Logic.Friendship.AddPending
 
         [JsonPropertyName("friend")]
         public string Friend { get; set; }
-
- 
     }
 }
-
-

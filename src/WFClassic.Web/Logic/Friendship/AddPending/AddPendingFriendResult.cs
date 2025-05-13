@@ -4,6 +4,7 @@
     {
         public AddPendingFriendResultStatus AddPendingFriendResultStatus { get; set; }
     }
+
     public enum AddPendingFriendResultStatus
     {
         ValidationErrors,

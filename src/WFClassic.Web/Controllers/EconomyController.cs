@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Economics.Sell;
 using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Shared;
-using WFClassic.Web.Logic.WFAuth.WFLogin;
-using WFClassic.Web.Logic.WFAuth.WFLogout;
 
 namespace WFClassic.Web.Controllers
 {
@@ -16,19 +12,18 @@ namespace WFClassic.Web.Controllers
     {
         private GetCreditsHandler _getCreditsHandler;
         private SellItemHandler _sellItemHandler;
+
         public EconomyController(GetCreditsHandler getCreditsHandler, SellItemHandler sellItemHandler)
         {
             _getCreditsHandler = getCreditsHandler;
             _sellItemHandler = sellItemHandler;
         }
 
-
         [Route("api/credits.php")]
         [HttpGet]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public async Task<IActionResult> GetAsync([FromQuery] GetCredits getCredits)
         {
-
             var result = _getCreditsHandler.Handle(getCredits);
 
             if (result.GetCreditsResultStatus == GetCreditsResultStatus.Failure)
@@ -58,7 +53,7 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult ForcePurchase([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            // maybe trade? 
+            // maybe trade?
             return new JsonResult("{}");
         }
 
@@ -67,7 +62,6 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult SellItemToLotus([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-
             SellItem sellItem = new SellItem()
             {
                 AccountId = accountId,
@@ -89,11 +83,7 @@ namespace WFClassic.Web.Controllers
                 return Ok();
             }
 
-
             return StatusCode(500);
         }
-
-
     }
 }
-

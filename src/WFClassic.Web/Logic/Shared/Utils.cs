@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Crypto.Utilities;
+﻿using Org.BouncyCastle.Crypto.Digests;
 using System.Text.Json;
 
 namespace WFClassic.Web.Logic.Shared
 {
     public static class Utils
     {
-
-
         public static string GetWhirlpoolHash(string inputString)
         {
             WhirlpoolDigest whirlpool = new WhirlpoolDigest();
@@ -19,10 +15,9 @@ namespace WFClassic.Web.Logic.Shared
         }
 
         public static T GetRequestObject<T>(HttpContext httpContext)
-        {           
+        {
             return JsonSerializer.Deserialize<T>(Utils.GetRequestObjectAsString(httpContext));
         }
-
 
         // used for GetRequestObject and SaveLoadout
         public static string GetRequestObjectAsString(HttpContext httpContext)
@@ -37,8 +32,5 @@ namespace WFClassic.Web.Logic.Shared
             Console.Write(bodyBytes);
             return bodyBytes;
         }
-
-
-
     }
 }

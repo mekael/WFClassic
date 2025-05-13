@@ -1,8 +1,7 @@
-﻿using WFClassic.Web.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
-using WFClassic.Web.Logic.Admin.CheckOnline;
-using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data.Enums;
+using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Credits.Add;
 
 namespace WFClassic.Web.Logic.Inventory.Update
@@ -34,8 +33,6 @@ namespace WFClassic.Web.Logic.Inventory.Update
 
             Player player = null;
 
-
-
             try
             {
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", updateInventory.AccountId, updateInventory.Nonce);
@@ -44,7 +41,6 @@ namespace WFClassic.Web.Logic.Inventory.Update
                                                     .Include(i => i.Missions)
                                                     .FirstOrDefault(w => w.ApplicationUserId == updateInventory.AccountId);
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", updateInventory.AccountId, updateInventory.Nonce);
-
             }
             catch (Exception ex)
             {
@@ -53,7 +49,6 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 return result;
             }
 
-
             try
             {
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating playerXp", updateInventory.AccountId, updateInventory.Nonce);
@@ -61,8 +56,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 player.AdditionalPlayerXP += updateInventory.UpdateInventoryFromMissionObject.AdditionalPlayerXP;
                 player.PlayerXP += updateInventory.UpdateInventoryFromMissionObject.PlayerXP;
 
-
-                // update equipment 
+                // update equipment
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating equipment", updateInventory.AccountId, updateInventory.Nonce);
 
                 List<JsonIncomingEquipmentItem> equipmentItems = new List<JsonIncomingEquipmentItem>()
@@ -82,7 +76,6 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 }
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating mods", updateInventory.AccountId, updateInventory.Nonce);
 
-
                 foreach (var mod in updateInventory.UpdateInventoryFromMissionObject.Upgrades)
                 {
                     _applicationDbContext.InventoryItems.Add(new InventoryItem()
@@ -92,24 +85,19 @@ namespace WFClassic.Web.Logic.Inventory.Update
                         PlayerId = player.Id,
                         InternalInventoryItemType = InternalInventoryItemType.Upgrades
                     });
-
                 }
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating misc/consumables/recipes", updateInventory.AccountId, updateInventory.Nonce);
 
-                UpdateItemCountInventory(updateInventory.UpdateInventoryFromMissionObject.MiscItems, player.InventoryItems, InternalInventoryItemType.MiscItems,  player.Id);
+                UpdateItemCountInventory(updateInventory.UpdateInventoryFromMissionObject.MiscItems, player.InventoryItems, InternalInventoryItemType.MiscItems, player.Id);
                 UpdateItemCountInventory(updateInventory.UpdateInventoryFromMissionObject.Consumables, player.InventoryItems, InternalInventoryItemType.Consumables, player.Id);
                 UpdateItemCountInventory(updateInventory.UpdateInventoryFromMissionObject.Recipes, player.InventoryItems, InternalInventoryItemType.Recipes, player.Id);
 
-
-                if(updateInventory.UpdateInventoryFromMissionObject.MissionReport != null)
+                if (updateInventory.UpdateInventoryFromMissionObject.MissionReport != null)
                 {
                     MissionReport missionReport = CreateMissionReport(updateInventory.UpdateInventoryFromMissionObject.MissionReport, player.Id, updateInventory.Nonce);
 
                     _applicationDbContext.MissionReports.Add(missionReport);
                 }
-
-
-
 
                 _addAccountTransactionHandler.Handle(new AddAccountTransaction()
                 {
@@ -120,9 +108,9 @@ namespace WFClassic.Web.Logic.Inventory.Update
                     MemoCode = "Mission"
                 });
 
-                // when we claim the daily reward we get a blank mission 
+                // when we claim the daily reward we get a blank mission
 
-                if (updateInventory.UpdateInventoryFromMissionObject.Missions != null  )
+                if (updateInventory.UpdateInventoryFromMissionObject.Missions != null)
                 {
                     var existingMission = player.Missions.FirstOrDefault(f => f.Tag == updateInventory.UpdateInventoryFromMissionObject.Missions.Tag);
 
@@ -144,8 +132,6 @@ namespace WFClassic.Web.Logic.Inventory.Update
                         _applicationDbContext.Missions.Add(mission);
                     }
                 }
-              
-
             }
             catch (Exception ex)
             {
@@ -154,17 +140,15 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 return result;
             }
 
-
             //TODO addChallenges(inventory, ChallengeProgress);
 
             try
             {
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating player object", updateInventory.AccountId, updateInventory.Nonce);
-                _applicationDbContext.Entry(player).State = EntityState.Modified; 
+                _applicationDbContext.Entry(player).State = EntityState.Modified;
                 _applicationDbContext.SaveChanges();
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => update successful", updateInventory.AccountId, updateInventory.Nonce);
                 result.UpdateInventoryResultStatus = UpdateInventoryResultStatus.Success;
-
             }
             catch (Exception ex)
             {
@@ -175,8 +159,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
             return result;
         }
 
-
-        void UpdateItemCountInventory(List<ItemCountPair> incomingEquipmentItems, List<InventoryItem> existingItems, InternalInventoryItemType internalInventoryItemType, Guid playerId)
+        private void UpdateItemCountInventory(List<ItemCountPair> incomingEquipmentItems, List<InventoryItem> existingItems, InternalInventoryItemType internalInventoryItemType, Guid playerId)
         {
             foreach (var equipmentItem in incomingEquipmentItems)
             {
@@ -197,12 +180,11 @@ namespace WFClassic.Web.Logic.Inventory.Update
                         InternalInventoryItemType = internalInventoryItemType
                     };
                     _applicationDbContext.InventoryItems.Add(inventoryItem);
-                 }
+                }
             }
         }
 
-
-        MissionReport CreateMissionReport(IncomingMissionreport incomingMissionReport, Guid playerId, long nonce )
+        private MissionReport CreateMissionReport(IncomingMissionreport incomingMissionReport, Guid playerId, long nonce)
         {
             MissionReport report = new MissionReport()
             {
@@ -210,8 +192,9 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 Nonce = nonce
             };
 
-            try {
-                  report = new MissionReport()
+            try
+            {
+                report = new MissionReport()
                 {
                     PlayerId = playerId,
                     Nonce = nonce,
@@ -238,15 +221,11 @@ namespace WFClassic.Web.Logic.Inventory.Update
                     }).ToList()
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("UpdateInventoryHandler => playerId {playerId} nonce {Nonce} => Exception while creating missionreport : {Ex}", playerId, nonce, ex);
-
             }
             return report;
-
-
         }
-
     }
 }

@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
-
 namespace WFClassic.Web.Logic.Bonus.Rewards
 {
     public class GetLoginRewardsHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<GetLoginRewardsHandler> _logger;
         private UserManager<ApplicationUser> _userManager;
@@ -18,7 +16,7 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
             _applicationDbContext = applicationDbContext;
             _logger = logger;
             _userManager = userManager;
-         }
+        }
 
         public async Task<GetLoginRewardsResult> HandleAsync(GetLoginRewards getLoginRewards)
         {
@@ -32,11 +30,9 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
                 return result;
             }
 
-
             ApplicationUser user = null;
             List<DailyRewardDefinition> dailyRewardDefinitions = null;
             List<DateTimeOffset> loginTimestamps = null;
-  
 
             try
             {
@@ -46,7 +42,6 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
                 user = await _userManager.FindByIdAsync(getLoginRewards.AccountId.ToString());
                 dailyRewardDefinitions = _applicationDbContext.DailyRewardDefinitions.ToList();
                 _logger.LogInformation("GetLoginRewardsHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", getLoginRewards.AccountId, getLoginRewards.Nonce);
-
             }
             catch (Exception ex)
             {
@@ -55,7 +50,7 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
                 return result;
             }
 
-            if (loginTimestamps.Count( w=> w.Date == DateTime.Today ) >1)
+            if (loginTimestamps.Count(w => w.Date == DateTime.Today) > 1)
             {
                 // we've already provided the reward
                 _logger.LogInformation("GetLoginRewardsHandler => accountId {AccountID} nonce {Nonce} => Login reward already assigned", getLoginRewards.AccountId, getLoginRewards.Nonce);
@@ -63,7 +58,7 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
                 return result;
             }
 
-            try 
+            try
             {
                 var rand = new Random().Next(1, 101);
                 var assignedReward = dailyRewardDefinitions.Where(w => w.StreakStartDate <= user.LoginStreak
@@ -92,7 +87,7 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
                 };
                 result.GetLoginRewardsResultStatus = GetLoginRewardsResultStatus.Success;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("GetLoginRewardsHandler => accountId {AccountID} nonce {Nonce} => Exception while mapping return object : {Ex}", getLoginRewards.AccountId, getLoginRewards.Nonce, ex);
                 result.GetLoginRewardsResultStatus = GetLoginRewardsResultStatus.MappingFailure;
@@ -100,6 +95,5 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
 
             return result;
         }
-
     }
 }

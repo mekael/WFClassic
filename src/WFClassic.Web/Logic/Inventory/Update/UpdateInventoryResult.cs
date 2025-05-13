@@ -1,10 +1,9 @@
-﻿ namespace WFClassic.Web.Logic.Inventory.Update
+﻿namespace WFClassic.Web.Logic.Inventory.Update
 {
     public class UpdateInventoryResult
     {
         public UpdateInventoryResultStatus UpdateInventoryResultStatus { get; set; }
     }
-
 
     public enum UpdateInventoryResultStatus
     {

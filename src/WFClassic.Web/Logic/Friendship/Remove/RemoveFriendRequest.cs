@@ -15,6 +15,5 @@ namespace WFClassic.Web.Logic.Friendship.Remove
 
         [JsonPropertyName("friend")]
         public Guid Friend { get; set; }
-
     }
 }

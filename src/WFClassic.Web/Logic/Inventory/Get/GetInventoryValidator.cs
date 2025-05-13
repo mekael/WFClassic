@@ -4,8 +4,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
 {
     public class GetInventoryValidator : AbstractValidator<GetInventory>
     {
-
-
         public GetInventoryValidator()
         {
             RuleFor(r => r.AccountId).NotEmpty();

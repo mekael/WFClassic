@@ -10,7 +10,6 @@ namespace WFClassic.Web.Logic.Inventory.Update
         public UpdateInventoryFromMissionObject UpdateInventoryFromMissionObject { get; set; }
     }
 
-
     public class UpdateInventoryFromMissionObject
     {
         public List<JsonIncomingEquipmentItem> LongGuns { get; set; }
@@ -28,7 +27,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
         public List<ItemCountPair> MiscItems { get; set; }
         public object[] Cards { get; set; }
         public List<ItemCountPair> Recipes { get; set; }
-        public object[] XPInfo { get; set; } 
+        public object[] XPInfo { get; set; }
 
         public Bin SuitBin { get; set; }
         public Bin WeaponBin { get; set; }
@@ -131,7 +130,4 @@ namespace WFClassic.Web.Logic.Inventory.Update
         public int ItemCount { get; set; }
         public string ItemType { get; set; }
     }
-
 }
-
-

@@ -1,21 +1,18 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Admin.CheckOnline;
 using WFClassic.Web.Logic.Credits.Get;
 
 namespace WFClassic.Web.Logic.Inventory.Get
 {
     public class GetInventoryHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<GetInventoryHandler> _logger;
         private GetCreditsHandler _getCreditsHandler;
 
-        public GetInventoryHandler(ApplicationDbContext applicationDbContext, ILogger<GetInventoryHandler> logger,  GetCreditsHandler getCreditsHandler)
+        public GetInventoryHandler(ApplicationDbContext applicationDbContext, ILogger<GetInventoryHandler> logger, GetCreditsHandler getCreditsHandler)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
@@ -43,18 +40,15 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", getInventory.AccountId, getInventory.Nonce);
                 player = _applicationDbContext.Players
                     .Include(i => i.InventoryItems)
-                    .Include(i=> i.InventoryBins)
-                    .Include(i=> i.Missions)
-                    .Include(i=> i.BankAccounts)
-                    .Include(i=> i.TauntHistoryItems)
+                    .Include(i => i.InventoryBins)
+                    .Include(i => i.Missions)
+                    .Include(i => i.BankAccounts)
+                    .Include(i => i.TauntHistoryItems)
                     .FirstOrDefault(w => w.ApplicationUserId == getInventory.AccountId);
 
-
-                attachments = _applicationDbContext.InventoryItemAttachments.Include(i=> i.AttachedInventoryItem).Where(w=> w.AttachedInventoryItem.PlayerId == player.Id).ToList();
-
+                attachments = _applicationDbContext.InventoryItemAttachments.Include(i => i.AttachedInventoryItem).Where(w => w.AttachedInventoryItem.PlayerId == player.Id).ToList();
 
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", getInventory.AccountId, getInventory.Nonce);
-
             }
             catch (Exception ex)
             {
@@ -70,13 +64,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
             }
             catch (Exception ex)
             {
-                result.GetInventoryResultStatus = GetInventoryResultStatus.MappingFailure   ;
+                result.GetInventoryResultStatus = GetInventoryResultStatus.MappingFailure;
             }
-
- 
 
             return result;
         }
-
     }
 }

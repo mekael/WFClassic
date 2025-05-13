@@ -2,7 +2,7 @@
 
 namespace WFClassic.Web.Logic.Inventory.Update
 {
-    public class UpdateInventoryValidator :AbstractValidator<UpdateInventory>   
+    public class UpdateInventoryValidator : AbstractValidator<UpdateInventory>
     {
     }
 }

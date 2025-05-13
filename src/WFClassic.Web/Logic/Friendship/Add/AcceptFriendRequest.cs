@@ -15,9 +15,5 @@ namespace WFClassic.Web.Logic.Friendship.Add
 
         [JsonPropertyName("friend")]
         public Guid Friend { get; set; }
-
- 
     }
 }
-
-

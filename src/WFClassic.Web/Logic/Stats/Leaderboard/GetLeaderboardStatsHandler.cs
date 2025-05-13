@@ -1,14 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WFClassic.Web.Data;
+﻿using WFClassic.Web.Data;
 
 namespace WFClassic.Web.Logic.Stats.Leaderboard
 {
     public class GetLeaderboardStatsHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<GetLeaderboardStatsHandler> _logger;
-
 
         public GetLeaderboardStatsHandler(ApplicationDbContext applicationDbContext,
                                     ILogger<GetLeaderboardStatsHandler> logger)
@@ -16,7 +13,6 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
             _applicationDbContext = applicationDbContext;
             _logger = logger;
         }
-
 
         //GET http://localhost/stats/leaderboard.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=5239627016210914759&steamId=0&field=Kills&before=0&after=10 HTTP/1.1
         // GET http://localhost/stats/leaderboard.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=5239627016210914759&steamId=0&field=Kills&before=4&after=6&pivotAccountId=c64c1e01-34d6-4311-ae40-7baa5eba3016 HTTP/1.1
@@ -33,7 +29,7 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
                 return result;
             }
 
-            //TODO: store this in cache. 
+            //TODO: store this in cache.
 
             List<GetLeaderboardStatsResultItem> topTenKillers = null;
             try
@@ -43,7 +39,7 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
                 topTenKillers = _applicationDbContext.MetricItems
                                                            .Where(w => w.EventName == "KILL_ENEMY")
                                                            .GroupBy(gb => gb.DisplayName)
-                                                           .Select(s => new GetLeaderboardStatsResultItem() { DisplayName = s.Key, rank= 1,  score = s.Sum(s => s.ItemCount.HasValue? s.ItemCount.Value:0) })
+                                                           .Select(s => new GetLeaderboardStatsResultItem() { DisplayName = s.Key, rank = 1, score = s.Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0) })
                                                            .OrderByDescending(obd => obd.score)
                                                            .Take(10)
                                                            .ToList();
@@ -58,12 +54,8 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
                 result.GetLeaderboardStatsResultStatus = GetLeaderboardStatsResultStatus.DatabaseErrors;
             }
 
-
-
-
-
             //TODO: Deal with the players rank amongst other players
-            // add them to the top ten list. 
+            // add them to the top ten list.
             // will need to get their displayname from the users table
             if (getLeaderboardStats.PivotAccountId != Guid.Empty)
             {
@@ -75,11 +67,7 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
                 players = topTenKillers
             };
 
-
-
-
             return result;
         }
-
     }
 }

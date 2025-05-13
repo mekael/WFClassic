@@ -10,8 +10,6 @@ namespace WFClassic.Web.Logic.Exp.Artifact
         public IncomingUpgradeArtifactRequest IncomingUpgradeArtifactRequest { get; set; }
     }
 
-
-
     public class IncomingUpgradeArtifactRequest
     {
         public Upgrade Upgrade { get; set; }
@@ -43,6 +41,4 @@ namespace WFClassic.Web.Logic.Exp.Artifact
         public int Slot { get; set; }
         public Itemid ParentId { get; set; }
     }
- 
-
 }

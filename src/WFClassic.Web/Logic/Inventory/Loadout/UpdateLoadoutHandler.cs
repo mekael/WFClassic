@@ -7,15 +7,14 @@ namespace WFClassic.Web.Logic.Inventory.Get
 {
     public class UpdateLoadoutHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<UpdateLoadoutHandler> _logger;
- 
+
         public UpdateLoadoutHandler(ApplicationDbContext applicationDbContext, ILogger<UpdateLoadoutHandler> logger)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-         }
+        }
 
         public UpdateLoadoutResult Handle(UpdateLoadout updateLoadout)
         {
@@ -30,7 +29,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
             }
 
             Player player = null;
-   
+
             try
             {
                 _logger.LogInformation("UpdateLoadoutHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", updateLoadout.AccountId, updateLoadout.Nonce);
@@ -38,7 +37,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 result.UpdateLoadoutResultStatus = UpdateLoadoutResultStatus.Success;
 
                 _logger.LogInformation("UpdateLoadoutHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", updateLoadout.AccountId, updateLoadout.Nonce);
-
             }
             catch (Exception ex)
             {
@@ -47,14 +45,12 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 return result;
             }
 
- 
             try
             {
                 player.CurrentLoadout = updateLoadout.LoadoutState;
                 _applicationDbContext.Entry(player).State = EntityState.Modified;
                 _applicationDbContext.SaveChanges();
                 result.UpdateLoadoutResultStatus = UpdateLoadoutResultStatus.Success;
-
             }
             catch (Exception ex)
             {
@@ -64,6 +60,5 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
             return result;
         }
-
     }
 }

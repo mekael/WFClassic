@@ -4,6 +4,7 @@
     {
         public AcceptFriendResultStatus AcceptFriendResultStatus { get; set; }
     }
+
     public enum AcceptFriendResultStatus
     {
         ValidationErrors,

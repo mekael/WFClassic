@@ -5,10 +5,8 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
 {
     public class GetProfileStatsHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<GetProfileStatsHandler> _logger;
-
 
         public GetProfileStatsHandler(ApplicationDbContext applicationDbContext,
                                     ILogger<GetProfileStatsHandler> logger)
@@ -17,7 +15,7 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
             _logger = logger;
         }
 
-        List<string> weaponEventNames = new List<string>()
+        private List<string> weaponEventNames = new List<string>()
         {
             "FIRE_WEAPON",
             "HEADSHOT_ITEM",
@@ -39,7 +37,7 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
                 return result;
             }
 
-            //TODO: store this in cache. 
+            //TODO: store this in cache.
             List<MetricItem> metricItems = null;
             try
             {
@@ -55,14 +53,13 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
                 return result;
             }
 
-
-            try {
-
+            try
+            {
                 var weaponAndSuitMetrics = metricItems.Where(w => w.ItemName != null && (w.ItemName.StartsWith("/Lotus/Powersuits") || w.ItemName.StartsWith("/Lotus/Weapons"))).GroupBy(gb => gb.ItemName);
                 List<Weapon> weapons = new List<Weapon>();
                 foreach (var item in weaponAndSuitMetrics)
                 {
-                    weapons.Add( new Weapon()
+                    weapons.Add(new Weapon()
                     {
                         assists = 0,
                         equipTime = item.Where(w => w.EventName == "EQUIP_WEAPON").Sum(s => s.Seconds.HasValue ? s.Seconds.Value : 0),
@@ -71,19 +68,18 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
                         hits = item.Where(w => w.EventName == "HIT_ENTITY_ITEM").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
                         kills = item.Where(w => w.EventName == "KILL_ENEMY_ITEM").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
                         xp = item.Where(w => w.EventName == "WEAPON_XP").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
-                        type =item.Key
+                        type = item.Key
                     });
                 }
-                 
+
                 result.ProfileStatsItem = new ProfileStatsItem()
                 {
-
                     CiphersFailed = metricItems.Where(w => w.EventName == "CIPHER" && w.ItemName == "0").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
                     CiphersSolved = metricItems.Where(w => w.EventName == "CIPHER" && w.ItemName == "1").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
                     CipherTime = metricItems.Where(w => w.EventName == "CIPHER_TIME").Sum(s => s.Seconds.HasValue ? s.Seconds.Value : 0),
                     TimePlayedSec = metricItems.Where(w => w.EventName == "MISSION_TIME").Sum(s => s.Seconds.HasValue ? s.Seconds.Value : 0),
 
-                    //TODO: check to see if these make sense? 
+                    //TODO: check to see if these make sense?
                     MissionsCompleted = metricItems.Where(w => w.EventName == "MISSION_COMPLETE" && w.ItemName == "GS_SUCCESS").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
                     MissionsFailed = metricItems.Where(w => w.EventName == "MISSION_COMPLETE" && w.ItemName == "GS_FAILURE").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
                     MissionsInterrupted = metricItems.Where(w => w.EventName == "MISSION_COMPLETE" && w.ItemName == "GS_INTERRUPTED").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
@@ -91,35 +87,26 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
                     MissionsQuit = metricItems.Where(w => w.EventName == "MISSION_COMPLETE" && w.ItemName == "GS_QUIT").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
                     ReviveCount = metricItems.Where(w => w.EventName == "REVIVE_BUDDY").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
                     HealCount = metricItems.Where(w => w.EventName == "HEAL_BUDDY").Sum(s => s.ItemCount.HasValue ? s.ItemCount.Value : 0),
-                    //TODO: once we determine how the rest of the other data points are represented, this will need to be it's own function / for loop. 
+                    //TODO: once we determine how the rest of the other data points are represented, this will need to be it's own function / for loop.
                     Enemies = metricItems.Where(w => w.EventName == "KILL_ENEMY" && w.ItemName.StartsWith("/Lotus/Types/Enemies/"))
                              .GroupBy(gb => gb.ItemName)
                              .Select(s => new Enemy() { type = s.Key, deaths = s.Sum(si => si.ItemCount.HasValue ? si.ItemCount.Value : 0) })
-                             .ToList() ,
+                             .ToList(),
                     Weapons = weapons
                 }
 
         ;
 
                 result.GetProfileStatsResultsStatus = GetProfileStatsResultsStatus.Success;
-            
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("GetProfileStatsHandler => accountId {AccountID} nonce {Nonce} =>  Mapping Errors {Ex}", getProfileStats.AccountId, getProfileStats.Nonce, ex);
                 result.GetProfileStatsResultsStatus = GetProfileStatsResultsStatus.MappingErrors;
             }
 
-
-
-
-
-
             return result;
         }
-
-
-
     }
 }
 
@@ -128,5 +115,5 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
         public long Rank { get; set; }
 
         public Enemy[] Enemies { get; set; }
- 
+
  */

@@ -15,6 +15,5 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
 
         [JsonPropertyName("lookupId")]
         public Guid LookupId { get; set; }
-
     }
 }

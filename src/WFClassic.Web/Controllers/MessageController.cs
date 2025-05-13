@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace WFClassic.Web.Controllers
 {
@@ -13,7 +12,7 @@ namespace WFClassic.Web.Controllers
             var response = @"{
       ""Messages"": [
             {
-                ""SenderId"": {  
+                ""SenderId"": {
                     ""$id"":""sdfs""
                 },
                 ""Content"":""sdfsd""
@@ -29,7 +28,5 @@ namespace WFClassic.Web.Controllers
         {
             return new JsonResult("{}");
         }
-
     }
 }
-

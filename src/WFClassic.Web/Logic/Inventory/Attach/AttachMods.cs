@@ -6,7 +6,7 @@ namespace WFClassic.Web.Logic.Inventory.Attach
     {
         public Guid AccountId { get; set; }
         public long Nonce { get; set; }
-        public IncomingAttachRequest IncomingAttachRequest { get; set; }    
+        public IncomingAttachRequest IncomingAttachRequest { get; set; }
     }
 
     public class IncomingAttachRequest
@@ -44,7 +44,4 @@ namespace WFClassic.Web.Logic.Inventory.Attach
         public int Slot { get; set; }
         public Itemid ParentId { get; set; }
     }
-
-
-
 }

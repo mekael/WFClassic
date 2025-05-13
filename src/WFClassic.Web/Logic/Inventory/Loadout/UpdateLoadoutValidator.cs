@@ -4,8 +4,6 @@ namespace WFClassic.Web.Logic.Inventory.Loadout
 {
     public class UpdateLoadoutValidator : AbstractValidator<UpdateLoadout>
     {
-
-
         public UpdateLoadoutValidator()
         {
             RuleFor(r => r.AccountId).NotEmpty();

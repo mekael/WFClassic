@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Foundry.Claim;
 using WFClassic.Web.Logic.Foundry.Pending;
 using WFClassic.Web.Logic.Foundry.Rush;
 using WFClassic.Web.Logic.Foundry.Start;
-using WFClassic.Web.Logic.Friendship.Get;
 using WFClassic.Web.Logic.Middleware;
 
 namespace WFClassic.Web.Controllers
@@ -14,11 +11,11 @@ namespace WFClassic.Web.Controllers
     [ApiController]
     public class FoundryController : ControllerBase
     {
-        CheckPendingRecipesQueryHandler _checkPendingRecipesQueryHandler;
-        StartRecipeBuildHandler _startRecipeBuildHandler;
-        ClaimCompletedRecipeHandler _claimCompletedRecipeHandler;
-        RushRecipeHandler _rushRecipeHandler;
-        ILogger<FoundryController> _logger;
+        private CheckPendingRecipesQueryHandler _checkPendingRecipesQueryHandler;
+        private StartRecipeBuildHandler _startRecipeBuildHandler;
+        private ClaimCompletedRecipeHandler _claimCompletedRecipeHandler;
+        private RushRecipeHandler _rushRecipeHandler;
+        private ILogger<FoundryController> _logger;
 
         public FoundryController(ILogger<FoundryController> logger, CheckPendingRecipesQueryHandler checkPendingRecipesQueryHandler,
             StartRecipeBuildHandler startRecipeBuildHandler, ClaimCompletedRecipeHandler claimCompletedRecipeHandler,
@@ -36,11 +33,10 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult InstantCompleteRecipe([FromQuery] RushRecipe rushRecipe)
         {
-
             var result = _rushRecipeHandler.Handle(rushRecipe);
             _logger.LogInformation("RecipeController => in action InstantCompleteRecipe");
 
-            if (result.RushRecipeResultStatus == RushRecipeResultStatus.DatabaseErrors  )
+            if (result.RushRecipeResultStatus == RushRecipeResultStatus.DatabaseErrors)
             {
                 return StatusCode(500);
             }
@@ -50,19 +46,17 @@ namespace WFClassic.Web.Controllers
             }
             else if (result.RushRecipeResultStatus == RushRecipeResultStatus.Success)
             {
-                return  Ok();
+                return Ok();
             }
 
             return StatusCode(500);
- 
         }
 
         [HttpPost]
         [Route("/api/claimCompletedRecipe.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
-        public ActionResult ClaimCompletedItem([FromQuery]ClaimCompletedRecipe claimCompletedRecipe)
+        public ActionResult ClaimCompletedItem([FromQuery] ClaimCompletedRecipe claimCompletedRecipe)
         {
-
             _logger.LogInformation("RecipeController => in action startRecipe");
             var result = _claimCompletedRecipeHandler.Handle(claimCompletedRecipe);
 
@@ -88,7 +82,6 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult StartRecipe([FromQuery] StartRecipeBuild startRecipeBuild)
         {
-
             _logger.LogInformation("RecipeController => in action startRecipe");
             var result = _startRecipeBuildHandler.Handle(startRecipeBuild);
 
@@ -103,7 +96,7 @@ namespace WFClassic.Web.Controllers
             }
             else if (result.StartRecipeBuildResultStatus == StartRecipeBuildResultStatus.Success)
             {
-                    return Ok();
+                return Ok();
             }
 
             return StatusCode(500);
@@ -114,7 +107,6 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Pending([FromQuery] CheckPendingRecipesQuery checkPendingRecipesQuery)
         {
-
             _logger.LogInformation("RecipeController =>  checkPendingRecipes");
             var result = _checkPendingRecipesQueryHandler.Handle(checkPendingRecipesQuery);
 
@@ -134,7 +126,6 @@ namespace WFClassic.Web.Controllers
             }
 
             return StatusCode(500);
-
         }
     }
 }

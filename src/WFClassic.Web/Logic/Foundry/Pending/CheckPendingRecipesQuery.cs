@@ -13,5 +13,4 @@ namespace WFClassic.Web.Logic.Foundry.Pending
         [JsonPropertyName("steamId")]
         public long SteamId { get; set; }
     }
-
 }

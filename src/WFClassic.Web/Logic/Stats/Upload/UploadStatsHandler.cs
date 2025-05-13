@@ -1,17 +1,14 @@
 ﻿using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
-
 namespace WFClassic.Web.Logic.Stats.Upload
 {
     public class UploadStatsHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<UploadStatsHandler> _logger;
 
-
-        public UploadStatsHandler(ApplicationDbContext applicationDbContext, 
+        public UploadStatsHandler(ApplicationDbContext applicationDbContext,
                                     ILogger<UploadStatsHandler> logger)
         {
             _applicationDbContext = applicationDbContext;
@@ -30,7 +27,6 @@ namespace WFClassic.Web.Logic.Stats.Upload
                 return result;
             }
 
-
             List<MetricItem> metricItems = new List<MetricItem>();
 
             if (uploadStats.StatsObject.Counters != null)
@@ -45,7 +41,7 @@ namespace WFClassic.Web.Logic.Stats.Upload
                         ItemCount = counterStat.ItemCount,
                         ItemName = counterStat.ItemName,
                         Set = counterStat.Set,
-                        ApplicationUserId = uploadStats.AccountId, 
+                        ApplicationUserId = uploadStats.AccountId,
                         AssociatedNonce = uploadStats.Nonce,
                         DisplayName = uploadStats.StatsObject.DisplayName
                     });
@@ -70,7 +66,7 @@ namespace WFClassic.Web.Logic.Stats.Upload
                 }
             }
 
-            try 
+            try
             {
                 _logger.LogInformation("UploadStatsHandler => accountId {AccountID} nonce {Nonce} => Saving stats to db", uploadStats.AccountId, uploadStats.Nonce);
                 _applicationDbContext.MetricItems.AddRange(metricItems);
@@ -84,7 +80,6 @@ namespace WFClassic.Web.Logic.Stats.Upload
                 _logger.LogError("UploadStatsHandler => accountId {AccountID} nonce {Nonce} => {Ex}", uploadStats.AccountId, uploadStats.Nonce, ex);
                 result.UploadStatsResultStatus = UploadStatsResultStatus.DatabaseErrors;
             }
-
 
             return result;
         }

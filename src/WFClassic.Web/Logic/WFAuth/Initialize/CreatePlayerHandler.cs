@@ -1,15 +1,11 @@
-﻿using System.Linq.Expressions;
-using WFClassic.Web.Data;
+﻿using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Admin.CheckOnline;
-using WFClassic.Web.Logic.Inventory.Starting;
 
 namespace WFClassic.Web.Logic.WFAuth.Initialize
 {
     public class CreatePlayerHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<CreatePlayerHandler> _logger;
 
@@ -18,7 +14,6 @@ namespace WFClassic.Web.Logic.WFAuth.Initialize
             _applicationDbContext = applicationDbContext;
             _logger = logger;
         }
-
 
         public CreatePlayerResult Handle(CreatePlayer createPlayer)
         {
@@ -37,7 +32,6 @@ namespace WFClassic.Web.Logic.WFAuth.Initialize
 
             Player player = new Player
             {
-
                 ApplicationUserId = createPlayer.ApplicationUserId,
                 PlayerLevel = 0,
                 BankAccounts = new List<BankAccount>()
@@ -64,7 +58,6 @@ namespace WFClassic.Web.Logic.WFAuth.Initialize
                 _applicationDbContext.SaveChanges();
                 _logger.LogInformation("CreatePlayerHandler => accountId {AccountID}  => Successfully created player object", createPlayer.ApplicationUserId);
                 result.CreatePlayerResultStatus = CreatePlayerResultStatus.Success;
-
             }
             catch (Exception ex)
             {
@@ -73,6 +66,5 @@ namespace WFClassic.Web.Logic.WFAuth.Initialize
             }
             return result;
         }
-
     }
 }

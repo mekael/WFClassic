@@ -2,7 +2,6 @@
 {
     public class MissionReport : EntityBase
     {
-
         public Guid PlayerId { get; set; }
         public Player Player { get; set; }
         public long Nonce { get; set; }

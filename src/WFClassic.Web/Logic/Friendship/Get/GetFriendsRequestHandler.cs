@@ -1,14 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Friendship.Add;
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Friendship.Get
 {
     public class GetFriendsRequestHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<GetFriendsRequestHandler> _logger;
 
@@ -18,7 +16,6 @@ namespace WFClassic.Web.Logic.Friendship.Get
             _logger = logger;
         }
 
-
         public GetFriendsResult Handle(GetFriendsRequest getFriendsRequest)
         {
             GetFriendsResult getFriendsResult = new GetFriendsResult();
@@ -26,29 +23,27 @@ namespace WFClassic.Web.Logic.Friendship.Get
 
             if (!validationResults.IsValid)
             {
-                 _logger.LogError("GetFriendsRequestHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", getFriendsRequest.AccountId, getFriendsRequest.Nonce, string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
+                _logger.LogError("GetFriendsRequestHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", getFriendsRequest.AccountId, getFriendsRequest.Nonce, string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
                 getFriendsResult.GetFriendsResultStatus = GetFriendsResultStatus.ValidationErrors;
                 return getFriendsResult;
             }
 
-
             List<FriendshipRequest> friendshipRequests = null;
             List<PersonRelationship> friends = null;
-
 
             try
             {
                 _logger.LogInformation("GetFriendsRequestHandler => accountId {AccountID} nonce {Nonce} =>  Starting friend and friend request query ", getFriendsRequest.AccountId, getFriendsRequest.Nonce);
 
-                friendshipRequests =   _applicationDbContext.FriendshipRequests
+                friendshipRequests = _applicationDbContext.FriendshipRequests
                                                                   .Include(i => i.Requestor)
                                                                   .Include(i => i.Friend)
                                                                   .Where(w => w.FriendId == getFriendsRequest.AccountId || w.RequestorId == getFriendsRequest.AccountId)
                                                                   .ToList();
 
                 friends = _applicationDbContext.PersonRelationships
-                                                                    .Include(i=> i.Friend)
-                                                                    .Where(w=> w.UserId == getFriendsRequest.AccountId && w.PersonRelationshipType == Data.Enums.PersonRelationshipType.Friend)
+                                                                    .Include(i => i.Friend)
+                                                                    .Where(w => w.UserId == getFriendsRequest.AccountId && w.PersonRelationshipType == Data.Enums.PersonRelationshipType.Friend)
                                                                     .ToList();
 
                 _logger.LogInformation("GetFriendsRequestHandler => accountId {AccountID} nonce {Nonce} =>  Friend query complete ", getFriendsRequest.AccountId, getFriendsRequest.Nonce);
@@ -61,8 +56,6 @@ namespace WFClassic.Web.Logic.Friendship.Get
             }
             _logger.LogInformation("GetFriendsRequestHandler => accountId {AccountID} nonce {Nonce} =>  Found {friendshipRequestCount} friendship requests", getFriendsRequest.AccountId, getFriendsRequest.Nonce, friendshipRequests.Count);
             _logger.LogInformation("GetFriendsRequestHandler => accountId {AccountID} nonce {Nonce} =>  Found {friendCount} friends", getFriendsRequest.AccountId, getFriendsRequest.Nonce, friends.Count);
-
-
 
             try
             {
@@ -82,12 +75,11 @@ namespace WFClassic.Web.Logic.Friendship.Get
                 _logger.LogError("GetFriendsRequestHandler => accountId {AccountID} nonce {Nonce} => Exception while mapping friends onto return object {Ex}", getFriendsRequest.AccountId, getFriendsRequest.Nonce, ex);
                 getFriendsResult.GetFriendsResultStatus = GetFriendsResultStatus.MappingFailure;
             }
-           
+
             return getFriendsResult;
         }
 
-
-        class QueryResultItem
+        private class QueryResultItem
         {
             public string DisplayName { get; set; }
             public Guid Id { get; set; }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Admin.CheckOnline;
 using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.Credits.Get;
 
@@ -23,11 +22,9 @@ namespace WFClassic.Web.Logic.Exp.Artifact
             _getCreditsHandler = getCreditsHandler;
         }
 
-
         public UpgradeArtifactResult Handle(UpgradeArtifact upgradeArtifact)
         {
             UpgradeArtifactResult result = new UpgradeArtifactResult();
-
 
             var validationResults = new UpradeArtifactValidator().Validate(upgradeArtifact);
 
@@ -37,7 +34,6 @@ namespace WFClassic.Web.Logic.Exp.Artifact
                 result.UpgradeArtifactResultStatus = UpgradeArtifactResultStatus.ValidationErrors;
                 return result;
             }
-
 
             // get player and all items
 
@@ -55,7 +51,6 @@ namespace WFClassic.Web.Logic.Exp.Artifact
                 return result;
             }
 
-
             GetCredits getCredits = new GetCredits()
             {
                 AccountId = upgradeArtifact.AccountId,
@@ -64,7 +59,6 @@ namespace WFClassic.Web.Logic.Exp.Artifact
 
             var getCreditsResult = _getCreditsHandler.Handle(getCredits);
 
-
             if (getCreditsResult.GetCreditsResultDetails.RegularCredits < upgradeArtifact.IncomingUpgradeArtifactRequest.Cost)
             {
                 _logger.LogError("UpgradeArtifactHandler => accountId {AccountID} nonce {Nonce} => Not enough credits to proceed", upgradeArtifact.AccountId, upgradeArtifact.Nonce);
@@ -72,34 +66,31 @@ namespace WFClassic.Web.Logic.Exp.Artifact
                 return result;
             }
 
-
-
-
             // check to make sure that the item to upgrade is still at the appropriate level
             var itemToUpgrade = upgradeArtifact.IncomingUpgradeArtifactRequest.Upgrade;
             var inventoryItemToUpgrade = player.InventoryItems.FirstOrDefault(fod => fod.Id == Guid.Parse(upgradeArtifact.IncomingUpgradeArtifactRequest.Upgrade.ItemId.id));
 
             if (inventoryItemToUpgrade == null)
             {
-                // we already got rid of it. 
+                // we already got rid of it.
                 _logger.LogError("UpgradeArtifactHandler => accountId {AccountID} nonce {Nonce} => No matching artifact found", upgradeArtifact.AccountId, upgradeArtifact.Nonce);
                 result.UpgradeArtifactResultStatus = UpgradeArtifactResultStatus.ValidationErrors;
                 return result;
             }
             else if (itemToUpgrade.UpgradeFingerprint != itemToUpgrade.UpgradeFingerprint)
             {
-                // already upgraded 
+                // already upgraded
                 _logger.LogError("UpgradeArtifactHandler => accountId {AccountID} nonce {Nonce} => Artifact has already been updated", upgradeArtifact.AccountId, upgradeArtifact.Nonce);
                 result.UpgradeArtifactResultStatus = UpgradeArtifactResultStatus.ValidationErrors;
                 return result;
             }
 
             // get the current bank account status
-            // 
+            //
             int inventoryItemsToConsumeCounter = 0;
             var consumedItems = upgradeArtifact.IncomingUpgradeArtifactRequest.Consumed;
 
-            // check to make sure that all of the consumed items exist and that they are at the appropriate level . 
+            // check to make sure that all of the consumed items exist and that they are at the appropriate level .
 
             foreach (var consumedItem in consumedItems)
             {
@@ -112,12 +103,11 @@ namespace WFClassic.Web.Logic.Exp.Artifact
 
             if (consumedItems.Length != inventoryItemsToConsumeCounter)
             {
-                // leave early 
+                // leave early
                 _logger.LogError("UpgradeArtifactHandler => accountId {AccountID} nonce {Nonce} => Some of the proposed artifacts have already been consumed.", upgradeArtifact.AccountId, upgradeArtifact.Nonce);
                 result.UpgradeArtifactResultStatus = UpgradeArtifactResultStatus.ValidationErrors;
                 return result;
             }
-
 
             inventoryItemToUpgrade.UpgradeFingerprint = itemToUpgrade.UpgradeFingerprint;
             _applicationDbContext.Entry(inventoryItemToUpgrade).State = EntityState.Modified;
@@ -126,7 +116,6 @@ namespace WFClassic.Web.Logic.Exp.Artifact
                 var itemToConsume = player.InventoryItems.FirstOrDefault(fod => fod.Id == Guid.Parse(consumedItem.ItemId.id));
                 _applicationDbContext.Entry(itemToConsume).State = EntityState.Deleted;
             }
-
 
             try
             {
@@ -142,13 +131,12 @@ namespace WFClassic.Web.Logic.Exp.Artifact
             _addAccountTransactionHandler.Handle(new AddAccountTransaction()
             {
                 AccountId = upgradeArtifact.AccountId,
-                Amount = -1* upgradeArtifact.IncomingUpgradeArtifactRequest.Cost,
+                Amount = -1 * upgradeArtifact.IncomingUpgradeArtifactRequest.Cost,
                 BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit,
                 BankAccountType = Data.Enums.BankAccountType.StandardCredits,
                 MemoCode = $"Upgraded {upgradeArtifact.IncomingUpgradeArtifactRequest.Upgrade.ItemId.id}"
             });
             result.UpgradeArtifactResultStatus = UpgradeArtifactResultStatus.Success;
-
 
             return result;
         }

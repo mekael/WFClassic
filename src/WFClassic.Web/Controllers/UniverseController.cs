@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Bonus.Rewards;
-using WFClassic.Web.Logic.Inventory.Loadout;
 using WFClassic.Web.Logic.Middleware;
 
 namespace WFClassic.Web.Controllers
@@ -10,7 +8,7 @@ namespace WFClassic.Web.Controllers
     [ApiController]
     public class UniverseController : ControllerBase
     {
-        GetLoginRewardsHandler _getLoginRewardsHandler;
+        private GetLoginRewardsHandler _getLoginRewardsHandler;
 
         public UniverseController(GetLoginRewardsHandler getLoginRewardsHandler)
         {
@@ -22,13 +20,13 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult LoginRewards([FromQuery] GetLoginRewards getLoginRewards)
         {
-            var result =   _getLoginRewardsHandler.HandleAsync(getLoginRewards).Result;
+            var result = _getLoginRewardsHandler.HandleAsync(getLoginRewards).Result;
 
             if (result.GetLoginRewardsResultStatus == GetLoginRewardsResultStatus.Success)
             {
                 return new JsonResult(result.GetLoginRewardsResultReturnJson, new JsonSerializerOptions { PropertyNamingPolicy = null });
             }
-            else if(result.GetLoginRewardsResultStatus == GetLoginRewardsResultStatus.AlreadyProvided)
+            else if (result.GetLoginRewardsResultStatus == GetLoginRewardsResultStatus.AlreadyProvided)
             {
                 return Ok();
             }
@@ -41,7 +39,6 @@ namespace WFClassic.Web.Controllers
                 return StatusCode(500);
             }
             return StatusCode(500);
- 
         }
 
         [HttpGet]
@@ -49,17 +46,16 @@ namespace WFClassic.Web.Controllers
         public string CheckDailyMissionBonus([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             var cat = "{DailyMissionBonus:1}";
-            return cat; 
+            return cat;
         }
 
         [HttpGet]
         [Route("/api/worldState.php")]
         public string WorldState([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-
             string ws = @"
 {
-    ""Events"": [   
+    ""Events"": [
         {
             ""_id"": {
                 ""$id"": ""5187e9393f9a5b131c66f528""
@@ -166,8 +162,8 @@ namespace WFClassic.Web.Controllers
             ""alertId"": {
                 ""$id"": ""521d98e9bb5768395e92594c""
             }
-            } 
-        } 
+            }
+        }
     ],
     ""Time"": 1379023743,
 ""BuildLabel"": ""2013.04.26.17.24/""

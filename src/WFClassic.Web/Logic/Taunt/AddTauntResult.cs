@@ -2,7 +2,7 @@
 {
     public class AddTauntResult
     {
-        public AddTauntResultStatus  AddTauntResultStatus { get; set; }
+        public AddTauntResultStatus AddTauntResultStatus { get; set; }
     }
 
     public enum AddTauntResultStatus

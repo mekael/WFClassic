@@ -2,8 +2,9 @@
 {
     public class UploadStatsResult
     {
-        public UploadStatsResultStatus UploadStatsResultStatus { get; set; }    
+        public UploadStatsResultStatus UploadStatsResultStatus { get; set; }
     }
+
     public enum UploadStatsResultStatus
     {
         ValidationErrors,

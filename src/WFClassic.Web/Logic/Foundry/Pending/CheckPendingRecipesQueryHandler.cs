@@ -6,7 +6,6 @@ namespace WFClassic.Web.Logic.Foundry.Pending
 {
     public class CheckPendingRecipesQueryHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<CheckPendingRecipesQueryHandler> _logger;
 
@@ -15,7 +14,6 @@ namespace WFClassic.Web.Logic.Foundry.Pending
             _applicationDbContext = applicationDbContext;
             _logger = logger;
         }
-
 
         public CheckPendingRecipesResult Handle(CheckPendingRecipesQuery getFriendsRequest)
         {
@@ -28,18 +26,17 @@ namespace WFClassic.Web.Logic.Foundry.Pending
                 checkPendingRecipesResult.CheckPendingRecipesResultStatus = CheckPendingRecipesResultStatus.ValidationErrors;
                 return checkPendingRecipesResult;
             }
-           
+
             List<PendingRecipe> pendingRecipes = new List<PendingRecipe>();
 
             try
             {
                 _logger.LogInformation("CheckPendingRecipesQueryHandler => accountId {AccountID} nonce {Nonce} =>  Querying for pending recips ", getFriendsRequest.AccountId, getFriendsRequest.Nonce);
 
-                pendingRecipes   = _applicationDbContext.PendingRecipes.AsNoTracking()
-                                                               .Include(i=> i.Recipe)
-                                                               .Where(w=> w.Player.ApplicationUserId ==  getFriendsRequest.AccountId)
+                pendingRecipes = _applicationDbContext.PendingRecipes.AsNoTracking()
+                                                               .Include(i => i.Recipe)
+                                                               .Where(w => w.Player.ApplicationUserId == getFriendsRequest.AccountId)
                                                                .ToList();
-
             }
             catch (Exception ex)
             {
@@ -56,7 +53,7 @@ namespace WFClassic.Web.Logic.Foundry.Pending
 
                 checkPendingRecipesResult.JsonCheckPendingRecipesResult = new JsonCheckPendingRecipesResult()
                 {
-                    PendingRecipes = pendingRecipes.Select(s => new JsonCheckPendingRecipesResultItem() { ItemType = s.Recipe.RecipeItemName, SecondsRemaining =  Math.Max(0, (long)(s.EndingTime - DateTimeOffset.Now).TotalSeconds )}).ToList()
+                    PendingRecipes = pendingRecipes.Select(s => new JsonCheckPendingRecipesResultItem() { ItemType = s.Recipe.RecipeItemName, SecondsRemaining = Math.Max(0, (long)(s.EndingTime - DateTimeOffset.Now).TotalSeconds) }).ToList()
                 };
                 checkPendingRecipesResult.CheckPendingRecipesResultStatus = CheckPendingRecipesResultStatus.Success;
             }
@@ -68,6 +65,5 @@ namespace WFClassic.Web.Logic.Foundry.Pending
 
             return checkPendingRecipesResult;
         }
- 
     }
 }

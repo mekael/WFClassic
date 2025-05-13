@@ -12,6 +12,5 @@ namespace WFClassic.Web.Logic.Friendship.Get
 
         [JsonPropertyName("steamId")]
         public long SteamId { get; set; }
-
     }
 }

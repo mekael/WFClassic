@@ -2,9 +2,6 @@
 
 namespace WFClassic.Web.Logic.Stats.Upload
 {
-
-
-
     public class UploadStats
     {
         public Guid AccountId { get; set; }
@@ -12,13 +9,10 @@ namespace WFClassic.Web.Logic.Stats.Upload
         public long Nonce { get; set; }
 
         public StatsObject StatsObject { get; set; }
-
     }
-
 
     public class StatsObject
     {
-
         [JsonPropertyName("displayName")]
         public string DisplayName { get; set; }
 
@@ -51,10 +45,11 @@ namespace WFClassic.Web.Logic.Stats.Upload
     {
         [JsonPropertyName("event")]
         public string Event { get; set; }
+
         [JsonPropertyName("object")]
         public string ItemName { get; set; }
+
         [JsonPropertyName("seconds")]
         public float Seconds { get; set; }
     }
-
 }

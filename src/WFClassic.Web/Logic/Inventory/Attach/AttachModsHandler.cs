@@ -1,22 +1,18 @@
-﻿using WFClassic.Web.Data.Models;
-using WFClassic.Web.Data;
-using WFClassic.Web.Logic.Admin.CheckOnline;
-using WFClassic.Web.Logic.Credits.Get;
-using WFClassic.Web.Logic.Inventory.Get;
+﻿using WFClassic.Web.Data;
+using WFClassic.Web.Data.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Attach
 {
     public class AttachModsHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<AttachModsHandler> _logger;
- 
+
         public AttachModsHandler(ApplicationDbContext applicationDbContext, ILogger<AttachModsHandler> logger)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
-         }
+        }
 
         public AttachModsResult Handle(AttachMods attachMods)
         {
@@ -32,11 +28,11 @@ namespace WFClassic.Web.Logic.Inventory.Attach
 
             List<InventoryItemAttachment> modAttachments = null;
 
-            try 
+            try
             {
-                modAttachments = _applicationDbContext.InventoryItemAttachments.Where(w => w.ParentInventoryItemId == Guid.Parse(attachMods.IncomingAttachRequest.Weapon.ItemId.Id)).ToList();  
+                modAttachments = _applicationDbContext.InventoryItemAttachments.Where(w => w.ParentInventoryItemId == Guid.Parse(attachMods.IncomingAttachRequest.Weapon.ItemId.Id)).ToList();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("GetInventoryHandler => accountId {AccountID} nonce {Nonce} =>  {Ex}", attachMods.AccountId, attachMods.Nonce, ex);
                 result.AttachModsResultStatus = AttachModsResultStatus.DatabaseErrors;
@@ -49,11 +45,11 @@ namespace WFClassic.Web.Logic.Inventory.Attach
                 _applicationDbContext.Entry(attachment).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             }
 
-            foreach(var upgradeToAttach in attachMods.IncomingAttachRequest.UpgradesToAttach)
+            foreach (var upgradeToAttach in attachMods.IncomingAttachRequest.UpgradesToAttach)
             {
                 InventoryItemAttachment attachment = new InventoryItemAttachment()
                 {
-                    ParentInventoryItemId = Guid.Parse( attachMods.IncomingAttachRequest.Weapon.ItemId.Id),
+                    ParentInventoryItemId = Guid.Parse(attachMods.IncomingAttachRequest.Weapon.ItemId.Id),
                     Slot = upgradeToAttach.Slot,
                     AttachedInventoryItemId = Guid.Parse(upgradeToAttach.ItemId.Id)
                 };
@@ -64,13 +60,12 @@ namespace WFClassic.Web.Logic.Inventory.Attach
             {
                 _applicationDbContext.SaveChanges();
                 result.AttachModsResultStatus = AttachModsResultStatus.Success;
-             }
-            catch(Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 _logger.LogError("GetInventoryHandler => accountId {AccountID} nonce {Nonce} =>  {Ex}", attachMods.AccountId, attachMods.Nonce, ex);
                 result.AttachModsResultStatus = AttachModsResultStatus.DatabaseErrors;
             }
-
-
 
             return result;
         }

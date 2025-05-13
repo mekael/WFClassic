@@ -8,10 +8,10 @@ namespace WFClassic.Web.Logic.Foundry.Claim
 {
     public class ClaimCompletedRecipeHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<ClaimCompletedRecipeHandler> _logger;
         private AddAccountTransactionHandler _addAccountTransactionHandler;
+
         private List<InternalInventoryItemType> _uniqueTypes = new List<InternalInventoryItemType>() {
                 InternalInventoryItemType.Suits,
                 InternalInventoryItemType.LongGuns,
@@ -19,7 +19,6 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 InternalInventoryItemType.Pistols,
                 InternalInventoryItemType.Sentinels,
                 InternalInventoryItemType.SentinelWeapons
-
             };
 
         public ClaimCompletedRecipeHandler(ApplicationDbContext applicationDbContext, ILogger<ClaimCompletedRecipeHandler> logger,
@@ -29,7 +28,6 @@ namespace WFClassic.Web.Logic.Foundry.Claim
             _logger = logger;
             _addAccountTransactionHandler = addAccountTransactionHandler;
         }
-
 
         public ClaimCompletedRecipeResult Handle(ClaimCompletedRecipe claimCompletedRecipe)
         {
@@ -42,7 +40,6 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;
                 return claimCompletedRecipeResult;
             }
-
 
             Player player = null;
             Recipe recipe = null;
@@ -57,7 +54,6 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 recipe = _applicationDbContext.Recipes.AsNoTracking()
                                                       .Include(i => i.RecipeComponentItems)
                                                       .FirstOrDefault(fod => fod.RecipeItemName == claimCompletedRecipe.RecipeName);
-
             }
             catch (Exception ex)
             {
@@ -65,9 +61,6 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.DatabaseErrors;
                 return claimCompletedRecipeResult;
             }
-
-
-
 
             if (recipe == null)
             {
@@ -81,7 +74,6 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 _logger.LogError("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => No pending recipe found ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;
                 return claimCompletedRecipeResult;
-
             }
             else if (!player.InventoryItems.Any(a => a.ItemType == claimCompletedRecipe.RecipeName && a.ItemCount > 0))
             {
@@ -90,12 +82,10 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 return claimCompletedRecipeResult;
             }
 
-
             _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName}  => Found inventory item, found pending recipe f  ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
 
             InventoryItem recipeItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == recipe.RecipeItemName);
             PendingRecipe pendingRecipe = player.PendingRecipes.FirstOrDefault(fod => fod.RecipeId == recipe.Id);
-
 
             InventoryItem builtItem = null;
 
@@ -108,14 +98,12 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                     ItemName = recipe.ResultItemPrettyName,
                     PlayerId = player.Id,
                     InternalInventoryItemType = recipe.InternalInventoryItemType,
-                    UpgradeVer =100
+                    UpgradeVer = 100
                 };
                 _applicationDbContext.InventoryItems.Add(builtItem);
-
             }
             else
             {
-               
                 builtItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == recipe.ResultItemName);
 
                 if (builtItem == null)
@@ -137,16 +125,14 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                     _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item exists incrementing counter    ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                     builtItem.ItemCount++;
                     _applicationDbContext.Entry(builtItem).State = EntityState.Modified;
-
                 }
             }
-
 
             _applicationDbContext.Entry(pendingRecipe).State = EntityState.Deleted;
             recipeItem.ItemCount--;
             _applicationDbContext.Entry(recipeItem).State = EntityState.Modified;
 
-            try 
+            try
             {
                 _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Updating database   ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                 _applicationDbContext.SaveChanges();
@@ -161,9 +147,7 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 return claimCompletedRecipeResult;
             }
 
-
             return claimCompletedRecipeResult;
         }
-
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Admin.CheckOnline;
 
 namespace WFClassic.Web.Logic.Credits.Get
 {
@@ -25,7 +23,7 @@ namespace WFClassic.Web.Logic.Credits.Get
 
             if (!validationResults.IsValid)
             {
-                _logger.LogError("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", getCredits.AccountId, getCredits.Nonce, string.Join(";", validationResults.Errors.Select(s=> $"{s.ErrorCode} {s.ErrorMessage}")));
+                _logger.LogError("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", getCredits.AccountId, getCredits.Nonce, string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
                 result.GetCreditsResultStatus = GetCreditsResultStatus.ValidationErrors;
                 return result;
             }
@@ -34,13 +32,12 @@ namespace WFClassic.Web.Logic.Credits.Get
             try
             {
                 _logger.LogInformation("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => Querying for bank accounts", getCredits.AccountId, getCredits.Nonce);
-                bankAccounts = _applicationDbContext.BankAccounts.Include(i=> i.Player).Where(w => w.Player.ApplicationUserId == getCredits.AccountId).ToList();
+                bankAccounts = _applicationDbContext.BankAccounts.Include(i => i.Player).Where(w => w.Player.ApplicationUserId == getCredits.AccountId).ToList();
                 _logger.LogInformation("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => Query completed", getCredits.AccountId, getCredits.Nonce);
-
             }
             catch (Exception ex)
             {
-                _logger.LogError("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => Exception while querying for bank accounts {Ex}",getCredits.AccountId, getCredits.Nonce,ex);
+                _logger.LogError("GetCreditsHandler => accountId {AccountID} nonce {Nonce} => Exception while querying for bank accounts {Ex}", getCredits.AccountId, getCredits.Nonce, ex);
                 result.GetCreditsResultStatus = GetCreditsResultStatus.Failure;
                 return result;
             }
@@ -49,7 +46,6 @@ namespace WFClassic.Web.Logic.Credits.Get
 
             var regularCredits = bankAccounts.FirstOrDefault(fod => fod.BankAccountType == Data.Enums.BankAccountType.StandardCredits)?.CurrentBalance;
             var premiumCredits = bankAccounts.FirstOrDefault(fod => fod.BankAccountType == Data.Enums.BankAccountType.Platinum)?.CurrentBalance;
-
 
             result.GetCreditsResultDetails = new GetCreditsResultDetails()
             {

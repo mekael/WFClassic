@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Inventory.Attach;
@@ -16,12 +14,13 @@ namespace WFClassic.Web.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
-        UpdateInventoryHandler _updateInventoryHandler;
-        GiveStartingGearHandler _giveStartingGearHandler;
-        GetInventoryHandler _getInventoryHandler;
-        AttachModsHandler _attachModsHandler;
-        UpgradeArtifactHandler _upgradeArtifactHandler;
-        UpdateLoadoutHandler _updateLoadoutHandler;
+        private UpdateInventoryHandler _updateInventoryHandler;
+        private GiveStartingGearHandler _giveStartingGearHandler;
+        private GetInventoryHandler _getInventoryHandler;
+        private AttachModsHandler _attachModsHandler;
+        private UpgradeArtifactHandler _upgradeArtifactHandler;
+        private UpdateLoadoutHandler _updateLoadoutHandler;
+
         public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler,
             UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler, UpgradeArtifactHandler upgradeArtifactHandler,
             UpdateLoadoutHandler updateLoadoutHandler)
@@ -46,13 +45,11 @@ namespace WFClassic.Web.Controllers
             return new JsonResult("{cats}");
         }
 
-
         [HttpPost]
         [Route("/api/saveLoadout.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult SaveCurrentLoadout([FromQuery] UpdateLoadout updateLoadout)
         {
-
             updateLoadout.LoadoutState = Utils.GetRequestObjectAsString(this.HttpContext);
             var result = _updateLoadoutHandler.Handle(updateLoadout);
             if (result.UpdateLoadoutResultStatus == UpdateLoadoutResultStatus.Success)
@@ -68,7 +65,6 @@ namespace WFClassic.Web.Controllers
                 return StatusCode(500);
             }
             return StatusCode(500);
-            
         }
 
         [HttpPost]
@@ -85,11 +81,8 @@ namespace WFClassic.Web.Controllers
 
             var result = _updateInventoryHandler.Handle(updateInventory);
 
-
             return new JsonResult("{cats}");
         }
-
-
 
         [HttpGet]
         [Route("/api/inventory.php")]
@@ -122,7 +115,6 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Artifacts(Guid accountId, long nonce, long steamId)
         {
-
             UpgradeArtifact upgradeArtifact = new UpgradeArtifact()
             {
                 AccountId = accountId,
@@ -144,9 +136,6 @@ namespace WFClassic.Web.Controllers
             {
                 return StatusCode(500);
             }
-
-
-
 
             return StatusCode(500);
         }
@@ -181,15 +170,11 @@ namespace WFClassic.Web.Controllers
             return new JsonResult("");
         }
 
-
-
         [HttpGet]
         [Route("/api/giveStartingGear.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult GiveStartingGear([FromQuery] GiveStartingGear giveStartingGear)
         {
-
-
             var result = _giveStartingGearHandler.Handle(giveStartingGear);
 
             if (result.Status == GiveStartingGearResultStatus.Success)
@@ -207,14 +192,5 @@ namespace WFClassic.Web.Controllers
 
             return StatusCode(500);
         }
-
-
     }
-
 }
-
-
-
-
-
-

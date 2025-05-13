@@ -1,20 +1,9 @@
-﻿using Microsoft.CodeAnalysis.Elfie.Model.Tree;
-using Newtonsoft.Json;
-using Org.BouncyCastle.Bcpg.Sig;
-using System.Drawing;
-using System.Text.Json.Serialization;
-using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Shared.Models;
-
-namespace WFClassic.Web.Logic.Bonus.Rewards
+﻿namespace WFClassic.Web.Logic.Bonus.Rewards
 {
     public class GetLoginRewardsResult
     {
-
         public GetLoginRewardsResultStatus GetLoginRewardsResultStatus { get; set; }
         public GetLoginRewardsResultReturnJson GetLoginRewardsResultReturnJson { get; set; }
-
-
     }
 
     public enum GetLoginRewardsResultStatus
@@ -42,10 +31,4 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
         public int Tier { get; set; }
         public string Rarity { get; set; }
     }
-
-
-
 }
-
-
-

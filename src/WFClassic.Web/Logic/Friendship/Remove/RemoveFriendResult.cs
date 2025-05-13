@@ -1,17 +1,9 @@
-﻿using System.Text.Json.Serialization;
-using WFClassic.Web.Logic.Shared.Models;
-
-namespace WFClassic.Web.Logic.Friendship.Remove
+﻿namespace WFClassic.Web.Logic.Friendship.Remove
 {
     public class RemoveFriendResult
     {
         public RemoveFriendResultStatus RemoveFriendResultStatus { get; set; }
- 
-
     }
-
-     
-
 
     public enum RemoveFriendResultStatus
     {

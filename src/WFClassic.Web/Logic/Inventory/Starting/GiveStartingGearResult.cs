@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json;
-
-namespace WFClassic.Web.Logic.Inventory.Starting
+﻿namespace WFClassic.Web.Logic.Inventory.Starting
 {
     public class GiveStartingGearResult
     {
-    public GiveStartingGearResultStatus Status { get; set; }
+        public GiveStartingGearResultStatus Status { get; set; }
     }
 
     public enum GiveStartingGearResultStatus
@@ -13,6 +11,5 @@ namespace WFClassic.Web.Logic.Inventory.Starting
         AlreadyReceivedStartingGear,
         DatabaseErrors,
         Success
-
     }
 }

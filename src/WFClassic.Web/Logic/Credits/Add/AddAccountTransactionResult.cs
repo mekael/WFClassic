@@ -1,6 +1,4 @@
-﻿using WFClassic.Web.Data.Enums;
-
-namespace WFClassic.Web.Logic.Credits.Add
+﻿namespace WFClassic.Web.Logic.Credits.Add
 {
     public class AddAccountTransactionResult
     {

@@ -2,8 +2,9 @@
 {
     public class AttachModsResult
     {
-      public AttachModsResultStatus AttachModsResultStatus { get; set; }
+        public AttachModsResultStatus AttachModsResultStatus { get; set; }
     }
+
     public enum AttachModsResultStatus
     {
         ValidationErrors,
@@ -11,5 +12,4 @@
         MappingFailure,
         Success
     }
-
 }

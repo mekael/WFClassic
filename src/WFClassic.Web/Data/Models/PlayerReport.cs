@@ -5,8 +5,9 @@
         public Guid MissionReportId { get; set; }
         public MissionReport MissionReport { get; set; }
 
-        // This should be a nullable guid, but we can't be sure given the fact that 
+        // This should be a nullable guid, but we can't be sure given the fact that
         public string AssociatedAccountId { get; set; }
+
         public int Credits { get; set; }
         public int CredtBonus { get; set; }
         public int Xp { get; set; }
@@ -21,5 +22,3 @@
         public string Upgrades { get; set; }
     }
 }
-
-

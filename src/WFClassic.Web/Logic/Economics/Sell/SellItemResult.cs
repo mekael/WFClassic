@@ -5,7 +5,6 @@
         public SellItemResultStatus SellItemResultStatus { get; set; }
     }
 
-
     public enum SellItemResultStatus
     {
         ValidationErrors,

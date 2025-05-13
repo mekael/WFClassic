@@ -1,15 +1,11 @@
-﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Admin.CheckOnline;
-using WFClassic.Web.Logic.Credits.Get;
 
 namespace WFClassic.Web.Logic.Inventory.Starting
 {
     public class GiveStartingGearHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<GiveStartingGearHandler> _logger;
 
@@ -34,19 +30,16 @@ namespace WFClassic.Web.Logic.Inventory.Starting
 
             Player player = null;
 
-
             try
             {
                 _logger.LogInformation("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", giveStartingGear.AccountId, giveStartingGear.Nonce);
                 player = _applicationDbContext.Players.Include(i => i.InventoryItems).FirstOrDefault(w => w.ApplicationUserId == giveStartingGear.AccountId);
                 _logger.LogInformation("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", giveStartingGear.AccountId, giveStartingGear.Nonce);
-
-            }   
+            }
             catch (Exception ex)
             {
                 _logger.LogError("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => Exception while querying for player object : {Ex}", giveStartingGear.AccountId, giveStartingGear.Nonce, ex);
             }
-
 
             if (player.ReceivedStartingGear || player.InventoryItems.Any(a => a.ItemType.Contains("Powersuits")))
             {
@@ -67,7 +60,7 @@ namespace WFClassic.Web.Logic.Inventory.Starting
 
             player.InventoryItems.AddRange(StartingGearDefinitions.GetStartingCards(warframeName));
             player.InventoryItems.AddRange(StartingGearDefinitions.GetStartingWeapons());
-            
+
             player.ReceivedStartingGear = true;
 
             try
@@ -85,6 +78,5 @@ namespace WFClassic.Web.Logic.Inventory.Starting
             }
             return result;
         }
-
     }
 }

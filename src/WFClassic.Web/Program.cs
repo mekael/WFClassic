@@ -28,11 +28,6 @@ using WFClassic.Web.Logic.Taunt;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
- 
- 
- 
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +45,6 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
-    
 });
 builder.Services.AddRequestDecompression();
 
@@ -82,10 +76,6 @@ builder.Services.AddTransient<UpdateLoadoutHandler>();
 builder.Services.AddTransient<GetLoginRewardsHandler>();
 builder.Services.AddTransient<RushRecipeHandler>();
 builder.Services.AddTransient<SellItemHandler>();
-
-
-
-
 
 builder.Services.AddControllersWithViews();
 

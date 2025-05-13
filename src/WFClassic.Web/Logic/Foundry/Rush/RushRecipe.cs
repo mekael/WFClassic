@@ -15,7 +15,5 @@ namespace WFClassic.Web.Logic.Foundry.Rush
 
         [JsonPropertyName("recipeName")]
         public string RecipeName { get; set; }
- 
     }
 }
- 

@@ -1,15 +1,12 @@
-﻿
-
-using WFClassic.Web.Data.Enums;
+﻿using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Get
 {
     public static class GetInventoryMapper
     {
-        static List<InternalInventoryItemType> xpItems = new List<InternalInventoryItemType>() { InternalInventoryItemType.Sentinels,
+        private static List<InternalInventoryItemType> xpItems = new List<InternalInventoryItemType>() { InternalInventoryItemType.Sentinels,
                                                                                            InternalInventoryItemType.SentinelWeapons,
                                                                                            InternalInventoryItemType.Suits,
                                                                                            InternalInventoryItemType.LongGuns,
@@ -19,13 +16,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         public static GetInventoryResultDetails Map(Player player, List<InventoryItemAttachment> attachments)
         {
-
             List<GetInventoryResultJsonUpgradeItem> JsonUpgradeItems = new List<GetInventoryResultJsonUpgradeItem>();
-
 
             foreach (var upgrade in player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades))
             {
-
                 InventoryItemAttachment attachment = attachments.FirstOrDefault(w => w.AttachedInventoryItemId == upgrade.Id);
 
                 JsonUpgradeItems.Add(new GetInventoryResultJsonUpgradeItem()
@@ -33,11 +27,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     ItemId = new MongoId(upgrade.Id),
                     ItemType = upgrade.ItemType,
                     UpgradeFingerPrint = upgrade.UpgradeFingerprint,
-                    ParentId = attachment !=null ? new MongoId(attachment.ParentInventoryItemId) : null,
-                    Slot = attachment != null ? attachment.Slot: null
+                    ParentId = attachment != null ? new MongoId(attachment.ParentInventoryItemId) : null,
+                    Slot = attachment != null ? attachment.Slot : null
                 });
             }
-
 
             var whateve = player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades).Select(
                 s => new GetInventoryResultJsonUpgradeItem() { ItemId = new MongoId(s.Id), ItemType = s.ItemType, UpgradeFingerPrint = s.UpgradeFingerprint }
@@ -48,7 +41,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
             {
                 AdditionalPlayerXP = player.AdditionalPlayerXP,
                 CompletedAlerts = new List<string>(),
-                DeathMarks = new List<string>() {"Stalker" },
+                DeathMarks = new List<string>() { "Stalker" },
                 Founder = 2,
                 InvalidBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
                 MiscBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
@@ -81,26 +74,21 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node }).ToList(),
                 Upgrades = JsonUpgradeItems
             };
-
         }
 
-
-        static GetInventoryResultJsonInventoryBin GetBin(InventoryBinType inventoryBinType, List<InventoryBin> inventoryBins)
+        private static GetInventoryResultJsonInventoryBin GetBin(InventoryBinType inventoryBinType, List<InventoryBin> inventoryBins)
         {
             InventoryBin inventoryBin = inventoryBins.FirstOrDefault(fod => fod.InventoryBinType == inventoryBinType);
-            return inventoryBin == null ? new GetInventoryResultJsonInventoryBin() { Slots = 2 } : new GetInventoryResultJsonInventoryBin() { Extra = inventoryBin.Extra, Slots = inventoryBin.Slots };
+            return inventoryBin == null ? new GetInventoryResultJsonInventoryBin() { Slots = 2, Extra = 2 } : new GetInventoryResultJsonInventoryBin() { Extra = inventoryBin.Extra, Slots = inventoryBin.Slots };
         }
 
-
-        static List<GetInventoryResultJsonTypeCount> GetJsonTypeCount(InternalInventoryItemType internalInventoryItemType, List<InventoryItem> inventoryItems)
+        private static List<GetInventoryResultJsonTypeCount> GetJsonTypeCount(InternalInventoryItemType internalInventoryItemType, List<InventoryItem> inventoryItems)
         {
             return inventoryItems.Where(w => w.InternalInventoryItemType == internalInventoryItemType).Select(s => new GetInventoryResultJsonTypeCount() { ItemType = s.ItemType, ItemCount = s.ItemCount }).ToList();
-
         }
 
-            static List<GetInventoryResultJsonEquipmentItem> GetEquipmentByType(InternalInventoryItemType internalInventoryItemType, List<InventoryItem> inventoryItems)
+        private static List<GetInventoryResultJsonEquipmentItem> GetEquipmentByType(InternalInventoryItemType internalInventoryItemType, List<InventoryItem> inventoryItems)
         {
-
             return inventoryItems.Where(w => w.InternalInventoryItemType == internalInventoryItemType).ToList()
                 .Select(s => new GetInventoryResultJsonEquipmentItem()
                 {
@@ -113,6 +101,5 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     XP = s.XP
                 }).ToList();
         }
-
     }
 }

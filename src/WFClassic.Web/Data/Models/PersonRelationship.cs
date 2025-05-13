@@ -10,6 +10,5 @@ namespace WFClassic.Web.Data.Models
         public ApplicationUser Friend { get; set; }
 
         public PersonRelationshipType PersonRelationshipType { get; set; }
-
     }
 }

@@ -4,12 +4,12 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
 {
     public class WarframeLoginResult
     {
-        public WarframeLoginResultStatus WarframeLoginResultStatus { get; set; }    
-        public WarframeLoginResultDetails WarframeLoginResultDetails { get; set; } = new WarframeLoginResultDetails();  
-
+        public WarframeLoginResultStatus WarframeLoginResultStatus { get; set; }
+        public WarframeLoginResultDetails WarframeLoginResultDetails { get; set; } = new WarframeLoginResultDetails();
     }
 
-    public enum WarframeLoginResultStatus {
+    public enum WarframeLoginResultStatus
+    {
         BadRequest,
         UserNotFound,
         InvalidCredentials,
@@ -21,6 +21,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
     {
         [JsonProperty("id")]
         public string id { get; set; }
+
         [JsonProperty("DisplayName")]
         public string DisplayName { get; set; }
 
@@ -29,7 +30,6 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
 
         [JsonProperty("BuildLabel")]
         public string BuildLabel { get; set; } = "2013.03.25.11.45/";
-
 
         [JsonProperty("NatHash")]
         public string NatHash { get; set; }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -7,13 +6,10 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
 {
     public class WarframeLoginHandler
     {
-
         private readonly ILogger<WarframeLoginHandler> _logger;
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-
-
 
         public WarframeLoginHandler(ILogger<WarframeLoginHandler> logger, ApplicationDbContext applicationDbContext,
             SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
@@ -24,10 +20,8 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             this._userManager = userManager;
         }
 
-
         public async Task<WarframeLoginResult> Handle(WarframeLoginRequest warframeLoginRequest)
         {
-
             WarframeLoginResult warframeLoginResult = new WarframeLoginResult();
 
             var validationResults = new WarframeLoginRequestValidator().Validate(warframeLoginRequest);
@@ -39,16 +33,13 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 _logger.LogError("WarframeLoginHandler => email {email} =>  Invalid credentials", warframeLoginRequest.email);
                 warframeLoginResult.WarframeLoginResultStatus = WarframeLoginResultStatus.BadRequest;
                 return warframeLoginResult;
-
             }
-
 
             _logger.LogInformation("WarframeLoginHandler => email {email} =>  Searching for user", warframeLoginRequest.email);
 
             string upperPassword = warframeLoginRequest.password.ToUpper();
 
             var user = await _userManager.FindByEmailAsync(warframeLoginRequest.email);
-
 
             if (user == null)
             {
@@ -62,7 +53,6 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
 
             var result = await _signInManager.PasswordSignInAsync(warframeLoginRequest.email, upperPassword, false, false);
 
-
             if (!result.Succeeded)
             {
                 _logger.LogWarning("WarframeLoginHandler => email {email} =>  Invalid credentials ", warframeLoginRequest.email);
@@ -70,7 +60,6 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 return warframeLoginResult;
             }
             _logger.LogInformation("WarframeLoginHandler => email {email} =>  Successfully signed in", warframeLoginRequest.email);
-
 
             Random rnd = new Random();
 
@@ -110,7 +99,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             if (!identityResult.Succeeded)
             {
                 warframeLoginResult.WarframeLoginResultStatus = WarframeLoginResultStatus.Failure;
-                _logger.LogError("WarframeLoginHandler => email {email} =>  Error while updating user {Errors}", warframeLoginRequest.email, identityResult.Errors.Select(s=>s.Description));
+                _logger.LogError("WarframeLoginHandler => email {email} =>  Error while updating user {Errors}", warframeLoginRequest.email, identityResult.Errors.Select(s => s.Description));
             }
             else
             {
@@ -119,21 +108,20 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 warframeLoginResult.WarframeLoginResultDetails = new WarframeLoginResultDetails()
                 {
                     id = user.Id.ToString(),
-                  // BuildLabel = "2013.05.03.18.06/", // 7.10
-                      BuildLabel = "2013.04.26.17.24/", //7.9
-                 //   BuildLabel = "2013.03.25.11.45/", //7.3
+                    // BuildLabel = "2013.05.03.18.06/", // 7.10
+                    BuildLabel = "2013.04.26.17.24/", //7.9
+                                                      //   BuildLabel = "2013.03.25.11.45/", //7.3
                     DisplayName = user.DisplayName,
                     NatHash = "0098089",
                     Nonce = user.CurrentNonce,
                     SteamId = user.SteamId
                 };
-
             }
 
             return warframeLoginResult;
         }
 
-        int DetermineLoginStreak(DateTimeOffset lastLoginTimestamp, int currentStreak)
+        private int DetermineLoginStreak(DateTimeOffset lastLoginTimestamp, int currentStreak)
         {
             if (lastLoginTimestamp.Date == DateTime.Today)
             {
@@ -147,7 +135,6 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             {
                 currentStreak = 0;
             }
-
 
             return currentStreak;
         }

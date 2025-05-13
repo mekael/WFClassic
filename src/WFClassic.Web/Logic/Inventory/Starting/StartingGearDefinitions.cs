@@ -34,7 +34,7 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                                                 };
             }
 
-            return new List<InventoryItem>() ;
+            return new List<InventoryItem>();
         }
 
         public static List<InventoryItem> GetStartingWeapons()

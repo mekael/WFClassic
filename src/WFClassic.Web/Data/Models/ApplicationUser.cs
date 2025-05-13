@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis.Elfie.Extensions;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace WFClassic.Web.Data.Models
 {

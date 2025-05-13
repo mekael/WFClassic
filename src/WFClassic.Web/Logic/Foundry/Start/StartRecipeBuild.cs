@@ -20,4 +20,3 @@ namespace WFClassic.Web.Logic.Foundry.Start
         public long UsePremium { get; set; }
     }
 }
- 

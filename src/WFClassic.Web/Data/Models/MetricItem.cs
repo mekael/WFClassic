@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using WFClassic.Web.Data.Enums;
+﻿using WFClassic.Web.Data.Enums;
 
 namespace WFClassic.Web.Data.Models
 {
-    public class MetricItem :EntityBase
+    public class MetricItem : EntityBase
     {
         public Guid ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }

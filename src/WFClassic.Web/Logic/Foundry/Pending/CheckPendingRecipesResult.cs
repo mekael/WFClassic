@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Foundry.Pending
 {
@@ -7,8 +6,6 @@ namespace WFClassic.Web.Logic.Foundry.Pending
     {
         public CheckPendingRecipesResultStatus CheckPendingRecipesResultStatus { get; set; }
         public JsonCheckPendingRecipesResult JsonCheckPendingRecipesResult { get; set; }
-
-
     }
 
     public class JsonCheckPendingRecipesResult

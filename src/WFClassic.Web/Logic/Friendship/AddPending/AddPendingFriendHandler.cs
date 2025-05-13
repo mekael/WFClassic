@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using WFClassic.Web.Data;
-using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Inventory.Attach;
-using WFClassic.Web.Logic.Inventory.Get;
+﻿using WFClassic.Web.Data;
 
 namespace WFClassic.Web.Logic.Friendship.AddPending
 {
     public class AddPendingFriendHandler
     {
-
         private ApplicationDbContext _applicationDbContext;
         private ILogger<AddPendingFriendHandler> _logger;
 
@@ -31,7 +26,7 @@ namespace WFClassic.Web.Logic.Friendship.AddPending
                 return result;
             }
 
-            // check to see if the other user exists. 
+            // check to see if the other user exists.
 
             Guid playerId = Guid.Empty;
             bool requestAlreadyServiced = false;
@@ -41,8 +36,8 @@ namespace WFClassic.Web.Logic.Friendship.AddPending
             {
                 _logger.LogInformation("AddPendingFriendHandler => accountId {AccountID} nonce {Nonce} => Querying for friend {FriendUsername}", addPendingFriend.AccountId, addPendingFriend.Nonce, addPendingFriend.Friend);
                 friendUserId = _applicationDbContext.Users.Where(w => w.DisplayName == addPendingFriend.Friend).Select(s => s.Id).FirstOrDefault();
-                requestAlreadyServiced = _applicationDbContext.FriendshipRequests.Any(w =>  ( (w.RequestorId == addPendingFriend.AccountId && w.FriendId == friendUserId)  ||
-                (w.FriendId == addPendingFriend.AccountId && w.RequestorId == friendUserId) ) &&  w.RequestAcceptedOrDeclinedOn.HasValue);
+                requestAlreadyServiced = _applicationDbContext.FriendshipRequests.Any(w => ((w.RequestorId == addPendingFriend.AccountId && w.FriendId == friendUserId) ||
+                (w.FriendId == addPendingFriend.AccountId && w.RequestorId == friendUserId)) && w.RequestAcceptedOrDeclinedOn.HasValue);
             }
             catch (Exception ex)
             {
@@ -50,7 +45,6 @@ namespace WFClassic.Web.Logic.Friendship.AddPending
                 result.AddPendingFriendResultStatus = AddPendingFriendResultStatus.DatabaseErrors;
                 return result;
             }
-
 
             _logger.LogInformation("AddPendingFriendHandler => accountId {AccountID} nonce {Nonce} => Query complete", addPendingFriend.AccountId, addPendingFriend.Nonce);
 
@@ -72,9 +66,8 @@ namespace WFClassic.Web.Logic.Friendship.AddPending
             Data.Models.FriendshipRequest friendshipRequest = new Data.Models.FriendshipRequest()
             {
                 RequestorId = addPendingFriend.AccountId,
-                FriendId = friendUserId 
+                FriendId = friendUserId
             };
-
 
             try
             {
@@ -90,7 +83,6 @@ namespace WFClassic.Web.Logic.Friendship.AddPending
             }
 
             return result;
-
         }
     }
 }

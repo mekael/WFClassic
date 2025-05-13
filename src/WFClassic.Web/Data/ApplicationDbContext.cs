@@ -10,7 +10,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-
     }
 
     public DbSet<LoginTrackingItem> LoginTrackingItems { get; set; }
@@ -29,14 +28,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<PersonRelationship> PersonRelationships { get; set; }
 
-
     public DbSet<PendingRecipe> PendingRecipes { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<RecipeItem> RecipeItems { get; set; }
     public DbSet<MissionReport> MissionReports { get; set; }
     public DbSet<PlayerReport> PlayerReports { get; set; }
     public DbSet<DailyRewardDefinition> DailyRewardDefinitions { get; set; }
-
-
-
 }

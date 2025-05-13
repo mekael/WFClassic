@@ -2,7 +2,7 @@
 
 namespace WFClassic.Web.Logic.Economics.Sell
 {
-    public class SellItemValidator : AbstractValidator<SellItem>   
+    public class SellItemValidator : AbstractValidator<SellItem>
     {
     }
 }

@@ -1,9 +1,8 @@
-﻿using WFClassic.Web.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
-using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data.Enums;
+using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Credits.Add;
-using System.Linq;
 
 namespace WFClassic.Web.Logic.Economics.Sell
 {
@@ -41,7 +40,6 @@ namespace WFClassic.Web.Logic.Economics.Sell
                                                     .Include(i => i.InventoryItems)
                                                     .FirstOrDefault(w => w.ApplicationUserId == sellItem.AccountId);
                 _logger.LogInformation("SellItemHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", sellItem.AccountId, sellItem.Nonce);
-
             }
             catch (Exception ex)
             {
@@ -49,9 +47,6 @@ namespace WFClassic.Web.Logic.Economics.Sell
                 result.SellItemResultStatus = SellItemResultStatus.DatabaseErrors;
                 return result;
             }
-
-
-
 
             List<InventoryItem> inventoryItemsToUpdate = new List<InventoryItem>();
             bool canBeUpdated = true;
@@ -84,13 +79,11 @@ namespace WFClassic.Web.Logic.Economics.Sell
                         .ToList()
                         ;
 
-
-
                 foreach (var itemToSell in itemsToSell)
                 {
                     InventoryItem inventoryItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == itemToSell.String);
 
-                    if(inventoryItem == null)
+                    if (inventoryItem == null)
                     {
                         _logger.LogError("SellItemHandler => accountId {AccountID} nonce {Nonce} => unable to find item {itemId} ", sellItem.AccountId, sellItem.Nonce, itemToSell.String);
                         canBeUpdated = false;
@@ -144,8 +137,7 @@ namespace WFClassic.Web.Logic.Economics.Sell
                 return result;
             }
 
-
-           var addAccountTransactionResult =   _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = sellItem.AccountId, Amount = sellItem.IncomingSaleJson.SellPrice, BankAccountTransactionType = BankAccountTransactionType.Credit, BankAccountType = BankAccountType.StandardCredits, MemoCode = "ItemSale" });
+            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = sellItem.AccountId, Amount = sellItem.IncomingSaleJson.SellPrice, BankAccountTransactionType = BankAccountTransactionType.Credit, BankAccountType = BankAccountType.StandardCredits, MemoCode = "ItemSale" });
 
             if (addAccountTransactionResult.AddAccountTransactionResultStatus != AddAccountTransactionResultStatus.Success)
             {
@@ -161,7 +153,6 @@ namespace WFClassic.Web.Logic.Economics.Sell
                 _applicationDbContext.SaveChanges();
                 _logger.LogInformation("SellItemHandler => accountId {AccountID} nonce {Nonce} => Inventory Updated", sellItem.AccountId, sellItem.Nonce);
                 result.SellItemResultStatus = SellItemResultStatus.Success;
-
             }
             catch (Exception ex)
             {
@@ -171,7 +162,5 @@ namespace WFClassic.Web.Logic.Economics.Sell
             }
             return result;
         }
-
- 
     }
 }

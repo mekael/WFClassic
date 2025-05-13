@@ -15,7 +15,5 @@ namespace WFClassic.Web.Logic.Foundry.Claim
 
         [JsonPropertyName("recipeName")]
         public string RecipeName { get; set; }
- 
     }
 }
- 

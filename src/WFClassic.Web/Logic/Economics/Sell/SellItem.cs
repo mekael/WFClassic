@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace WFClassic.Web.Logic.Economics.Sell
+﻿namespace WFClassic.Web.Logic.Economics.Sell
 {
     public class SellItem
     {
@@ -9,8 +7,6 @@ namespace WFClassic.Web.Logic.Economics.Sell
 
         public IncomingSaleJson IncomingSaleJson { get; set; }
     }
-
-
 
     public class IncomingSaleJson
     {
@@ -50,8 +46,4 @@ namespace WFClassic.Web.Logic.Economics.Sell
         public Guid String { get; set; }
         public int Count { get; set; }
     }
-
-
 }
-
-

@@ -28,19 +28,15 @@ namespace WFClassic.Web.Logic.Credits.Add
                 return result;
             }
 
- 
-
             Player player = null;
 
-
-            try 
+            try
             {
                 _logger.LogInformation("AddAccountTransactionHandler => accountId {AccountID}  => Querying for player with bank accounts", addAccountTransaction.AccountId);
-                player = _applicationDbContext.Players.Include(i=> i.BankAccounts)
-                                                          .ThenInclude(ti=> ti.BankAccountTransactions)
-                                                          .FirstOrDefault(fod=> fod.ApplicationUserId == addAccountTransaction.AccountId);
+                player = _applicationDbContext.Players.Include(i => i.BankAccounts)
+                                                          .ThenInclude(ti => ti.BankAccountTransactions)
+                                                          .FirstOrDefault(fod => fod.ApplicationUserId == addAccountTransaction.AccountId);
                 _logger.LogInformation("AddAccountTransactionHandler => accountId {AccountID}  => Querying for player with bank accounts complete ", addAccountTransaction.AccountId);
-
             }
             catch (Exception ex)
             {
@@ -56,13 +52,13 @@ namespace WFClassic.Web.Logic.Credits.Add
                 _logger.LogInformation("AddAccountTransactionHandler => accountId {AccountID}  => Account not found for credit type, adding new bank account", addAccountTransaction.AccountId);
                 bankAccount = new BankAccount()
 
-                { 
-                PlayerId = player.Id,
-                BankAccountType = addAccountTransaction.BankAccountType,
-                BankAccountTransactions = new List<BankAccountTransaction>()
-                }; 
-                
-                try 
+                {
+                    PlayerId = player.Id,
+                    BankAccountType = addAccountTransaction.BankAccountType,
+                    BankAccountTransactions = new List<BankAccountTransaction>()
+                };
+
+                try
                 {
                     _logger.LogInformation("AddAccountTransactionHandler => accountId {AccountID}  => Creating new account", addAccountTransaction.AccountId);
                     _applicationDbContext.BankAccounts.Add(bankAccount);
@@ -77,33 +73,29 @@ namespace WFClassic.Web.Logic.Credits.Add
                 }
             }
 
-
             bankAccount.CurrentBalance += addAccountTransaction.Amount;
-            bankAccount.BankAccountTransactions.Add(  
+            bankAccount.BankAccountTransactions.Add(
                 new BankAccountTransaction()
                 {
-                    Amount= addAccountTransaction.Amount, 
-                    MemoCode= addAccountTransaction.MemoCode,
+                    Amount = addAccountTransaction.Amount,
+                    MemoCode = addAccountTransaction.MemoCode,
                     BankAccountTransactionType = addAccountTransaction.BankAccountTransactionType
                 }
                 );
 
-
-            try 
+            try
             {
                 _logger.LogInformation("AddAccountTransactionHandler => accountId {AccountID}  => Saving new transaction", addAccountTransaction.AccountId);
                 _applicationDbContext.Entry(bankAccount).State = EntityState.Modified;
                 _applicationDbContext.SaveChanges();
                 result.AddAccountTransactionResultStatus = AddAccountTransactionResultStatus.Success;
                 _logger.LogInformation("AddAccountTransactionHandler => accountId {AccountID}  => New transaction saved", addAccountTransaction.AccountId);
-
             }
             catch (Exception ex)
             {
                 _logger.LogError("AddAccountTransactionHandler => accountId {AccountID}  => Exception while saving new transaction {Ex}", addAccountTransaction.AccountId, ex);
                 result.AddAccountTransactionResultStatus = AddAccountTransactionResultStatus.Failure;
             }
-
 
             return result;
         }

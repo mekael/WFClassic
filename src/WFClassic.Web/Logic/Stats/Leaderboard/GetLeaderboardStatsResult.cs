@@ -4,7 +4,7 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
 {
     public class GetLeaderboardStatsResult
     {
-        public GetLeaderboardStatsResultJson GetLeaderboardStatsResultJson  { get; set; }
+        public GetLeaderboardStatsResultJson GetLeaderboardStatsResultJson { get; set; }
         public GetLeaderboardStatsResultStatus GetLeaderboardStatsResultStatus { get; set; }
     }
 
@@ -33,5 +33,3 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
         public int rank { get; set; }
     }
 }
-
-

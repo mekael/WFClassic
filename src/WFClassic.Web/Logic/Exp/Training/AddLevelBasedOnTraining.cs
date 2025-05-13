@@ -14,5 +14,3 @@ namespace WFClassic.Web.Logic.Exp.Training
         public int NumLevelsGained { get; set; }
     }
 }
-
-

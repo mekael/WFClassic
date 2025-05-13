@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Shared;
@@ -12,9 +11,10 @@ namespace WFClassic.Web.Controllers
     [ApiController]
     public class StatsController : ControllerBase
     {
-        UploadStatsHandler _uploadStatsHandler;
-        GetLeaderboardStatsHandler _getLeaderboardStatsHandler;
-        GetProfileStatsHandler _getProfileStatsHandler;
+        private UploadStatsHandler _uploadStatsHandler;
+        private GetLeaderboardStatsHandler _getLeaderboardStatsHandler;
+        private GetProfileStatsHandler _getProfileStatsHandler;
+
         public StatsController(UploadStatsHandler uploadStatsHandler, GetLeaderboardStatsHandler getLeaderboardStatsHandler, GetProfileStatsHandler getProfileStatsHandler)
         {
             _uploadStatsHandler = uploadStatsHandler;
@@ -27,7 +27,6 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult leaderboard([FromQuery] GetLeaderboardStats getLeaderboardStats)
         {
-
             var result = _getLeaderboardStatsHandler.Handle(getLeaderboardStats);
 
             if (result.GetLeaderboardStatsResultStatus == GetLeaderboardStatsResultStatus.Success)
@@ -52,15 +51,12 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Upload([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-
-
             var uploadStats = new UploadStats()
             {
                 AccountId = accountId,
                 Nonce = nonce,
                 StatsObject = Utils.GetRequestObject<StatsObject>(this.HttpContext)
             };
-
 
             var result = _uploadStatsHandler.Handle(uploadStats);
             if (result.UploadStatsResultStatus == UploadStatsResultStatus.Success)
@@ -84,7 +80,6 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult ProfileStats([FromQuery] GetProfileStats getProfileStats)
         {
-
             var result = _getProfileStatsHandler.Handle(getProfileStats);
 
             if (result.GetProfileStatsResultsStatus == GetProfileStatsResultsStatus.Success)

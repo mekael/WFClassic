@@ -8,6 +8,5 @@
         public DateTimeOffset? LogoutTimestamp { get; set; }
         public string IPAddress { get; set; }
         public long Nonce { get; set; }
-
     }
 }

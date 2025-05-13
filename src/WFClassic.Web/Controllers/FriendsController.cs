@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WFClassic.Web.Logic.Friendship.Add;
 using WFClassic.Web.Logic.Friendship.AddPending;
@@ -13,10 +11,11 @@ namespace WFClassic.Web.Controllers
     [ApiController]
     public class FriendsController : ControllerBase
     {
-        AddPendingFriendHandler _addPendingFriendHandler;
-        GetFriendsRequestHandler _getFriendsRequestHandler;
-        AcceptFriendRequestHandler _acceptFriendRequestHandler;
-        RemoveFriendRequestHandler _removeFriendRequestHandler;
+        private AddPendingFriendHandler _addPendingFriendHandler;
+        private GetFriendsRequestHandler _getFriendsRequestHandler;
+        private AcceptFriendRequestHandler _acceptFriendRequestHandler;
+        private RemoveFriendRequestHandler _removeFriendRequestHandler;
+
         public FriendsController(AddPendingFriendHandler addPendingFriendHandler, GetFriendsRequestHandler getFriendsRequestHandler,
             AcceptFriendRequestHandler acceptFriendRequestHandler, RemoveFriendRequestHandler removeFriendRequestHandler)
         {
@@ -86,7 +85,7 @@ namespace WFClassic.Web.Controllers
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult RemoveFriend([FromQuery] RemoveFriendRequest removeFriendRequest)
         {
-           var result = _removeFriendRequestHandler.Handle(removeFriendRequest);
+            var result = _removeFriendRequestHandler.Handle(removeFriendRequest);
             if (result.RemoveFriendResultStatus == RemoveFriendResultStatus.Success)
             {
                 return Ok();
@@ -103,13 +102,11 @@ namespace WFClassic.Web.Controllers
             return StatusCode(500);
         }
 
-
         [HttpGet]
         [Route("/api/getFriends.php")]
         [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult GetFriends([FromQuery] GetFriendsRequest getFriendsRequest)
         {
-
             var result = _getFriendsRequestHandler.Handle(getFriendsRequest);
 
             if (result.GetFriendsResultStatus == GetFriendsResultStatus.DatabaseErrors ||
@@ -128,8 +125,6 @@ namespace WFClassic.Web.Controllers
             }
 
             return StatusCode(500);
-
         }
-
     }
 }

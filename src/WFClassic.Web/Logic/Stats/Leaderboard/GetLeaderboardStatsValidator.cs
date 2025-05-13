@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using WFClassic.Web.Logic.Stats.Upload;
 
 namespace WFClassic.Web.Logic.Stats.Leaderboard
 {

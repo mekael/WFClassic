@@ -1,24 +1,18 @@
 ﻿using Newtonsoft.Json;
-using Org.BouncyCastle.Bcpg.Sig;
 using System.Text.Json.Serialization;
-using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Get
 {
     public class GetInventoryResult
     {
-
         public GetInventoryResultStatus GetInventoryResultStatus { get; set; }
 
-        public GetInventoryResultDetails GetInventoryResultDetails { get; set; }    
-
+        public GetInventoryResultDetails GetInventoryResultDetails { get; set; }
     }
 
     public class GetInventoryResultDetails
     {
-       
-
         [JsonPropertyName("SubscribedToEmails")]
         public int SubscribedToEmails { get; set; }
 
@@ -102,12 +96,12 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonPropertyName("MiscItems")]
         public List<GetInventoryResultJsonTypeCount> MiscItems { get; set; }
+
         [JsonPropertyName("Recipes")]
         public List<GetInventoryResultJsonTypeCount> Recipes { get; set; }
 
         [JsonPropertyName("Components")]
         public List<GetInventoryResultJsonTypeCount> Components { get; set; }
-
 
         [JsonPropertyName("XPInfo")]
         public List<GetInventoryResultJsonXpInfoItem> XPInfo { get; set; }
@@ -128,7 +122,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public long XP { get; set; }
     }
 
-
     public class GetInventoryResultJsonUpgradeItem
     {
         [JsonPropertyName("ItemType")]
@@ -145,7 +138,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonPropertyName("UpgradeFingerprint")]
         public string UpgradeFingerPrint { get; set; }
-
     }
 
     public class GetInventoryResultJsonTypeCount
@@ -163,7 +155,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public string node { get; set; }
     }
 
-
     public class GetInventoryResultJsonMission
     {
         [JsonPropertyName("Tag")]
@@ -174,17 +165,16 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonPropertyName("BestRating")]
         public float BestRating { get; set; }
-
     }
 
     public class GetInventoryResultJsonInventoryBin
     {
         [JsonProperty("Slots")]
         public int Slots { get; set; }
+
         [JsonProperty("Extra")]
         public int Extra { get; set; }
     }
-
 
     public class GetInventoryResultJsonEquipmentItem
     {
@@ -208,8 +198,8 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonPropertyName("ExtraRemaining")]
         public int ExtraRemaining { get; set; }
-        
     }
+
     public enum GetInventoryResultStatus
     {
         ValidationErrors,
@@ -217,5 +207,4 @@ namespace WFClassic.Web.Logic.Inventory.Get
         MappingFailure,
         Success
     }
-
 }

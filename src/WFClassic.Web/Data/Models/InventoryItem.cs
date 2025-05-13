@@ -1,5 +1,4 @@
-﻿using System.Security.Policy;
-using WFClassic.Web.Data.Enums;
+﻿using WFClassic.Web.Data.Enums;
 
 namespace WFClassic.Web.Data.Models
 {
@@ -9,7 +8,7 @@ namespace WFClassic.Web.Data.Models
         public Player Player { get; set; }
         public InternalInventoryItemType InternalInventoryItemType { get; set; }
         public string ItemType { get; set; }
-        public string ItemName { get; set; }    
+        public string ItemName { get; set; }
         public int ItemCount { get; set; }
 
         public int UpgradeVer { get; set; }
@@ -20,9 +19,6 @@ namespace WFClassic.Web.Data.Models
         public string UpgradeFingerprint { get; set; }
         public int Charge { get; set; }
         public DateTime ExpiryDate { get; set; }
-
-
-
     }
 }
 
@@ -49,14 +45,11 @@ namespace WFClassic.Web.Data.Models
     SkillTree?: string;
     ArchonCrystalUpgrades?: IArchonCrystalUpgrade[];
     _id: Types.ObjectId;
- 
- 
+
  */
 
-
-
 /*
- 
+
 const inventorySchema = new Schema<IInventoryDatabase, InventoryDocumentProps>(
     {
         accountOwnerId: Schema.Types.ObjectId,
@@ -69,13 +62,10 @@ const inventorySchema = new Schema<IInventoryDatabase, InventoryDocumentProps>(
         //Platinum
         PremiumCredits: Number,
 
-
         //Slots
         SuitBin: slotsBinSchema,
         WeaponBin: slotsBinSchema,
         SentinelBin: slotsBinSchema,
-
-       
 
         //Achievement
         ChallengeProgress: [challengeProgressSchema],
@@ -95,9 +85,6 @@ const inventorySchema = new Schema<IInventoryDatabase, InventoryDocumentProps>(
         //Melee      Weapon
         Melee: [EquipmentSchema],
 
-
-
-
         //Sentinel(like Helios or modular)
         Sentinels: [EquipmentSchema],
 
@@ -106,7 +93,6 @@ const inventorySchema = new Schema<IInventoryDatabase, InventoryDocumentProps>(
 
         //Item for EquippedGear example:Scaner,LoadoutTechSummon etc
         Consumables: [typeCountSchema],
-
 
         ReceivedStartingGear: Boolean,
 
@@ -184,5 +170,5 @@ const inventorySchema = new Schema<IInventoryDatabase, InventoryDocumentProps>(
     },
     { timestamps: { createdAt: "Created" } }
 );
- 
+
  */

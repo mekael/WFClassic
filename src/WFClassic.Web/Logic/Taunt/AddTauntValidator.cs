@@ -6,7 +6,7 @@ namespace WFClassic.Web.Logic.Taunt
     {
         public AddTauntValidator()
         {
-            RuleFor(r=> r).NotEmpty();
+            RuleFor(r => r).NotEmpty();
         }
     }
 }

@@ -7,8 +7,6 @@ namespace WFClassic.Web.Logic.Friendship.Get
     {
         public GetFriendsResultStatus GetFriendsResultStatus { get; set; }
         public JsonGetFriendsResult JsonGetFriendsResult { get; set; }
-
-
     }
 
     public class JsonGetFriendsResult
@@ -23,17 +21,14 @@ namespace WFClassic.Web.Logic.Friendship.Get
         public List<GetFriendsResultFriendItem> OutgoingFriendRequests { get; set; }
     }
 
-
-    public class GetFriendsResultFriendItem 
+    public class GetFriendsResultFriendItem
     {
         [JsonPropertyName("_id")]
         public MongoId id { get; set; }
 
         [JsonPropertyName("DisplayName")]
         public string DisplayName { get; set; }
-    
     }
-
 
     public enum GetFriendsResultStatus
     {

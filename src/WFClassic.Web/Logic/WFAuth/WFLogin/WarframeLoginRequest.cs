@@ -12,6 +12,5 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
 
         [JsonIgnore]
         public string HostName { get; set; }
-       
     }
 }

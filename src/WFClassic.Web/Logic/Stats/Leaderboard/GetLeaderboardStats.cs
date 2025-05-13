@@ -1,11 +1,9 @@
-﻿
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace WFClassic.Web.Logic.Stats.Leaderboard
 {
     public class GetLeaderboardStats
     {
-
         [JsonPropertyName("accountId")]
         public Guid AccountId { get; set; }
 
@@ -26,8 +24,5 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
 
         [JsonPropertyName("pivotAccountId")]
         public Guid PivotAccountId { get; set; }
-
- 
-
     }
 }

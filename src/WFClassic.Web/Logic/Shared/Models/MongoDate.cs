@@ -1,11 +1,9 @@
-﻿
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace WFClassic.Web.Logic.Shared.Models
 {
     public class MongoDate
     {
-
         [JsonPropertyName("$date")]
         public MongoLongDate MongoLongDate { get; set; }
 

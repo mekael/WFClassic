@@ -10,6 +10,5 @@
         Success,
         ValidationErrors,
         DatabaseErrors,
-
     }
 }
