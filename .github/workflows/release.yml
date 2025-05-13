@@ -38,7 +38,7 @@ jobs:
           release_name="WFClassic-$tag-${{ matrix.target }}"
 
           # Build everything
-          dotnet publish src/WFClassic.Web/WFClassic.Web.csproj --self-contained --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" -p:PublishTrimmed=true
+          dotnet publish src/WFClassic.Web/WFClassic.Web.csproj --self-contained --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
