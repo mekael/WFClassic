@@ -9,6 +9,7 @@ using WFClassic.Web.Logic.Middleware;
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
+    [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class FoundryController : ControllerBase
     {
         private CheckPendingRecipesQueryHandler _checkPendingRecipesQueryHandler;
@@ -30,7 +31,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/instantCompleteRecipe.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult InstantCompleteRecipe([FromQuery] RushRecipe rushRecipe)
         {
             var result = _rushRecipeHandler.Handle(rushRecipe);
@@ -54,7 +54,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/claimCompletedRecipe.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult ClaimCompletedItem([FromQuery] ClaimCompletedRecipe claimCompletedRecipe)
         {
             _logger.LogInformation("RecipeController => in action startRecipe");
@@ -79,7 +78,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/startRecipe.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult StartRecipe([FromQuery] StartRecipeBuild startRecipeBuild)
         {
             _logger.LogInformation("RecipeController => in action startRecipe");
@@ -104,7 +102,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/checkPendingRecipes.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Pending([FromQuery] CheckPendingRecipesQuery checkPendingRecipesQuery)
         {
             _logger.LogInformation("RecipeController =>  checkPendingRecipes");

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WFClassic.Web.Logic.Middleware;
 
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
+    [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class UserController : ControllerBase
     {
         [HttpPost]

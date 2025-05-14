@@ -8,6 +8,7 @@ using WFClassic.Web.Logic.Shared;
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
+    [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class EconomyController : ControllerBase
     {
         private GetCreditsHandler _getCreditsHandler;
@@ -21,7 +22,6 @@ namespace WFClassic.Web.Controllers
 
         [Route("api/credits.php")]
         [HttpGet]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public async Task<IActionResult> GetAsync([FromQuery] GetCredits getCredits)
         {
             var result = _getCreditsHandler.Handle(getCredits);
@@ -41,7 +41,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/purchase.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Purchase([FromQuery] Guid accountId, [FromQuery] long nonce, [FromQuery] string productName, [FromQuery] int usePremium)
         {
             // purchase something from the shop
@@ -50,7 +49,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/forcePurchase.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult ForcePurchase([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             // maybe trade?
@@ -59,7 +57,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/sell.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult SellItemToLotus([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             SellItem sellItem = new SellItem()

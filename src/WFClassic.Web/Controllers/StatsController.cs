@@ -9,6 +9,7 @@ using WFClassic.Web.Logic.Stats.Upload;
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
+    [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class StatsController : ControllerBase
     {
         private UploadStatsHandler _uploadStatsHandler;
@@ -24,7 +25,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/stats/leaderboard.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult leaderboard([FromQuery] GetLeaderboardStats getLeaderboardStats)
         {
             var result = _getLeaderboardStatsHandler.Handle(getLeaderboardStats);
@@ -48,7 +48,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/stats/upload.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Upload([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             var uploadStats = new UploadStats()
@@ -77,7 +76,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/stats/profileStats.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult ProfileStats([FromQuery] GetProfileStats getProfileStats)
         {
             var result = _getProfileStatsHandler.Handle(getProfileStats);

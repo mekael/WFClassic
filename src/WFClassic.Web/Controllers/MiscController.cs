@@ -8,6 +8,7 @@ using WFClassic.Web.Logic.Taunt;
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
+    [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class MiscController : ControllerBase
     {
         private AddLevelBasedOnTrainingHandler _addLevelBasedOnTrainingHandler;
@@ -21,7 +22,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/trainingResult.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult TrainingResult([FromQuery] AddLevelBasedOnTraining addLevelBasedOnTraining)
         {
             var result = _addLevelBasedOnTrainingHandler.Handle(addLevelBasedOnTraining);
@@ -63,7 +63,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/tauntHistory.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult TauntHistory([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             IncomingAddTaunt incomingAddTaunt = Utils.GetRequestObject<IncomingAddTaunt>(this.HttpContext);

@@ -12,6 +12,7 @@ using WFClassic.Web.Logic.Shared;
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
+    [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class InventoryController : ControllerBase
     {
         private UpdateInventoryHandler _updateInventoryHandler;
@@ -47,7 +48,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/saveLoadout.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult SaveCurrentLoadout([FromQuery] UpdateLoadout updateLoadout)
         {
             updateLoadout.LoadoutState = Utils.GetRequestObjectAsString(this.HttpContext);
@@ -69,7 +69,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/updateInventory.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult UpdateInventoryEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             UpdateInventory updateInventory = new UpdateInventory()
@@ -86,7 +85,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/inventory.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Inventory([FromQuery] GetInventory getInventory)
         {
             GetInventoryResult result = _getInventoryHandler.Handle(getInventory);
@@ -112,7 +110,6 @@ namespace WFClassic.Web.Controllers
         //accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=5060132779479405351&steamId=0
         [HttpPost]
         [Route("/api/artifacts.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult Artifacts(Guid accountId, long nonce, long steamId)
         {
             UpgradeArtifact upgradeArtifact = new UpgradeArtifact()
@@ -142,7 +139,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/upgrades.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult AttachModsEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             IncomingAttachRequest incomingAttachRequest = Utils.GetRequestObject<IncomingAttachRequest>(this.HttpContext);
@@ -172,7 +168,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/giveStartingGear.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult GiveStartingGear([FromQuery] GiveStartingGear giveStartingGear)
         {
             var result = _giveStartingGearHandler.Handle(giveStartingGear);

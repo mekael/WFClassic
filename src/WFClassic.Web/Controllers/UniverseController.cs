@@ -6,6 +6,7 @@ using WFClassic.Web.Logic.Middleware;
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
+    [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class UniverseController : ControllerBase
     {
         private GetLoginRewardsHandler _getLoginRewardsHandler;
@@ -17,7 +18,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/loginRewards.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult LoginRewards([FromQuery] GetLoginRewards getLoginRewards)
         {
             var result = _getLoginRewardsHandler.HandleAsync(getLoginRewards).Result;

@@ -9,6 +9,7 @@ using WFClassic.Web.Logic.Middleware;
 namespace WFClassic.Web.Controllers
 {
     [ApiController]
+    [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class FriendsController : ControllerBase
     {
         private AddPendingFriendHandler _addPendingFriendHandler;
@@ -34,7 +35,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/addPendingFriend.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult AddPendingFriend([FromQuery] AddPendingFriend addPendingFriend)
         {
             var result = _addPendingFriendHandler.Handle(addPendingFriend);
@@ -58,7 +58,6 @@ namespace WFClassic.Web.Controllers
         // approve a friend request
         [HttpGet]
         [Route("/api/addFriend.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult AddFriend([FromQuery] AcceptFriendRequest acceptFriendRequest)
 
         {
@@ -82,7 +81,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/removeFriend.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult RemoveFriend([FromQuery] RemoveFriendRequest removeFriendRequest)
         {
             var result = _removeFriendRequestHandler.Handle(removeFriendRequest);
@@ -104,7 +102,6 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/getFriends.php")]
-        [TypeFilter(typeof(LoginVerificationActionFilter))]
         public ActionResult GetFriends([FromQuery] GetFriendsRequest getFriendsRequest)
         {
             var result = _getFriendsRequestHandler.Handle(getFriendsRequest);
