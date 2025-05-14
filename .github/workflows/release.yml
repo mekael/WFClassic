@@ -11,11 +11,11 @@ jobs:
     name: Release
     strategy:
       matrix:
-        kind: ['windows']
+        kind: ['windows', 'linux']
         include:
-       #   - kind: linux
-        #    os: ubuntu-latest
-         #   target: linux-x64
+          - kind: linux
+            os: ubuntu-latest
+            target: linux-x64
           - kind: windows
             os: windows-latest
             target: win-x64
@@ -45,7 +45,7 @@ jobs:
             # Pack to zip for Windows
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
           else
-          tar czvf "${release_name}.tar.gz" "$release_name"
+            tar czvf "${release_name}.tar.gz" "$release_name"
           fi
 
           # Delete output directory
