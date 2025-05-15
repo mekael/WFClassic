@@ -59,6 +59,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 // update equipment
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating equipment", updateInventory.AccountId, updateInventory.Nonce);
 
+ 
                 List<JsonIncomingEquipmentItem> equipmentItems = new List<JsonIncomingEquipmentItem>()
                                                                                                      .Union(updateInventory.UpdateInventoryFromMissionObject.LongGuns)
                                                                                                      .Union(updateInventory.UpdateInventoryFromMissionObject.Pistols)
@@ -68,24 +69,32 @@ namespace WFClassic.Web.Logic.Inventory.Update
                                                                                                      .Union(updateInventory.UpdateInventoryFromMissionObject.SentinelWeapons)
                                                                                                      .ToList();
 
+
+
+
                 foreach (var equipmentItem in equipmentItems.Where(w => !string.IsNullOrWhiteSpace(w.ItemId.id)))
                 {
                     var item = player.InventoryItems.Find(f => f.Id == Guid.Parse(equipmentItem.ItemId.id));
                     item.XP += equipmentItem.XP;
+                    item.ExtraCapacity = equipmentItem.ExtraCapacity;
+                    item.ExtraRemaining = equipmentItem.ExtraRemaining;
                     _applicationDbContext.Entry(item).State = EntityState.Modified;
                 }
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating mods", updateInventory.AccountId, updateInventory.Nonce);
 
-                foreach (var mod in updateInventory.UpdateInventoryFromMissionObject.Upgrades)
-                {
-                    _applicationDbContext.InventoryItems.Add(new InventoryItem()
+                
+                    foreach (var mod in updateInventory.UpdateInventoryFromMissionObject.Upgrades)
                     {
-                        ItemType = mod.ItemType,
-                        UpgradeFingerprint = mod.UpgradeFingerprint,
-                        PlayerId = player.Id,
-                        InternalInventoryItemType = InternalInventoryItemType.Upgrades
-                    });
-                }
+                        _applicationDbContext.InventoryItems.Add(new InventoryItem()
+                        {
+                            ItemType = mod.ItemType,
+                            UpgradeFingerprint = mod.UpgradeFingerprint,
+                            PlayerId = player.Id,
+                            InternalInventoryItemType = InternalInventoryItemType.Upgrades
+                        });
+                    }
+                 
+
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating misc/consumables/recipes", updateInventory.AccountId, updateInventory.Nonce);
 
                 UpdateItemCountInventory(updateInventory.UpdateInventoryFromMissionObject.MiscItems, player.InventoryItems, InternalInventoryItemType.MiscItems, player.Id);
@@ -159,8 +168,13 @@ namespace WFClassic.Web.Logic.Inventory.Update
             return result;
         }
 
+
         private void UpdateItemCountInventory(List<ItemCountPair> incomingEquipmentItems, List<InventoryItem> existingItems, InternalInventoryItemType internalInventoryItemType, Guid playerId)
         {
+            if(incomingEquipmentItems == null || !incomingEquipmentItems.Any())
+            {
+                return;
+            }
             foreach (var equipmentItem in incomingEquipmentItems)
             {
                 var item = existingItems.FirstOrDefault(f => f.ItemType == equipmentItem.ItemType);

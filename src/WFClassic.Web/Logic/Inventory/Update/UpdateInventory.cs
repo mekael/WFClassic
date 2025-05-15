@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace WFClassic.Web.Logic.Inventory.Update
 {
@@ -12,14 +13,29 @@ namespace WFClassic.Web.Logic.Inventory.Update
 
     public class UpdateInventoryFromMissionObject
     {
-        public List<JsonIncomingEquipmentItem> LongGuns { get; set; }
-        public List<JsonIncomingEquipmentItem> Pistols { get; set; }
-        public List<JsonIncomingEquipmentItem> Suits { get; set; }
-        public List<JsonIncomingEquipmentItem> Melee { get; set; }
-        public List<JsonIncomingEquipmentItem> Sentinels { get; set; }
-        public List<JsonIncomingEquipmentItem> SentinelWeapons { get; set; }
+
+        public UpdateInventoryFromMissionObject()
+        {
+            LongGuns = new List<JsonIncomingEquipmentItem>();
+            Pistols = new List<JsonIncomingEquipmentItem>();
+            Suits = new List<JsonIncomingEquipmentItem>();
+            Melee = new List<JsonIncomingEquipmentItem>();
+            Sentinels = new List<JsonIncomingEquipmentItem>();
+            SentinelWeapons = new List<JsonIncomingEquipmentItem>();
+            Upgrades = new List<Upgrade>();
+            Consumables = new List<ItemCountPair>();
+            MiscItems = new List<ItemCountPair>();
+            Recipes = new List<ItemCountPair>();
+        }
+
+        public List<JsonIncomingEquipmentItem> LongGuns { get; set; }  
+        public List<JsonIncomingEquipmentItem> Pistols { get; set; }  
+        public List<JsonIncomingEquipmentItem> Suits { get; set; }  
+        public List<JsonIncomingEquipmentItem> Melee { get; set; }  
+        public List<JsonIncomingEquipmentItem> Sentinels { get; set; }  
+        public List<JsonIncomingEquipmentItem> SentinelWeapons { get; set; }  
         public object[] WeaponSkins { get; set; }
-        public Upgrade[] Upgrades { get; set; }
+        public List<Upgrade> Upgrades { get; set; }
         public object[] Boosters { get; set; }
         public object[] Robotics { get; set; }
         public List<ItemCountPair> Consumables { get; set; }
