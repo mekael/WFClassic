@@ -82,31 +82,30 @@ namespace WFClassic.Web.Controllers
     ],
 
     ""Goals"": [
-{
-                        ""_id"": {
+            {
+           ""_id"": {
                 ""$id"": ""521d98e9bb5768395e92594c""
             },
             ""Activation"": {
                 ""sec"": 1746814027,
                 ""usec"": 0
             },
-            ""AllowReplay"": 1,
             ""Expiry"": {
                 ""sec"": 1747359260,
                 ""usec"": 0
             },
+            ""AllowReplay"": 1,
+
       ""Desc"": ""CATSAASDASD"",
+      ""Type"": ""MT_ASSASSINATION"",
+      ""Transmission"": ""/Lotus/Sounds/Lotus/Operations/FusionMoaOperationTransmission"",
       ""Count"": 250,
       ""Goal"": 500,
-      ""Success"": 1,
-      ""Personal"": true,
-      ""Best"": true,
-      ""Node"": ""SolNode119"",
-      ""MissionKeyName"": ""/Lotus/Types/Keys/MechSurvivalCorpusShip"",
-      ""Faction"": ""FC_GRINEER"",
-      ""Icon"": ""/Lotus/Interface/Icons/Categories/IconMech256.png"",
-      ""Tag"": ""MechSurvivalA"",
-      ""ScoreVar"": ""MechSurvivalScore"",
+      ""Success"": 0,
+        ""Reward"" :""/Lotus/Types/Items/MiscItems/Morphic"",
+        ""RewardItemCount"" :1,
+        ""RewardCredits"" :1,
+
 
         }],
      ""Alerts"": [

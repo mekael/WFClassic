@@ -29,7 +29,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
         public long Nonce { get; set; }
 
         [JsonProperty("BuildLabel")]
-        public string BuildLabel { get; set; } = "2013.03.25.11.45/";
+        public string BuildLabel { get; set; }  
 
         [JsonProperty("NatHash")]
         public string NatHash { get; set; }

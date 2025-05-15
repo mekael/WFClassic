@@ -10,14 +10,16 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IConfiguration _configuration;
 
         public WarframeLoginHandler(ILogger<WarframeLoginHandler> logger, ApplicationDbContext applicationDbContext,
-            SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+            SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             this._logger = logger;
             this._applicationDbContext = applicationDbContext;
             this._signInManager = signInManager;
             this._userManager = userManager;
+            this._configuration = configuration;
         }
 
         public async Task<WarframeLoginResult> Handle(WarframeLoginRequest warframeLoginRequest)
@@ -108,11 +110,13 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 warframeLoginResult.WarframeLoginResultDetails = new WarframeLoginResultDetails()
                 {
                     id = user.Id.ToString(),
+                    BuildLabel = _configuration.GetValue<string>("BuildLabel"), 
                     // BuildLabel = "2013.05.03.18.06/", // 7.10
-                    BuildLabel = "2013.04.26.17.24/", //7.9
-                                                      //   BuildLabel = "2013.03.25.11.45/", //7.3
+                    // BuildLabel = "2013.04.26.17.24/", // 7.9
+                    // BuildLabel = "2013.05.17.15.42/", // 7.11
+                    // BuildLabel = "2013.03.25.11.45/", // 7.3
                     DisplayName = user.DisplayName,
-                    NatHash = "0098089",
+                    NatHash = "127.0.0.1:88",
                     Nonce = user.CurrentNonce,
                     SteamId = user.SteamId
                 };
