@@ -34,4 +34,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<MissionReport> MissionReports { get; set; }
     public DbSet<PlayerReport> PlayerReports { get; set; }
     public DbSet<DailyRewardDefinition> DailyRewardDefinitions { get; set; }
+
+    public DbSet<AlertConfiguration> AlertConfigurations { get; set; }
+    public DbSet<AlertEnemyConfiguration> AlertEnemyConfigurations { get; set; }
+    public DbSet<AlertRewardConfiguration> AlertRewardConfigurations { get; set; }
+    public DbSet<WorldStateEventMessage> WorldStateEventMessages { get; set; }
+
 }

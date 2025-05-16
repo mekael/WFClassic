@@ -25,6 +25,7 @@ using WFClassic.Web.Logic.Stats.Leaderboard;
 using WFClassic.Web.Logic.Stats.ProfileStats;
 using WFClassic.Web.Logic.Stats.Upload;
 using WFClassic.Web.Logic.Taunt;
+using WFClassic.Web.Logic.Universe.GetState;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
@@ -76,6 +77,7 @@ builder.Services.AddTransient<UpdateLoadoutHandler>();
 builder.Services.AddTransient<GetLoginRewardsHandler>();
 builder.Services.AddTransient<RushRecipeHandler>();
 builder.Services.AddTransient<SellItemHandler>();
+builder.Services.AddTransient<GetWorldStateHandler>();
 
 builder.Services.AddControllersWithViews();
 

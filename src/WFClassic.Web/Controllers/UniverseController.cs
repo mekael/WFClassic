@@ -2,6 +2,7 @@
 using System.Text.Json;
 using WFClassic.Web.Logic.Bonus.Rewards;
 using WFClassic.Web.Logic.Middleware;
+using WFClassic.Web.Logic.Universe.GetState;
 
 namespace WFClassic.Web.Controllers
 {
@@ -10,10 +11,11 @@ namespace WFClassic.Web.Controllers
     public class UniverseController : ControllerBase
     {
         private GetLoginRewardsHandler _getLoginRewardsHandler;
-
-        public UniverseController(GetLoginRewardsHandler getLoginRewardsHandler)
+        private GetWorldStateHandler _getWorldStateHandler;
+        public UniverseController(GetLoginRewardsHandler getLoginRewardsHandler, GetWorldStateHandler getWorldStateHandler)
         {
             _getLoginRewardsHandler = getLoginRewardsHandler;
+            _getWorldStateHandler = getWorldStateHandler;
         }
 
         [HttpGet]
@@ -51,7 +53,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/worldState.php")]
-        public string WorldState([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult WorldState([FromQuery] GetWorldState getWorldState)
         {
             string ws = @"
 {
@@ -167,7 +169,12 @@ namespace WFClassic.Web.Controllers
 
             //    ""BuildLabel"": ""2013.04.26.17.24/""
             //""BuildLabel"": ""2013.04.26.17.24/""
-            return ws;
+
+
+           var cat =  _getWorldStateHandler.Handle(getWorldState);
+            return new JsonResult(cat.GetWorldStateResultJson, new JsonSerializerOptions { PropertyNamingPolicy = null });
+
+        //    return ws;
         }
 
         [HttpPost]
@@ -176,6 +183,16 @@ namespace WFClassic.Web.Controllers
         {
             Console.WriteLine("In Goals");
             return new JsonResult("{}");
+        }
+
+
+
+        [HttpGet]
+        [Route("/api/hearbeat.php")]
+        public ActionResult Heartbeat([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+            Console.WriteLine("In Goals");
+            return Ok();
         }
     }
 }
