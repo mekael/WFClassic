@@ -98,7 +98,7 @@ namespace WFClassic.Web.Logic.Foundry.Start
                 PlayerId = player.Id,
                 RecipeId = recipe.Id,
                 StartingTime = DateTimeOffset.Now,
-                EndingTime = DateTimeOffset.Now.AddMinutes(recipe.BuildTimeInMinutes)
+                EndingTime = DateTimeOffset.Now.AddSeconds(recipe.BuildTimeInSeconds)
             };
 
             // add new bank account transaction

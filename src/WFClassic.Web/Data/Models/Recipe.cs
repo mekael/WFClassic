@@ -11,7 +11,7 @@ namespace WFClassic.Web.Data.Models
         public string RecipeItemName { get; set; }
         public string RecipeItemPrettyName { get; set; }
 
-        public long BuildTimeInMinutes { get; set; }
+        public long BuildTimeInSeconds { get; set; }
         public long PriceInStandardCredits { get; set; }
         public long SkipBuildPriceInPlatinum { get; set; }
 
