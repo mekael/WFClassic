@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
+using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Starting
@@ -33,7 +34,9 @@ namespace WFClassic.Web.Logic.Inventory.Starting
             try
             {
                 _logger.LogInformation("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", giveStartingGear.AccountId, giveStartingGear.Nonce);
-                player = _applicationDbContext.Players.Include(i => i.InventoryItems).FirstOrDefault(w => w.ApplicationUserId == giveStartingGear.AccountId);
+                player = _applicationDbContext.Players.Include(i => i.InventoryItems)
+                                                      .Include(i=> i.InventoryBins)
+                                                      .FirstOrDefault(w => w.ApplicationUserId == giveStartingGear.AccountId);
                 _logger.LogInformation("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", giveStartingGear.AccountId, giveStartingGear.Nonce);
             }
             catch (Exception ex)
@@ -60,6 +63,10 @@ namespace WFClassic.Web.Logic.Inventory.Starting
 
             player.InventoryItems.AddRange(StartingGearDefinitions.GetStartingCards(warframeName));
             player.InventoryItems.AddRange(StartingGearDefinitions.GetStartingWeapons());
+
+            player.InventoryBins.Add(new InventoryBin() { InventoryBinType = InventoryBinType.Suit, Slots = 2 });
+            player.InventoryBins.Add(new InventoryBin() { InventoryBinType = InventoryBinType.Weapon, Slots = 8 });
+            player.InventoryBins.Add(new InventoryBin() { InventoryBinType = InventoryBinType.Sentinel, Slots = 8 });
 
             player.ReceivedStartingGear = true;
 
