@@ -38,7 +38,7 @@ namespace WFClassic.Web.Logic.WFAuth.Initialize
                 {
                      new BankAccount()
                                         {
-                                            BankAccountType = BankAccountType.Platinum,
+                                            BankAccountType = CurrencyType.Platinum,
                                             CurrentBalance = 50,
                                             BankAccountTransactions = new List<BankAccountTransaction>() {
                                                 new BankAccountTransaction() {

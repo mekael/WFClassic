@@ -44,8 +44,8 @@ namespace WFClassic.Web.Logic.Credits.Get
 
             //TODO :Figure out if we want throw an error or not,if we dont get back both types of account.
 
-            var regularCredits = bankAccounts.FirstOrDefault(fod => fod.BankAccountType == Data.Enums.BankAccountType.StandardCredits)?.CurrentBalance;
-            var premiumCredits = bankAccounts.FirstOrDefault(fod => fod.BankAccountType == Data.Enums.BankAccountType.Platinum)?.CurrentBalance;
+            var regularCredits = bankAccounts.FirstOrDefault(fod => fod.BankAccountType == Data.Enums.CurrencyType.StandardCredits)?.CurrentBalance;
+            var premiumCredits = bankAccounts.FirstOrDefault(fod => fod.BankAccountType == Data.Enums.CurrencyType.Platinum)?.CurrentBalance;
 
             result.GetCreditsResultDetails = new GetCreditsResultDetails()
             {

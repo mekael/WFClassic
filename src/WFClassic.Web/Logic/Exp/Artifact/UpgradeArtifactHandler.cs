@@ -133,7 +133,7 @@ namespace WFClassic.Web.Logic.Exp.Artifact
                 AccountId = upgradeArtifact.AccountId,
                 Amount = -1 * upgradeArtifact.IncomingUpgradeArtifactRequest.Cost,
                 BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit,
-                BankAccountType = Data.Enums.BankAccountType.StandardCredits,
+                BankAccountType = Data.Enums.CurrencyType.StandardCredits,
                 MemoCode = $"Upgraded {upgradeArtifact.IncomingUpgradeArtifactRequest.Upgrade.ItemId.id}"
             });
             result.UpgradeArtifactResultStatus = UpgradeArtifactResultStatus.Success;

@@ -113,7 +113,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
                     AccountId = updateInventory.AccountId,
                     Amount = updateInventory.UpdateInventoryFromMissionObject.RegularCredits,
                     BankAccountTransactionType = BankAccountTransactionType.Credit,
-                    BankAccountType = BankAccountType.StandardCredits,
+                    BankAccountType = CurrencyType.StandardCredits,
                     MemoCode = "Mission"
                 });
 

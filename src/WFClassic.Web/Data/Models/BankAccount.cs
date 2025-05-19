@@ -6,7 +6,7 @@ namespace WFClassic.Web.Data.Models
     {
         public Guid PlayerId { get; set; }
         public Player Player { get; set; }
-        public BankAccountType BankAccountType { get; set; }
+        public CurrencyType BankAccountType { get; set; }
         public List<BankAccountTransaction> BankAccountTransactions { get; set; }
         public long CurrentBalance { get; set; }
     }

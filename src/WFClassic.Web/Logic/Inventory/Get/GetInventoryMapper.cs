@@ -69,8 +69,8 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 ReceivedStartingGear = player.ReceivedStartingGear,
                 SubscribedToEmails = Convert.ToInt32(player.SubscribedToEmails),
                 TrainingDate = new MongoDate(player.TrainingDate),
-                PremiumCredits = player.BankAccounts.Where(w => w.BankAccountType == BankAccountType.Platinum).Select(s => s.CurrentBalance).Sum(),
-                RegularCredits = player.BankAccounts.Where(w => w.BankAccountType == BankAccountType.StandardCredits).Select(s => s.CurrentBalance).Sum(),
+                PremiumCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.Platinum).Select(s => s.CurrentBalance).Sum(),
+                RegularCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.StandardCredits).Select(s => s.CurrentBalance).Sum(),
                 TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node }).ToList(),
                 Upgrades = JsonUpgradeItems
             };

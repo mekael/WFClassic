@@ -108,7 +108,7 @@ namespace WFClassic.Web.Logic.Foundry.Start
                 AccountId = startRecipeBuild.AccountId,
                 Amount = recipe.PriceInStandardCredits,
                 BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit,
-                BankAccountType = Data.Enums.BankAccountType.StandardCredits,
+                BankAccountType = Data.Enums.CurrencyType.StandardCredits,
                 MemoCode = $"Build of {recipe.RecipeItemName}"
             });
 

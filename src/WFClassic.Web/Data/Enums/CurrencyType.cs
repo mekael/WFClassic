@@ -1,6 +1,6 @@
 ﻿namespace WFClassic.Web.Data.Enums
 {
-    public enum BankAccountType
+    public enum CurrencyType
     {
         StandardCredits,
         Platinum

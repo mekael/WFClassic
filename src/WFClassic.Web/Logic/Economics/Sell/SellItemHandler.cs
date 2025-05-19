@@ -137,7 +137,7 @@ namespace WFClassic.Web.Logic.Economics.Sell
                 return result;
             }
 
-            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = sellItem.AccountId, Amount = sellItem.IncomingSaleJson.SellPrice, BankAccountTransactionType = BankAccountTransactionType.Credit, BankAccountType = BankAccountType.StandardCredits, MemoCode = "ItemSale" });
+            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = sellItem.AccountId, Amount = sellItem.IncomingSaleJson.SellPrice, BankAccountTransactionType = BankAccountTransactionType.Credit, BankAccountType = CurrencyType.StandardCredits, MemoCode = "ItemSale" });
 
             if (addAccountTransactionResult.AddAccountTransactionResultStatus != AddAccountTransactionResultStatus.Success)
             {
