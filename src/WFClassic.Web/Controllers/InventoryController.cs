@@ -2,6 +2,8 @@
 using System.Text.Json;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Inventory.Attach;
+using WFClassic.Web.Logic.Inventory.Attach.Modifications;
+using WFClassic.Web.Logic.Inventory.Attach.Orokin;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Loadout;
 using WFClassic.Web.Logic.Inventory.Starting;
@@ -21,10 +23,11 @@ namespace WFClassic.Web.Controllers
         private AttachModsHandler _attachModsHandler;
         private UpgradeArtifactHandler _upgradeArtifactHandler;
         private UpdateLoadoutHandler _updateLoadoutHandler;
+        private AttachOrokinModHandler _attachOrokinModHandler;
 
         public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler,
             UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler, UpgradeArtifactHandler upgradeArtifactHandler,
-            UpdateLoadoutHandler updateLoadoutHandler)
+            UpdateLoadoutHandler updateLoadoutHandler, AttachOrokinModHandler attachOrokinModHandler)
         {
             _giveStartingGearHandler = giveStartingGearHandler;
             _getInventoryHandler = getInventoryHandler;
@@ -32,6 +35,7 @@ namespace WFClassic.Web.Controllers
             _attachModsHandler = attachModsHandler;
             _upgradeArtifactHandler = upgradeArtifactHandler;
             _updateLoadoutHandler = updateLoadoutHandler;
+            _attachOrokinModHandler = attachOrokinModHandler;
         }
 
         [HttpPost]
@@ -119,6 +123,9 @@ namespace WFClassic.Web.Controllers
                 IncomingUpgradeArtifactRequest = Utils.GetRequestObject<IncomingUpgradeArtifactRequest>(this.HttpContext)
             };
 
+
+
+
             var result = _upgradeArtifactHandler.Handle(upgradeArtifact);
 
             if (result.UpgradeArtifactResultStatus == UpgradeArtifactResultStatus.Success)
@@ -150,8 +157,19 @@ namespace WFClassic.Web.Controllers
                 IncomingAttachRequest = incomingAttachRequest
             }
             ;
+            AttachModsResult result = null;
+            if (incomingAttachRequest.UpgradesToAttach.Count() == 0
+                && incomingAttachRequest.UpgradesToDetach.Count() == 0)
+            {
+                result = _attachOrokinModHandler.Handle(attachMods);
 
-            var result = _attachModsHandler.Handle(attachMods);
+            }
+            else {
+                result = _attachModsHandler.Handle(attachMods);
+            }
+
+
+            result = _attachModsHandler.Handle(attachMods);
 
             if (result.AttachModsResultStatus == AttachModsResultStatus.ValidationErrors)
             {

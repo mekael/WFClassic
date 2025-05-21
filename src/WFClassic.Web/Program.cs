@@ -6,6 +6,7 @@ using WFClassic.Web.Logic.Admin.CheckOnline;
 using WFClassic.Web.Logic.Bonus.Rewards;
 using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.Credits.Get;
+using WFClassic.Web.Logic.Economics.Purchase;
 using WFClassic.Web.Logic.Economics.Sell;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Exp.Training;
@@ -17,7 +18,8 @@ using WFClassic.Web.Logic.Friendship.Add;
 using WFClassic.Web.Logic.Friendship.AddPending;
 using WFClassic.Web.Logic.Friendship.Get;
 using WFClassic.Web.Logic.Friendship.Remove;
-using WFClassic.Web.Logic.Inventory.Attach;
+using WFClassic.Web.Logic.Inventory.Attach.Modifications;
+using WFClassic.Web.Logic.Inventory.Attach.Orokin;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
 using WFClassic.Web.Logic.Inventory.Update;
@@ -78,6 +80,8 @@ builder.Services.AddTransient<GetLoginRewardsHandler>();
 builder.Services.AddTransient<RushRecipeHandler>();
 builder.Services.AddTransient<SellItemHandler>();
 builder.Services.AddTransient<GetWorldStateHandler>();
+//builder.Services.AddTransient<PurchaseItemHandler>();
+builder.Services.AddTransient<AttachOrokinModHandler>();
 
 builder.Services.AddControllersWithViews();
 

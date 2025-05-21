@@ -1,7 +1,7 @@
 ﻿using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
-namespace WFClassic.Web.Logic.Inventory.Attach
+namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 {
     public class AttachModsHandler
     {
@@ -25,6 +25,7 @@ namespace WFClassic.Web.Logic.Inventory.Attach
                 result.AttachModsResultStatus = AttachModsResultStatus.ValidationErrors;
                 return result;
             }
+
 
             List<InventoryItemAttachment> modAttachments = null;
 
@@ -69,5 +70,8 @@ namespace WFClassic.Web.Logic.Inventory.Attach
 
             return result;
         }
+
+
+
     }
 }
