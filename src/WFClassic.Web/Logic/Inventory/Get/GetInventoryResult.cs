@@ -101,6 +101,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public List<GetInventoryResultJsonTypeCount> Recipes { get; set; }
 
         [JsonPropertyName("Components")]
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<GetInventoryResultJsonTypeCount> Components { get; set; }
 
         [JsonPropertyName("XPInfo")]
@@ -111,6 +112,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonPropertyName("Upgrades")]
         public List<GetInventoryResultJsonUpgradeItem> Upgrades { get; set; }
+
     }
 
     public class GetInventoryResultJsonXpInfoItem
@@ -131,9 +133,12 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public MongoId ItemId { get; set; }
 
         [JsonPropertyName("ParentId")]
+        [System.Text.Json.Serialization.JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)]
         public MongoId ParentId { get; set; }
 
         [JsonPropertyName("Slot")]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? Slot { get; set; }
 
         [JsonPropertyName("UpgradeFingerprint")]
@@ -197,7 +202,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public int ExtraCapacity { get; set; }
 
         [JsonPropertyName("ExtraRemaining")]
-        public int ExtraRemaining { get; set; }
+        public int ExtraRemaining { get; set; }  
+
+
+
     }
 
     public enum GetInventoryResultStatus
