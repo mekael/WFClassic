@@ -59,6 +59,8 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Suits,
                 ItemType = giveStartingGear.WarframeName,
                 ItemName = giveStartingGear.WarframeName.Split("/").Last(),
+                UpgradeVer =101
+                
             });
 
             player.InventoryItems.AddRange(StartingGearDefinitions.GetStartingCards(warframeName));
