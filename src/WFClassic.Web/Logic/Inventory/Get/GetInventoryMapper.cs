@@ -1,4 +1,6 @@
-﻿using WFClassic.Web.Data.Enums;
+﻿using System.Net.Mail;
+using System.Numerics;
+using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared.Models;
 
@@ -32,10 +34,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 });
             }
 
-            var whateve = player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades).Select(
-                s => new GetInventoryResultJsonUpgradeItem() { ItemId = new MongoId(s.Id), ItemType = s.ItemType, UpgradeFingerPrint = s.UpgradeFingerprint }
-                ); ;
-
+       
             return new GetInventoryResultDetails()
 
             {
@@ -48,7 +47,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 SuitBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
                 SentinelBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
                 WeaponBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
-                Cards = GetEquipmentByType(InternalInventoryItemType.Cards, player.InventoryItems),
+                Cards = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Cards),
                 LongGuns = GetEquipmentByType(InternalInventoryItemType.LongGuns, player.InventoryItems),
                 Pistols = GetEquipmentByType(InternalInventoryItemType.Pistols, player.InventoryItems),
                 Melee = GetEquipmentByType(InternalInventoryItemType.Melee, player.InventoryItems),
@@ -72,9 +71,11 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 PremiumCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.Platinum).Select(s => s.CurrentBalance).Sum(),
                 RegularCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.StandardCredits).Select(s => s.CurrentBalance).Sum(),
                 TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node }).ToList(),
-                Upgrades = JsonUpgradeItems
+                Upgrades = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Upgrades)
             };
         }
+
+
 
         private static GetInventoryResultJsonInventoryBin GetBin(InventoryBinType inventoryBinType, List<InventoryBin> inventoryBins)
         {
@@ -100,6 +101,27 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     UpgradeVer = s.UpgradeVer,
                     XP = s.XP
                 }).ToList();
+        }
+
+        private static List<GetInventoryResultJsonUpgradeItem> GetUpgrade(List<InventoryItem> inventoryItems, List<InventoryItemAttachment> attachments, InternalInventoryItemType internalInventoryItemType)
+        {
+            List<GetInventoryResultJsonUpgradeItem> JsonUpgradeItems = new List<GetInventoryResultJsonUpgradeItem>();
+
+            foreach (var upgrade in inventoryItems.Where(w => w.InternalInventoryItemType == internalInventoryItemType))
+            {
+                InventoryItemAttachment attachment = attachments.FirstOrDefault(w => w.AttachedInventoryItemId == upgrade.Id);
+
+                JsonUpgradeItems.Add(new GetInventoryResultJsonUpgradeItem()
+                {
+                    ItemId = new MongoId(upgrade.Id),
+                    ItemType = upgrade.ItemType,
+                    UpgradeFingerPrint = upgrade.UpgradeFingerprint,
+                    ParentId = attachment != null ? new MongoId(attachment.ParentInventoryItemId) : null,
+                    Slot = attachment != null ? attachment.Slot : null
+                });
+            }
+
+            return JsonUpgradeItems;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public List<GetInventoryResultJsonEquipmentItem> LongGuns { get; set; }
 
         [JsonPropertyName("Cards")]
-        public List<GetInventoryResultJsonEquipmentItem> Cards { get; set; }
+        public List<GetInventoryResultJsonUpgradeItem> Cards { get; set; }
 
         [JsonPropertyName("Pistols")]
         public List<GetInventoryResultJsonEquipmentItem> Pistols { get; set; }
@@ -206,6 +206,13 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
 
 
+    }
+
+    public class GetInventoryResultJsonCardItem
+    {
+        public string ItemType { get; set; }
+        public int Rank { get; set; }
+        public int AmountRemaining { get; set; }
     }
 
     public enum GetInventoryResultStatus
