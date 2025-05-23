@@ -31,6 +31,7 @@ using WFClassic.Web.Logic.Universe.GetState;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
+using WFClassic.Web.Logic.Sys.SystemLogout;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,6 +83,8 @@ builder.Services.AddTransient<SellItemHandler>();
 builder.Services.AddTransient<GetWorldStateHandler>();
 builder.Services.AddTransient<PurchaseItemHandler>();
 builder.Services.AddTransient<AttachOrokinModHandler>();
+builder.Services.AddScoped<MassLogoutUsersHandler>();
+
 
 builder.Services.AddControllersWithViews();
 
@@ -107,9 +110,21 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseRequestDecompression();
 
+//logout all users during server restart. 
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-app.Run();
+
+
+
+using (var serviceScope = app.Services.CreateScope())
+{
+     serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
+}
+ 
+
+app.Run(); 
