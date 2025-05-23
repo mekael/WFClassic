@@ -80,7 +80,7 @@ builder.Services.AddTransient<GetLoginRewardsHandler>();
 builder.Services.AddTransient<RushRecipeHandler>();
 builder.Services.AddTransient<SellItemHandler>();
 builder.Services.AddTransient<GetWorldStateHandler>();
-//builder.Services.AddTransient<PurchaseItemHandler>();
+builder.Services.AddTransient<PurchaseItemHandler>();
 builder.Services.AddTransient<AttachOrokinModHandler>();
 
 builder.Services.AddControllersWithViews();

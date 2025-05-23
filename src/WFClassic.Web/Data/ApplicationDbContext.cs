@@ -40,4 +40,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<AlertRewardConfiguration> AlertRewardConfigurations { get; set; }
     public DbSet<WorldStateEventMessage> WorldStateEventMessages { get; set; }
 
+
+    public DbSet<MarketPackageDefinition> MarketPackageDefinitions { get; set; }
+    public DbSet<MarketPackageItemDefinition> MarketPackageItemDefintions { get; set; }
+
 }
