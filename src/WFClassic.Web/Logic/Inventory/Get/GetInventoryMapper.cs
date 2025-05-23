@@ -20,7 +20,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         {
             List<GetInventoryResultJsonUpgradeItem> JsonUpgradeItems = new List<GetInventoryResultJsonUpgradeItem>();
 
-            foreach (var upgrade in player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades))
+            foreach (var upgrade in player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades  ))
             {
                 InventoryItemAttachment attachment = attachments.FirstOrDefault(w => w.AttachedInventoryItemId == upgrade.Id);
 
@@ -40,7 +40,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
             {
                 AdditionalPlayerXP = player.AdditionalPlayerXP,
                 CompletedAlerts = new List<string>(),
-                DeathMarks = new List<string>() { "Stalker" },
+                DeathMarks = new List<string>() { },
                 Founder = 2,
                 InvalidBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
                 MiscBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
