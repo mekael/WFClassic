@@ -59,7 +59,9 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Suits,
                 ItemType = giveStartingGear.WarframeName,
                 ItemName = giveStartingGear.WarframeName.Split("/").Last(),
-                UpgradeVer =101
+                UpgradeVer =101,
+                ExtraCapacity= 4,
+                ExtraRemaining =4
                 
             });
 
