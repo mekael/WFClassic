@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Coravel.Invocable;
+using Microsoft.EntityFrameworkCore;
 using WFClassic.Web.Data;
 
-namespace WFClassic.Web.Logic.Sys.SystemLogout
+namespace WFClassic.Web.Logic.Sys.SystemLogout  
 {
-    public class MassLogoutUsersHandler
+    public class MassLogoutUsersHandler : IInvocable
     {
         private ApplicationDbContext _applicationDbContext;
         private ILogger<MassLogoutUsersHandler> _logger;
@@ -15,6 +16,12 @@ namespace WFClassic.Web.Logic.Sys.SystemLogout
             _logger = logger;
         }
 
+
+
+        public async Task Invoke()
+        {
+              this.Handle();
+        }
 
         public void Handle()
         {

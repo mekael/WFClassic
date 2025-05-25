@@ -32,6 +32,9 @@ using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
 using WFClassic.Web.Logic.Sys.SystemLogout;
+using WFClassic.Web.Logic.Sys.Scheduled;
+using Coravel;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,8 +87,13 @@ builder.Services.AddTransient<GetWorldStateHandler>();
 builder.Services.AddTransient<PurchaseItemHandler>();
 builder.Services.AddTransient<AttachOrokinModHandler>();
 builder.Services.AddScoped<MassLogoutUsersHandler>();
+builder.Services.AddScoped<ResetWarframeRevivesHandler>();
+builder.Services.AddTransient<MassLogoutUsersHandler>();
+builder.Services.AddTransient<ResetWarframeRevivesHandler>();
 
 
+
+builder.Services.AddScheduler();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -123,8 +131,16 @@ app.MapRazorPages();
 
 using (var serviceScope = app.Services.CreateScope())
 {
-     serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
+    serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
+    serviceScope.ServiceProvider.GetRequiredService<ResetWarframeRevivesHandler>().Handle(new ResetWarframeRevives() {ResetReason ="System Startup", ResetRegardless =false });
 }
- 
+
+app.Services.UseScheduler(
+    scheduler => {
+        scheduler.Schedule<MassLogoutUsersHandler>().DailyAtHour(0);
+        scheduler.ScheduleWithParams<ResetWarframeRevivesHandler>(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false }).DailyAtHour(0);
+    });
+
+
 
 app.Run(); 

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.1" />
+    <PackageReference Include="Coravel" Version="6.0.2" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.4" />
@@ -23,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Logic\Guild\Create\" />
+    <Folder Include="Logic\Inventory\AttachOrokin\" />
   </ItemGroup>
 
   <ItemGroup>
