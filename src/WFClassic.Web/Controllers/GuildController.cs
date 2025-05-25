@@ -25,6 +25,24 @@ namespace WFClassic.Web.Controllers
             return new JsonResult("{}");
         }
 
+        [HttpPost]
+        [Route("/api/customizeGuildRanks.php")]
+        public ActionResult CustomizeGuildRanks([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+            Console.WriteLine("In customizeGuildRanks");
+
+            return new JsonResult("{}");
+        }
+
+        [HttpPost]
+        [Route("/api/donateToGuild.php")]
+        public ActionResult DonateToGuild([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+            Console.WriteLine("In DonateToGuild");
+
+            return new JsonResult("{}");
+        }
+
         [HttpGet]
         [Route("/api/addToGuild.php")]
         public ActionResult AddToGuild([FromQuery] Guid accountId, [FromQuery] long nonce)
@@ -71,7 +89,7 @@ namespace WFClassic.Web.Controllers
                     },
                     ""DisplayName"" :""beer"",
                     ""Status"": 0,
-                    ""ActiveAvatarImageType"" :""/Lotus/Types/StoreItems/AvatarImages/AvatarImagePack1"",
+                    ""ActiveAvatarImageType"" :"""",
                     ""Rank"" : 2
                                         },
                      {
@@ -80,16 +98,16 @@ namespace WFClassic.Web.Controllers
                     },
                     ""DisplayName"" :""mekael"",
                     ""Status"": 0,
-                    ""ActiveAvatarImageType"" :""/Lotus/Types/StoreItems/AvatarImages/AvatarImagePack1"",
+                    ""ActiveAvatarImageType"" :"""",
                     ""Rank"" : 1
                                         },
                     
-            ] 
+            ]
+
 }
 
 ";
-            cat = "{}";
-            return cat;
+             return cat;
         }
     }
 }
