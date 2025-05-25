@@ -4,6 +4,17 @@ A server emulator which allows you to play older versions of warframe,through to
 This work is based off of the SpaceNinjaServer project, with additional reverse engineering in order to accommodate the different endpoint structures. 
 Currently using .net9 and sqlite for persistence, linux and windows are both supported and builds are self contained, so no runtime install is necessary. 
 
+# Currently Tested Versions
+
+| Version | Build Id |  Manifest Id| Items not working? | Notes |
+|-|-|-| -| -|
+|7.10 | 2013.05.03.18.06/ | 588705282697359018 | | This version has some issues loading certain textures, specifically those around grenades and melee attacks. The issue is within the binary, rather than the assets |
+|7.9 | 2013.04.26.17.24/ | 	6399786153404128119 | | |
+|7.3 | 2013.03.25.11.45/ | 9176710083987114410 | | Oddities with the starchart, least performant of the tested builds. |
+
+
+Builds after 7.10 do not work as of now, and may never work. There seem to either be missing assets or a missing endpoint.
+
 
 # Features
 
