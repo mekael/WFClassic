@@ -34,6 +34,7 @@ using WFClassic.Web.Logic.WFAuth.WFLogout;
 using WFClassic.Web.Logic.Sys.SystemLogout;
 using WFClassic.Web.Logic.Sys.Scheduled;
 using Coravel;
+using WFClassic.Web.Logic.Bonus.Daily;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -90,7 +91,7 @@ builder.Services.AddScoped<MassLogoutUsersHandler>();
 builder.Services.AddScoped<ResetWarframeRevivesHandler>();
 builder.Services.AddTransient<MassLogoutUsersHandler>();
 builder.Services.AddTransient<ResetWarframeRevivesHandler>();
-
+builder.Services.AddTransient<GetDailyMissionBonusHandler>();
 
 
 builder.Services.AddScheduler();

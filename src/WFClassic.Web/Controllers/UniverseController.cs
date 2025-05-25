@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using WFClassic.Web.Logic.Bonus.Daily;
 using WFClassic.Web.Logic.Bonus.Rewards;
 using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Universe.GetState;
@@ -12,10 +13,12 @@ namespace WFClassic.Web.Controllers
     {
         private GetLoginRewardsHandler _getLoginRewardsHandler;
         private GetWorldStateHandler _getWorldStateHandler;
-        public UniverseController(GetLoginRewardsHandler getLoginRewardsHandler, GetWorldStateHandler getWorldStateHandler)
+        private GetDailyMissionBonusHandler _getDailyMissionBonusHandler;
+        public UniverseController(GetLoginRewardsHandler getLoginRewardsHandler, GetWorldStateHandler getWorldStateHandler, GetDailyMissionBonusHandler getDailyMissionBonusHandler)
         {
             _getLoginRewardsHandler = getLoginRewardsHandler;
             _getWorldStateHandler = getWorldStateHandler;
+            _getDailyMissionBonusHandler = getDailyMissionBonusHandler;
         }
 
         [HttpGet]
@@ -45,10 +48,23 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/checkDailyMissionBonus.php")]
-        public string CheckDailyMissionBonus([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult CheckDailyMissionBonus([FromQuery] GetDailyMissionBonus getDailyMissionBonus)
         {
-            var cat = "{DailyMissionBonus:1}";
-            return cat;
+            var result = _getDailyMissionBonusHandler.Handle(getDailyMissionBonus);
+
+            if (result.GetDailyMissionBonusResultStatus == GetDailyMissionBonusResultStatus.Success)
+            {
+                return new JsonResult(result.GetDailyMissionBonusResultReturnJson, new JsonSerializerOptions { PropertyNamingPolicy = null });
+            }
+            else if (result.GetDailyMissionBonusResultStatus == GetDailyMissionBonusResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.GetDailyMissionBonusResultStatus == GetDailyMissionBonusResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+            return StatusCode(500);
         }
 
         [HttpGet]
@@ -165,16 +181,23 @@ namespace WFClassic.Web.Controllers
 }
 
 ";
-            //goals is operations
-
-            //    ""BuildLabel"": ""2013.04.26.17.24/""
-            //""BuildLabel"": ""2013.04.26.17.24/""
 
 
-           var cat =  _getWorldStateHandler.Handle(getWorldState);
-            return new JsonResult(cat.GetWorldStateResultJson, new JsonSerializerOptions { PropertyNamingPolicy = null });
+            var result = _getWorldStateHandler.Handle(getWorldState);
 
-        //    return ws;
+            if (result.GetWorldStateResultStatus == GetWorldStateResultStatus.Success)
+            {
+                return new JsonResult(result.GetWorldStateResultJson, new JsonSerializerOptions { PropertyNamingPolicy = null });
+            }
+            else if (result.GetWorldStateResultStatus == GetWorldStateResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.GetWorldStateResultStatus == GetWorldStateResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+            return StatusCode(500);
         }
 
         [HttpPost]
@@ -187,12 +210,21 @@ namespace WFClassic.Web.Controllers
 
 
 
-        [HttpGet]
-        [Route("/api/hearbeat.php")]
-        public ActionResult Heartbeat([FromQuery] Guid accountId, [FromQuery] long nonce)
+        [HttpPost]
+        [Route("/api/heartbeat.php")]
+        public ActionResult HeartbeatPost()
         {
-            Console.WriteLine("In Goals");
-            return Ok();
+            Console.WriteLine("In heartbeat post");
+            return new JsonResult("");
         }
+
+        [HttpGet]
+        [Route("/api/heartbeat.php")]
+        public ActionResult HeartbeatGet()
+        {
+            Console.WriteLine("In heartbeat get");
+            return new JsonResult("");
+        }
+
     }
 }

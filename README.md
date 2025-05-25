@@ -28,14 +28,14 @@ This is not a comprehensive list of features, just the ones that really seem to 
 
 |Name|Area|Description|Implementation|What needs work|
 |--|--|--|--|--|
-|Login| Autnz ||Fully||
-|Logout| Autnz ||Fully||
+|Login| Authnz ||Fully||
+|Logout| Authnz ||Fully||
 |Initial Training and Warframe Selection| Gameplay ||Fully||
 |Complete Mastery Rank Challenges| Gameplay ||Fully||
 |Attach system wide artifact| Gameplay ||Fully|This is not actually an api endpoint, but instead relies on returnign inventory correctly|
 | Obtain daily login reward| ||Fully| This is customizable and uses older documentation for the rewards listing. Current state drop table percentage is not period accurate |
 | Get the world state | || Partially | Can be configured via db, alerts work for the most part.  operations are not implemented|
-| Validate daily mission bonus status| ||No| Currently hardcoded|
+| Validate daily mission bonus status| ||Fully| |
 | purchase more revives ||No work done||
 | update taunt state | ||Fully*| There may be a bug surrounding the initial lotus explanation after completing training |
 |Get updated credits/plat| Economy ||Fully||
