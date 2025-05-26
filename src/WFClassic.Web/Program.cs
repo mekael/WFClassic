@@ -129,21 +129,26 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-
-
-
 using (var serviceScope = app.Services.CreateScope())
 {
+    // this will either create or migrate the db, depending on whether or not it exists. 
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    if (dbContext.Database.GetPendingMigrations().Any())
+    {
+        dbContext.Database.Migrate();
+    }
+
     serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
-    serviceScope.ServiceProvider.GetRequiredService<ResetWarframeRevivesHandler>().Handle(new ResetWarframeRevives() {ResetReason ="System Startup", ResetRegardless =false });
+    serviceScope.ServiceProvider.GetRequiredService<ResetWarframeRevivesHandler>().Handle(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false });
 }
 
 app.Services.UseScheduler(
-    scheduler => {
+    scheduler =>
+    {
         scheduler.Schedule<MassLogoutUsersHandler>().DailyAtHour(0);
         scheduler.ScheduleWithParams<ResetWarframeRevivesHandler>(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false }).DailyAtHour(0);
     });
 
 
 
-app.Run(); 
+app.Run();

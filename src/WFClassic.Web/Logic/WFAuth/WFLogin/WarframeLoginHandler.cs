@@ -16,11 +16,12 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
         private readonly IConfiguration _configuration;
         private readonly CreatePlayerHandler _createPlayerHandler;
         private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
 
 
         public WarframeLoginHandler(ILogger<WarframeLoginHandler> logger, ApplicationDbContext applicationDbContext,
             SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration,
-            CreatePlayerHandler createPlayerHandler, IUserStore<ApplicationUser> userStore)
+            CreatePlayerHandler createPlayerHandler, IUserStore<ApplicationUser> userStore )
         {
             this._logger = logger;
             this._applicationDbContext = applicationDbContext;
@@ -28,7 +29,8 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             this._userManager = userManager;
             this._configuration = configuration;
             this._createPlayerHandler = createPlayerHandler;
-            _userStore = userStore;
+            this._userStore = userStore;
+            this._emailStore = (IUserEmailStore<ApplicationUser>)_userStore;
         }
 
         public async Task<WarframeLoginResult> Handle(WarframeLoginRequest warframeLoginRequest)
@@ -68,6 +70,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 user.SteamId = "0";
                 user.EmailConfirmed = true;
                 await _userStore.SetUserNameAsync(user, warframeLoginRequest.email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, warframeLoginRequest.email, CancellationToken.None);
                 await _userManager.CreateAsync(user, upperPassword);
                 _createPlayerHandler.Handle(new CreatePlayer() { ApplicationUserId = user.Id, PlatinumGiftAmount = 50 });
                 _logger.LogInformation("WarframeLoginHandler => email {email} =>  new user created ", warframeLoginRequest.email);

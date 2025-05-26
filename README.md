@@ -4,6 +4,13 @@ A server emulator which allows you to play older versions of warframe,through to
 This work is based off of the SpaceNinjaServer project, with additional reverse engineering in order to accommodate the different endpoint structures. 
 Currently using .net9 and sqlite for persistence, linux and windows are both supported and builds are self contained, so no runtime install is necessary. 
 
+# Getting started
+
+Unzip the pacakge, double click the exec, connect via localhost:5001 (or 5000, I can't remmber). The db is now created for you and migrations should be totally automatic.
+
+
+
+
 # Currently Tested Versions
 
 | Version | Build Id |  Manifest Id| Items not working? | Notes |
@@ -39,13 +46,13 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | Initial Training and Warframe Selection | Gameplay || Fully ||
 | Complete Mastery Rank Challenges| Gameplay || Fully ||
 | Attach system wide artifact| Gameplay || Fully |This is not actually an api endpoint, but instead relies on returnign inventory correctly|
-| Obtain daily login reward| || Fully | This is customizable and uses older documentation for the rewards listing. Current state drop table percentage is not period accurate |
-| Get the world state | || Partially | Can be configured via db, alerts work for the most part.  operations are not implemented|
-| Validate daily mission bonus status| || Fully | |
-| purchase more revives || Fully ||
-| update taunt state | ||Fully*| There may be a bug surrounding the initial lotus explanation after completing training |
+| Obtain daily login reward| Gameplay || Fully | This is customizable and uses older documentation for the rewards listing. Current state drop table percentage is not period accurate |
+| Get the world state | Gameplay || Partially | Can be configured via db, alerts work for the most part.  operations are not implemented|
+| Validate daily mission bonus status| Gameplay || Fully | |
+| purchase more revives | Economy || Fully ||
+| update taunt state | Gameplay ||Fully*| There may be a bug surrounding the initial lotus explanation after completing training |
 | Get updated credits/plat| Economy || Fully ||
-| Purchase Item | ||Some work started||
+| Purchase Item | Economy ||Some work started||
 | Craft item in Foundry | Foundry ||Partial|Not all recipes are parsed / available in db|
 | Claim Foundry Item|Foundry || Fully ||
 | Instantly complete item in foundry| Foundry || Fully ||
@@ -63,16 +70,16 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | Send friend request| Friends || Fully ||
 | Remove friend| Friends || Fully ||
 | Approve Friend request | Friends || Fully ||
-| Get friend listing |Friends || Partial / Unknown | More data might need to be returned. but list works.|
+| Get friend listing | Friends || Partial / Unknown | More data might need to be returned. but list works.|
 | Set player avatar | Friends || Fully ||
 | Get Guild Member Listing |Guild || Very Little | right now has hardcoded return object |
-| Create Guild| ||Nothing||
-| Remove member from Guild | ||Nothing||
-| Donate To Guild | ||Nothing||
-| Customize Guild Ranks | ||Nothing||
-| Invite to guild | ||Nothing||
-| Accept guild invite | ||Nothing||
-| change guild rank | ||Nothing||
+| Create Guild| Guild ||Nothing||
+| Remove member from Guild | Guild ||Nothing||
+| Donate To Guild | Guild ||Nothing||
+| Customize Guild Ranks | Guild ||Nothing||
+| Invite to guild | Guild ||Nothing||
+| Accept guild invite | Guild ||Nothing||
+| change guild rank | Guild ||Nothing||
 | Get Messages (Api) | ||Nothing| No idea what this is and it might be a vestigial endpoint|
 | Send Messages (Api) | ||Nothing| No idea what this is and it might be a vestigial endpoint|
 
