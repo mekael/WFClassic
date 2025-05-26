@@ -105,7 +105,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             {
                 ApplicationUserId = user.Id,
                 Nonce = newNonce,
-                IPAddress = warframeLoginRequest.HostName,
+                IPAddress = warframeLoginRequest.UserIpAddress,
                 LoginTimestamp = DateTimeOffset.Now
             };
             _applicationDbContext.LoginTrackingItems.Add(loginTrackingItem);
