@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Logic\Guild\Create\" />
-    <Folder Include="Logic\Inventory\AttachOrokin\" />
   </ItemGroup>
 
   <ItemGroup>

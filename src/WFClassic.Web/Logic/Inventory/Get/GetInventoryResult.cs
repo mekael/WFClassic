@@ -113,7 +113,20 @@ namespace WFClassic.Web.Logic.Inventory.Get
         [JsonPropertyName("Upgrades")]
         public List<GetInventoryResultJsonUpgradeItem> Upgrades { get; set; }
 
+        [JsonPropertyName("FlavourItems")]
+        public List<GetInventoryResultJsonFlavourItem> FlavourItems { get;set; }
+
+        [JsonPropertyName("ActiveAvatarImageType")]
+        public string ActiveAvatarImageType { get; set; }
+
     }
+
+    public class GetInventoryResultJsonFlavourItem
+    {
+        [JsonProperty("ItemType")]
+        public string ItemType { get; set; }
+    }
+
 
     public class GetInventoryResultJsonXpInfoItem
     {
@@ -143,6 +156,12 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonPropertyName("UpgradeFingerprint")]
         public string UpgradeFingerPrint { get; set; }
+
+        [JsonPropertyName("Rank")]
+        public int Rank { get; set; } = 10;
+
+        [JsonPropertyName("AmountRemaining")]
+        public int AmountRemaining { get; set; } = 99999;
     }
 
     public class GetInventoryResultJsonTypeCount

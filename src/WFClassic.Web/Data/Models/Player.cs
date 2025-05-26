@@ -21,6 +21,7 @@
         public DateTime TrainingDate { get; set; }
         public bool ReceivedStartingGear { get; set; }
         public string Founder { get; set; }
+        public string ActiveAvatarImageType { get; set; }
 
         public bool SubscribedToEmails { get; set; }
 

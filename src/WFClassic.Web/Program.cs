@@ -35,6 +35,7 @@ using WFClassic.Web.Logic.Sys.SystemLogout;
 using WFClassic.Web.Logic.Sys.Scheduled;
 using Coravel;
 using WFClassic.Web.Logic.Bonus.Daily;
+using WFClassic.Web.Logic.Friendship.Icon;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,7 +77,6 @@ builder.Services.AddTransient<GetFriendsRequestHandler>();
 builder.Services.AddTransient<RemoveFriendRequestHandler>();
 builder.Services.AddTransient<GetLeaderboardStatsHandler>();
 builder.Services.AddTransient<GetProfileStatsHandler>();
-
 builder.Services.AddTransient<CheckPendingRecipesQueryHandler>();
 builder.Services.AddTransient<StartRecipeBuildHandler>();
 builder.Services.AddTransient<ClaimCompletedRecipeHandler>();
@@ -92,7 +92,7 @@ builder.Services.AddScoped<ResetWarframeRevivesHandler>();
 builder.Services.AddTransient<MassLogoutUsersHandler>();
 builder.Services.AddTransient<ResetWarframeRevivesHandler>();
 builder.Services.AddTransient<GetDailyMissionBonusHandler>();
-
+builder.Services.AddTransient<SetAvatarIconRequestHandler>();
 
 builder.Services.AddScheduler();
 builder.Services.AddControllersWithViews();

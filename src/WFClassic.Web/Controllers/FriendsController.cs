@@ -3,8 +3,10 @@ using System.Text.Json;
 using WFClassic.Web.Logic.Friendship.Add;
 using WFClassic.Web.Logic.Friendship.AddPending;
 using WFClassic.Web.Logic.Friendship.Get;
+using WFClassic.Web.Logic.Friendship.Icon;
 using WFClassic.Web.Logic.Friendship.Remove;
 using WFClassic.Web.Logic.Middleware;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Controllers
 {
@@ -16,22 +18,46 @@ namespace WFClassic.Web.Controllers
         private GetFriendsRequestHandler _getFriendsRequestHandler;
         private AcceptFriendRequestHandler _acceptFriendRequestHandler;
         private RemoveFriendRequestHandler _removeFriendRequestHandler;
+        private SetAvatarIconRequestHandler _setAvatarIconRequestHandler;
 
         public FriendsController(AddPendingFriendHandler addPendingFriendHandler, GetFriendsRequestHandler getFriendsRequestHandler,
-            AcceptFriendRequestHandler acceptFriendRequestHandler, RemoveFriendRequestHandler removeFriendRequestHandler)
+            AcceptFriendRequestHandler acceptFriendRequestHandler, RemoveFriendRequestHandler removeFriendRequestHandler,
+            SetAvatarIconRequestHandler setAvatarIconRequestHandler)
         {
             _addPendingFriendHandler = addPendingFriendHandler;
             _getFriendsRequestHandler = getFriendsRequestHandler;
             _acceptFriendRequestHandler = acceptFriendRequestHandler;
             _removeFriendRequestHandler = removeFriendRequestHandler;
+            _setAvatarIconRequestHandler = setAvatarIconRequestHandler;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/api/addFriendImage.php")]
-        public ActionResult AddFriendImage([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult AddFriendImage( [FromQuery]  SetAvatarIconRequest setAvatarIconRequest )
         {
+            //GET /api/addFriendImage.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=8779661927687983114&avatarImageType=/Lotus/Types/StoreItems/AvatarImages/AvatarImageItem4&avatarImage=Icon04.png HTTP/1.1
+
+            var result = _setAvatarIconRequestHandler.Handle(setAvatarIconRequest);
+
+            if (result.SetAvatarIconResultStatus == SetAvatarIconResultStatus.Success)
+            {
+                return Ok();
+            }
+            else if (result.SetAvatarIconResultStatus == SetAvatarIconResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.SetAvatarIconResultStatus == SetAvatarIconResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+
+
+            Utils.GetRequestObjectAsString(this.HttpContext);
             return new JsonResult("{}");
         }
+ 
+
 
         [HttpGet]
         [Route("/api/addPendingFriend.php")]
