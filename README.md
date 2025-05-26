@@ -8,9 +8,15 @@ Currently using .net9 and sqlite for persistence, linux and windows are both sup
 
 | Version | Build Id |  Manifest Id| Items not working? | Notes |
 |-|-|-| -| -|
-|7.10 | 2013.05.03.18.06/ | 588705282697359018 | | This version has some issues loading certain textures, specifically those around grenades and melee attacks. The issue is within the binary, rather than the assets |
-|7.9 | 2013.04.26.17.24/ | 	6399786153404128119 | | |
-|7.3 | 2013.03.25.11.45/ | 9176710083987114410 | | Oddities with the starchart, least performant of the tested builds. |
+| 7.10 | 2013.05.03.18.06/ | 588705282697359018 | | This version has some issues loading certain textures, specifically those around grenades and melee attacks. The issue is within the binary, rather than the assets |
+| 7.9 | 2013.04.26.17.24/ | 6399786153404128119 | | |
+| 7.8.1 | 2013.04.24.11.45/ | 6629234302933135021 | | |
+| 7.7.4 | 2013.04.15.14.48/ | 8278491043607750104 | | |
+| 7.6 | 2013.04.01.16.24/ | 1412521350878833822 | | |
+| 7.5 | 2013.03.28.17.01/ | 5572824118589588358 | |Grineer corpses disappear after being killed. sometimes. (this looks to be a hotfix as there is another release on the 28th)?  |  
+| 7.4 | 2013.03.27.09.43/ | 1958670258248515033 | | |
+| 7.3 | 2013.03.25.11.45/ | 9176710083987114410 | | Oddities with the starchart, least performant of the tested builds. |
+
 
 
 Builds after 7.10 do not work as of now, and may never work. There seem to either be missing assets or a missing endpoint.
@@ -69,14 +75,12 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | change guild rank | ||Nothing||
 |Get Messages (Api) | ||Nothing| No idea what this is and it might be a vestigial endpoint|
 |Send Messages (Api) | ||Nothing| No idea what this is and it might be a vestigial endpoint|
-| | ||||
-| | ||||
-| | ||||
-| | ||||
+
 
 ## Web Features
 
 |Name|Area|Description|Implementation|What needs work|
+|-|-|-|-|-|
 |Login|Web||Fully||
 |Logout|Web||Fully||
 |Registration|Web||Fully||
@@ -86,7 +90,4 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | Leaderboards (guild) | ||No work done||
 | View player inventory  | ||No work done||
 | Trading system  | ||No work done||
-| | ||||
-| | ||||
-| | ||||
-
+| confirm account via email	|||||
