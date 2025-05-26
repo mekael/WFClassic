@@ -47,12 +47,6 @@ namespace WFClassic.Web.Controllers
             return new JsonResult("{}");
         }
 
-        [HttpPost]
-        [Route("/api/refillRevives.php")]
-        public ActionResult RefillRevives([FromQuery] Guid accountId, [FromQuery] long nonce)
-        {
-            return new JsonResult("{}");
-        }
 
         [HttpPost]
         [Route("/api/recharge.php")]
@@ -77,7 +71,7 @@ namespace WFClassic.Web.Controllers
 
             if (result.AddTauntResultStatus == AddTauntResultStatus.Success)
             {
-                return Ok();
+                return new JsonResult(incomingAddTaunt.Node);
             }
             else if (result.AddTauntResultStatus == AddTauntResultStatus.ValidationErrors)
             {
@@ -90,5 +84,9 @@ namespace WFClassic.Web.Controllers
 
             return new JsonResult("{}");
         }
+
+
+
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Text.Json;
 using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Economics.Purchase;
+using WFClassic.Web.Logic.Economics.Revives;
 using WFClassic.Web.Logic.Economics.Sell;
 using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Shared;
@@ -15,14 +16,47 @@ namespace WFClassic.Web.Controllers
         private GetCreditsHandler _getCreditsHandler;
         private SellItemHandler _sellItemHandler;
         private PurchaseItemHandler _purchaseItemHandler;
+        private PurchaseRevivesHandler _purchaseRevivesHandler;
 
         public EconomyController(GetCreditsHandler getCreditsHandler, SellItemHandler sellItemHandler,
-            PurchaseItemHandler purchaseItemHandler)
+            PurchaseItemHandler purchaseItemHandler, PurchaseRevivesHandler purchaseRevivesHandler)
         {
             _getCreditsHandler = getCreditsHandler;
             _sellItemHandler = sellItemHandler;
             _purchaseItemHandler = purchaseItemHandler;
+            _purchaseRevivesHandler = purchaseRevivesHandler;
         }
+
+        [HttpPost]
+        [Route("/api/refillRevives.php")]
+        public ActionResult RefillRevives([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+            PurchaseRevives purchaseRevives = new PurchaseRevives()
+            {
+                AccountId = accountId,
+                Nonce = nonce,
+                IncomingRefillRevivesJsonObject = Utils.GetRequestObject<IncomingRefillRevivesJsonObject>(this.HttpContext)
+            };
+
+            var result = _purchaseRevivesHandler.Handle(purchaseRevives);
+            if (result.PurchaseRevivesResultStatus == PurchaseRevivesResultStatus.DatabaseErrors  )
+            {
+                return StatusCode(500);
+            }
+            else if (result.PurchaseRevivesResultStatus == PurchaseRevivesResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.PurchaseRevivesResultStatus == PurchaseRevivesResultStatus.Success)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+
+
+         }
+
 
         [Route("api/credits.php")]
         [HttpGet]

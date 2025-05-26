@@ -42,7 +42,7 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | Obtain daily login reward| || Fully | This is customizable and uses older documentation for the rewards listing. Current state drop table percentage is not period accurate |
 | Get the world state | || Partially | Can be configured via db, alerts work for the most part.  operations are not implemented|
 | Validate daily mission bonus status| || Fully | |
-| purchase more revives ||No work done||
+| purchase more revives || Fully ||
 | update taunt state | ||Fully*| There may be a bug surrounding the initial lotus explanation after completing training |
 | Get updated credits/plat| Economy || Fully ||
 | Purchase Item | ||Some work started||

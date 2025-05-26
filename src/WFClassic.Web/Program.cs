@@ -36,6 +36,8 @@ using WFClassic.Web.Logic.Sys.Scheduled;
 using Coravel;
 using WFClassic.Web.Logic.Bonus.Daily;
 using WFClassic.Web.Logic.Friendship.Icon;
+using WFClassic.Web.Logic.Economics.Revives;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -93,7 +95,7 @@ builder.Services.AddTransient<MassLogoutUsersHandler>();
 builder.Services.AddTransient<ResetWarframeRevivesHandler>();
 builder.Services.AddTransient<GetDailyMissionBonusHandler>();
 builder.Services.AddTransient<SetAvatarIconRequestHandler>();
-
+builder.Services.AddTransient<PurchaseRevivesHandler>();
 builder.Services.AddScheduler();
 builder.Services.AddControllersWithViews();
 
