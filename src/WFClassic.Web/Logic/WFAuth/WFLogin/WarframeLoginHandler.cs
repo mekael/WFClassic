@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
+using WFClassic.Web.Logic.Shared;
+using WFClassic.Web.Logic.WFAuth.Initialize;
 
 namespace WFClassic.Web.Logic.WFAuth.WFLogin
 {
@@ -11,20 +14,27 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly CreatePlayerHandler _createPlayerHandler;
+        private readonly IUserStore<ApplicationUser> _userStore;
+
 
         public WarframeLoginHandler(ILogger<WarframeLoginHandler> logger, ApplicationDbContext applicationDbContext,
-            SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+            SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration,
+            CreatePlayerHandler createPlayerHandler, IUserStore<ApplicationUser> userStore)
         {
             this._logger = logger;
             this._applicationDbContext = applicationDbContext;
             this._signInManager = signInManager;
             this._userManager = userManager;
             this._configuration = configuration;
+            this._createPlayerHandler = createPlayerHandler;
+            _userStore = userStore;
         }
 
         public async Task<WarframeLoginResult> Handle(WarframeLoginRequest warframeLoginRequest)
         {
             WarframeLoginResult warframeLoginResult = new WarframeLoginResult();
+            bool createUserIfDoesNotExist = _configuration.GetValue<bool>("AutomaticallyCreateAccountUponInitialLogin");
 
             var validationResults = new WarframeLoginRequestValidator().Validate(warframeLoginRequest);
 
@@ -43,12 +53,29 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
 
             var user = await _userManager.FindByEmailAsync(warframeLoginRequest.email);
 
-            if (user == null)
+            if (user == null && !createUserIfDoesNotExist)
             {
                 _logger.LogWarning("WarframeLoginHandler => email {email} =>  User not found: ", warframeLoginRequest.email);
                 warframeLoginResult.WarframeLoginResultStatus = WarframeLoginResultStatus.UserNotFound;
                 return warframeLoginResult;
             }
+            else if(user == null && createUserIfDoesNotExist)
+            {
+                _logger.LogInformation ("WarframeLoginHandler => email {email} =>  User not found ", warframeLoginRequest.email);
+                _logger.LogWarning("WarframeLoginHandler => email {email} =>  Creating new user instance ", warframeLoginRequest.email);
+                user = Activator.CreateInstance<ApplicationUser>();
+                user.DisplayName = warframeLoginRequest.email.Split("@")[0];
+                user.SteamId = "0";
+                user.EmailConfirmed = true;
+                await _userStore.SetUserNameAsync(user, warframeLoginRequest.email, CancellationToken.None);
+                await _userManager.CreateAsync(user, upperPassword);
+                _createPlayerHandler.Handle(new CreatePlayer() { ApplicationUserId = user.Id, PlatinumGiftAmount = 50 });
+                _logger.LogInformation("WarframeLoginHandler => email {email} =>  new user created ", warframeLoginRequest.email);
+
+            }
+
+
+
             _logger.LogInformation("WarframeLoginHandler => email {email} =>  User Found", warframeLoginRequest.email);
 
             _logger.LogInformation("WarframeLoginHandler => email {email} =>  Signing in", warframeLoginRequest.email);
@@ -111,14 +138,10 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 {
                     id = user.Id.ToString(),
                     BuildLabel = _configuration.GetValue<string>("BuildLabel"), 
-                    // BuildLabel = "2013.05.03.18.06/", // 7.10
-                    // BuildLabel = "2013.04.26.17.24/", // 7.9
-                    // BuildLabel = "2013.05.17.15.42/", // 7.11
-                    // BuildLabel = "2013.03.25.11.45/", // 7.3
                     DisplayName = user.DisplayName,
                     NatHash = "127.0.0.1:88",
                     Nonce = user.CurrentNonce,
-                    SteamId = user.SteamId
+                    SteamId = "0"
                 };
             }
 
