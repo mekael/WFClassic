@@ -1,12 +1,28 @@
 # WFClassic
 
-A server emulator which allows you to play older versions of warframe,through to 7.10.
-This work is based off of the SpaceNinjaServer project, with additional reverse engineering in order to accommodate the different endpoint structures. 
+A server emulator which allows you to play older versions of warframe, 7.3 => 7.10.
+
+This work a combination of information from the SpaceNinjaServer project, additional reverse engineering of earlier builds, trial and error, and a decent amount.
 Currently using .net9 and sqlite for persistence, linux and windows are both supported and builds are self contained, so no runtime install is necessary. 
 
 # Getting started
 
-Unzip the pacakge, double click the exec, connect via localhost:5001 (or 5000, I can't remmber). The db is now created for you and migrations should be totally automatic.
+
+1.  Unzip the package to your desired location
+2. In appsettings.json , set  ```BuildLabel``` to the corresponding version of your client.  
+3. Run the executable 
+4. Wait for the db to be created / migrations complete. 
+5. ????
+6. Profit
+
+
+You can either create an account via the web interface (http://localhost:5000) or an account will be created automatigally for you upon initial login using the waframe client.
+
+In the steam content folder, ```C:\Program Files (x86)\Steam\steamapps\content\app_230410\depot_230411```, run the following
+
+```
+Warframe.x64.exe -log -dx11:1 -webserver:http://localhost:5000/api/ -fullscreen
+```
 
 
 
