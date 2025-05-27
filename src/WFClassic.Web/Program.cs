@@ -37,6 +37,7 @@ using Coravel;
 using WFClassic.Web.Logic.Bonus.Daily;
 using WFClassic.Web.Logic.Friendship.Icon;
 using WFClassic.Web.Logic.Economics.Revives;
+using Serilog;
 
 
 
@@ -98,6 +99,18 @@ builder.Services.AddTransient<SetAvatarIconRequestHandler>();
 builder.Services.AddTransient<PurchaseRevivesHandler>();
 builder.Services.AddScheduler();
 builder.Services.AddControllersWithViews();
+
+var loggerConfig = new LoggerConfiguration();
+loggerConfig.WriteTo.Console();
+
+if (builder.Configuration.GetValue<bool>("LogToDisk"))
+{
+    loggerConfig.WriteTo.File("./logs/wfclassic.log", rollOnFileSizeLimit: true);
+}
+
+Log.Logger = loggerConfig.CreateLogger();
+
+builder.Services.AddSerilog();
 
 var app = builder.Build();
 
