@@ -39,7 +39,10 @@ namespace WFClassic.Web.Logic.Sys.Scheduled
                 _logger.LogInformation("ResetWarframeRevives => resetReason {ResetReason} => Searching for last successful reset ", resetWarframeRevives.ResetReason);
                 lastReviveResetDate = _applicationDbContext.SystemTaskHistory
                                                                             .Where(w => w.SystemTaskType == SystemTaskType.ResetRevives && w.TaskWasSuccessful)
-                                                                            .Max(md => md.TaskExecutionTimestamp);
+                                                                            .Select(s => s.TaskExecutionTimestamp)
+                                                                            .ToList()
+                                                                            .OrderByDescending(obd=> obd)
+                                                                            .FirstOrDefault();
                 _logger.LogInformation("ResetWarframeRevives => resetReason {ResetReason} =>  Reset timestamp obtained", resetWarframeRevives.ResetReason);
             }
             catch(Exception ex)
