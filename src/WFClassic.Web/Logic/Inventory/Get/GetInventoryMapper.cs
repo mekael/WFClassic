@@ -34,6 +34,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 });
             }
 
+ 
        
             return new GetInventoryResultDetails()
 
@@ -43,10 +44,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 DeathMarks = new List<string>() { },
                 Founder = 2,
                 InvalidBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
-                MiscBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
-                SuitBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
-                SentinelBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
-                WeaponBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
+                MiscBin = GetBin(InventoryBinType.Misc, player.InventoryBins),
+                SuitBin = GetBin(InventoryBinType.Suit, player.InventoryBins),
+                SentinelBin = GetBin(InventoryBinType.Sentinel, player.InventoryBins),
+                WeaponBin = GetBin(InventoryBinType.Weapon, player.InventoryBins),
                 Cards = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Cards),
                 LongGuns = GetEquipmentByType(InternalInventoryItemType.LongGuns, player.InventoryItems),
                 Pistols = GetEquipmentByType(InternalInventoryItemType.Pistols, player.InventoryItems),
@@ -64,7 +65,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 PlayerLevel = player.PlayerLevel,
                 PlayerXP = player.PlayerXP,
                 Rating = player.Rating,
-                RewardSeed = 102938102938,
+                RewardSeed = new Random().NextInt64(),
                 XPInfo = player.InventoryItems.Where(w => xpItems.Contains(w.InternalInventoryItemType)).Select(s => new GetInventoryResultJsonXpInfoItem() { ItemType = s.ItemType, XP = s.XP }).ToList(),
                 ReceivedStartingGear = player.ReceivedStartingGear,
                 SubscribedToEmails = Convert.ToInt32(player.SubscribedToEmails),
@@ -72,7 +73,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 PremiumCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.Platinum).Select(s => s.CurrentBalance).Sum(),
                 RegularCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.StandardCredits).Select(s => s.CurrentBalance).Sum(),
                 TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node }).ToList(),
-                Upgrades = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Upgrades)
+                Upgrades = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Upgrades),                
             };
         }
 
