@@ -7,7 +7,6 @@ namespace WFClassic.Web.Logic.Credits.Add
         public AddAccountTransactionValidator()
         {
             RuleFor(r => r.AccountId).NotEmpty();
-            RuleFor(r => r.Amount).GreaterThanOrEqualTo(0);
         }
     }
 }

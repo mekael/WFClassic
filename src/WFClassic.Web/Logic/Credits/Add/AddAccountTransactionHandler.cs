@@ -73,7 +73,9 @@ namespace WFClassic.Web.Logic.Credits.Add
                 }
             }
 
-            bankAccount.CurrentBalance += addAccountTransaction.Amount;
+            int multiplier = addAccountTransaction.BankAccountTransactionType == Data.Enums.BankAccountTransactionType.Credit ? 1 : -1;
+
+            bankAccount.CurrentBalance += multiplier * Math.Abs(addAccountTransaction.Amount);
             bankAccount.BankAccountTransactions.Add(
                 new BankAccountTransaction()
                 {
