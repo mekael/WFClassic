@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using WFClassic.Web.Logic.Economics.Slots;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Inventory.Attach;
 using WFClassic.Web.Logic.Inventory.Attach.Modifications;
@@ -24,10 +25,10 @@ namespace WFClassic.Web.Controllers
         private UpgradeArtifactHandler _upgradeArtifactHandler;
         private UpdateLoadoutHandler _updateLoadoutHandler;
         private AttachOrokinModHandler _attachOrokinModHandler;
-
+        private PurchaseSlotsHandler _purchaseSlotsHandler;
         public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler,
             UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler, UpgradeArtifactHandler upgradeArtifactHandler,
-            UpdateLoadoutHandler updateLoadoutHandler, AttachOrokinModHandler attachOrokinModHandler)
+            UpdateLoadoutHandler updateLoadoutHandler, AttachOrokinModHandler attachOrokinModHandler, PurchaseSlotsHandler purchaseSlotsHandler)
         {
             _giveStartingGearHandler = giveStartingGearHandler;
             _getInventoryHandler = getInventoryHandler;
@@ -36,18 +37,35 @@ namespace WFClassic.Web.Controllers
             _upgradeArtifactHandler = upgradeArtifactHandler;
             _updateLoadoutHandler = updateLoadoutHandler;
             _attachOrokinModHandler = attachOrokinModHandler;
+            _purchaseSlotsHandler = purchaseSlotsHandler;
         }
 
         [HttpPost]
         [Route("/api/inventorySlots.php")]
-        public ActionResult InventorySlots(Guid accountId, long nonce)
+        public ActionResult InventorySlots([FromQuery]Guid accountId, [FromQuery] long nonce)
         {
-            Console.WriteLine("InventorySlots");
-            Utils.GetRequestObjectAsString(this.HttpContext);
 
-            // Buy new inventory slots
+            PurchaseSlots purchaseSlots = new PurchaseSlots()
+            {
+                AccountId = accountId,
+                Nonce = nonce,
+                IncomingPurchaseSlotsJsonObject = Utils.GetRequestObjectAsString(this.HttpContext)
+            };
 
-            return new JsonResult("{cats}");
+            var result = _purchaseSlotsHandler.Handle(purchaseSlots);
+            if (result.PurchaseSlotsResultStatus == PurchaseSlotsResultStatus.Success)
+            {
+                return Ok();
+            }
+            else if (result.PurchaseSlotsResultStatus == PurchaseSlotsResultStatus.ValidationErrors)
+            {
+                return BadRequest();
+            }
+            else if (result.PurchaseSlotsResultStatus == PurchaseSlotsResultStatus.DatabaseErrors)
+            {
+                return StatusCode(500);
+            }
+            return StatusCode(500);
         }
 
         [HttpPost]

@@ -82,7 +82,7 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | Upgrade Mods| Gear || Fully ||
 | Save loadout| Gear || Fully ||
 | Attach reactors / catalysts to frames/weapons| Gear|| Fully ||
-| Purchase new inventory slots (frames and weapons)| Gear ||No work started||
+| Purchase new inventory slots (frames and weapons)| Gear ||Fully||
 | Send friend request| Friends || Fully ||
 | Remove friend| Friends || Fully ||
 | Approve Friend request | Friends || Fully ||

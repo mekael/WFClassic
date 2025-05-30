@@ -38,6 +38,7 @@ using WFClassic.Web.Logic.Bonus.Daily;
 using WFClassic.Web.Logic.Friendship.Icon;
 using WFClassic.Web.Logic.Economics.Revives;
 using Serilog;
+using WFClassic.Web.Logic.Economics.Slots;
 
 
 
@@ -97,6 +98,10 @@ builder.Services.AddTransient<ResetWarframeRevivesHandler>();
 builder.Services.AddTransient<GetDailyMissionBonusHandler>();
 builder.Services.AddTransient<SetAvatarIconRequestHandler>();
 builder.Services.AddTransient<PurchaseRevivesHandler>();
+builder.Services.AddTransient<PurchaseSlotsHandler>();
+
+
+
 builder.Services.AddScheduler();
 builder.Services.AddControllersWithViews();
 
