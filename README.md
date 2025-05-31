@@ -57,8 +57,9 @@ This is not a comprehensive list of features, just the ones that really seem to 
 
 |Name|Area|Description|Implementation|What needs work|
 |--|--|--|--|--|
-| Login | Authnz | Gameplay | Fully ||
-| Logout | Authnz | Gameplay | Fully ||
+| Automatic Account Creation| Gameplay| Upon initial login from client, a new account will be created if one does not already exist | Fully ||
+| Login | Authnz |  | Fully ||
+| Logout | Authnz |  | Fully ||
 | Initial Training and Warframe Selection | Gameplay || Fully ||
 | Complete Mastery Rank Challenges| Gameplay || Fully ||
 | Attach system wide artifact| Gameplay || Fully |This is not actually an api endpoint, but instead relies on returnign inventory correctly|
@@ -69,7 +70,7 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | update taunt state | Gameplay ||Fully*| There may be a bug surrounding the initial lotus explanation after completing training |
 | Get updated credits/plat| Economy || Fully ||
 | Purchase Item | Economy ||Some work started||
-| Craft item in Foundry | Foundry ||Partial|Not all recipes are parsed / available in db|
+| Craft item in Foundry | Foundry ||Fully|all known recipes as of 7.10.0 are included|
 | Claim Foundry Item|Foundry || Fully ||
 | Instantly complete item in foundry| Foundry || Fully ||
 | Check build status in foundry | Foundry  || Fully ||
@@ -114,3 +115,4 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | View player inventory  | ||No work done||
 | Trading system  | ||No work done||
 | confirm account via email	|||||
+| ban player	|||||
