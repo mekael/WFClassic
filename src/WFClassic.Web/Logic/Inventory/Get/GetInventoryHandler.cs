@@ -38,6 +38,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
             {
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", getInventory.AccountId, getInventory.Nonce);
                 player = _applicationDbContext.Players
+                    .AsSplitQuery()
                     .Include(i => i.InventoryItems)
                     .Include(i => i.InventoryBins)
                     .Include(i => i.Missions)
