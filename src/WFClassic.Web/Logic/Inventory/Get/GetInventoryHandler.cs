@@ -34,7 +34,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
             Player player = null;
             List<InventoryItemAttachment> attachments = null;
 
-            ///Lotus/Powersuits/Saryn/PoisonAbilityCard
             try
             {
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", getInventory.AccountId, getInventory.Nonce);
@@ -59,11 +58,14 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
             try
             {
+                _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Start of mapping onto result ", getInventory.AccountId, getInventory.Nonce);
                 result.GetInventoryResultDetails = GetInventoryMapper.Map(player, attachments);
                 result.GetInventoryResultStatus = GetInventoryResultStatus.Success;
+                _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => inventory query finished ", getInventory.AccountId, getInventory.Nonce);
             }
             catch (Exception ex)
             {
+                _logger.LogError("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Exception while mapping onto inventory result : {Ex}", getInventory.AccountId, getInventory.Nonce, ex);
                 result.GetInventoryResultStatus = GetInventoryResultStatus.MappingFailure;
             }
 
