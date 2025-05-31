@@ -41,7 +41,7 @@ namespace WFClassic.Web.Logic.Foundry.Start
                                                       .Include(i => i.InventoryItems)
                                                       .FirstOrDefault(fod => fod.ApplicationUserId == startRecipeBuild.AccountId);
 
-                recipe = _applicationDbContext.Recipes.AsNoTracking()
+                recipe = _applicationDbContext.Recipes.AsNoTrackingWithIdentityResolution()
                                                       .Include(i => i.RecipeComponentItems)
                                                       .FirstOrDefault(fod => fod.RecipeItemName == startRecipeBuild.RecipeName);
             }
