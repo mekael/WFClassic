@@ -111,7 +111,6 @@ namespace WFClassic.Web.Controllers
         {
             GetInventoryResult result = _getInventoryHandler.Handle(getInventory);
 
-            Console.WriteLine(JsonSerializer.Serialize(result.GetInventoryResultDetails));
 
             if (result.GetInventoryResultStatus == GetInventoryResultStatus.Success)
             {
