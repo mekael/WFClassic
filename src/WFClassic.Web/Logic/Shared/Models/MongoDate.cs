@@ -9,6 +9,10 @@ namespace WFClassic.Web.Logic.Shared.Models
 
         public MongoDate(DateTime date)
         {
+            if(date == DateTime.MinValue)
+            {
+                date = DateTime.Now;
+            }
             MongoLongDate = new MongoLongDate() { NumberLong = new DateTimeOffset(date).ToUnixTimeMilliseconds().ToString() };
         }
     }
