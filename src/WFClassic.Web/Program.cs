@@ -39,6 +39,9 @@ using WFClassic.Web.Logic.Friendship.Icon;
 using WFClassic.Web.Logic.Economics.Revives;
 using Serilog;
 using WFClassic.Web.Logic.Economics.Slots;
+using WFClassic.Web.Logic;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using WFClassic.Web.Logic.Middleware;
 
 
 
@@ -99,7 +102,8 @@ builder.Services.AddTransient<GetDailyMissionBonusHandler>();
 builder.Services.AddTransient<SetAvatarIconRequestHandler>();
 builder.Services.AddTransient<PurchaseRevivesHandler>();
 builder.Services.AddTransient<PurchaseSlotsHandler>();
-
+builder.Services.AddTransient<ProblemDetailsFactory, WFClassicProblemDetailsFactory>();
+builder.Services.AddHttpLogging();
 
 
 builder.Services.AddScheduler();
@@ -117,6 +121,9 @@ Log.Logger = loggerConfig.CreateLogger();
 
 builder.Services.AddSerilog();
 
+builder.Services.AddProblemDetails();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -130,7 +137,7 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseHttpLogging();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
