@@ -2,7 +2,7 @@
 
 A server emulator which allows you to play older versions of warframe, 7.3 => 7.10.
 
-This work a combination of information from the SpaceNinjaServer project, additional reverse engineering of earlier builds, trial and error, and a decent amount.
+This work a combination of information from the SpaceNinjaServer project, additional reverse engineering of earlier builds, trial and error, and a decent amount of coffee.
 Currently using .net9 and sqlite for persistence, linux and windows are both supported and builds are self contained, so no runtime install is necessary. 
 
 # Getting started
@@ -25,6 +25,11 @@ Warframe.x64.exe -log -dx11:1 -webserver:http://localhost:5000/api/ -fullscreen
 ```
 
 
+There is also an online server available which supports the 7.9 build that is listed below 
+
+```
+.\Warframe.x64.exe -log -dx11:1 -webserver:http://138.197.55.72:5000/api/ 
+```
 
 
 # Currently Tested Versions
