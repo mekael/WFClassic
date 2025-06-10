@@ -45,6 +45,11 @@ namespace WFClassic.Web.Logic.WFAuth.Initialize
                                                     Amount = createPlayer.PlatinumGiftAmount,
                                                     BankAccountTransactionType =BankAccountTransactionType.Credit,
                                                     MemoCode="Intial Plat Gift" } }
+                                        },
+                      new BankAccount()
+                                        {
+                                            BankAccountType = CurrencyType.StandardCredits,
+                                            CurrentBalance = 0 
                                         }
                 }
             };

@@ -104,7 +104,7 @@ namespace WFClassic.Web.Logic.Economics.Revives
             // add plat transaction. 
             // honestly we don't care if this succeed 
             _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = purchaseRevives.AccountId, 
-                                                                                Amount = -3 * revivesToPurchase, 
+                                                                                Amount = 3 * revivesToPurchase, 
                                                                                 BankAccountTransactionType = BankAccountTransactionType.Debit, 
                                                                                 BankAccountType = CurrencyType.Platinum, 
                                                                                 MemoCode = "Purchase revives" });

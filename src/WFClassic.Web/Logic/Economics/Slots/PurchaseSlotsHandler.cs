@@ -107,7 +107,7 @@ namespace WFClassic.Web.Logic.Economics.Slots
             _addAccountTransactionHandler.Handle(new AddAccountTransaction()
             {
                 AccountId = purchaseSlots.AccountId,
-                Amount = -1 * platToCharge,
+                Amount =   platToCharge,
                 BankAccountTransactionType = BankAccountTransactionType.Debit,
                 BankAccountType = CurrencyType.Platinum,
                 MemoCode = "Purchase revives"

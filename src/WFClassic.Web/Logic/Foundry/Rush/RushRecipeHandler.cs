@@ -96,7 +96,7 @@ namespace WFClassic.Web.Logic.Foundry.Rush
             }
 
             //TODO: fix this, or turn it into an atomic action.
-            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = rushRecipe.AccountId, Amount = -1 * recipe.SkipBuildPriceInPlatinum, BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit, BankAccountType = Data.Enums.CurrencyType.Platinum, MemoCode = recipe.RecipeItemName });
+            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = rushRecipe.AccountId, Amount =  recipe.SkipBuildPriceInPlatinum, BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit, BankAccountType = Data.Enums.CurrencyType.Platinum, MemoCode = recipe.RecipeItemName });
 
             rushRecipeResult.RushRecipeResultStatus = RushRecipeResultStatus.Success;
             return rushRecipeResult;

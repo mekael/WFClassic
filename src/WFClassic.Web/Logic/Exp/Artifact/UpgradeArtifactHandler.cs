@@ -131,7 +131,7 @@ namespace WFClassic.Web.Logic.Exp.Artifact
             _addAccountTransactionHandler.Handle(new AddAccountTransaction()
             {
                 AccountId = upgradeArtifact.AccountId,
-                Amount = -1 * upgradeArtifact.IncomingUpgradeArtifactRequest.Cost,
+                Amount = upgradeArtifact.IncomingUpgradeArtifactRequest.Cost,
                 BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit,
                 BankAccountType = Data.Enums.CurrencyType.StandardCredits,
                 MemoCode = $"Upgraded {upgradeArtifact.IncomingUpgradeArtifactRequest.Upgrade.ItemId.id}"

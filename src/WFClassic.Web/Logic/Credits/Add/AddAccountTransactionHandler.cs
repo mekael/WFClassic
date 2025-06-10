@@ -79,7 +79,7 @@ namespace WFClassic.Web.Logic.Credits.Add
             bankAccount.BankAccountTransactions.Add(
                 new BankAccountTransaction()
                 {
-                    Amount = addAccountTransaction.Amount,
+                    Amount = Math.Abs(addAccountTransaction.Amount),
                     MemoCode = addAccountTransaction.MemoCode,
                     BankAccountTransactionType = addAccountTransaction.BankAccountTransactionType
                 }
