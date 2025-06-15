@@ -49,8 +49,8 @@ namespace WFClassic.Web.Logic.Credits.Get
 
             result.GetCreditsResultDetails = new GetCreditsResultDetails()
             {
-                RegularCredits = regularCredits.HasValue ? regularCredits.Value : 0,
-                PremiumCredits = premiumCredits.HasValue ? premiumCredits.Value : 0
+                RegularCredits = regularCredits.HasValue && regularCredits.Value >0 ? regularCredits.Value : 0,
+                PremiumCredits = premiumCredits.HasValue && premiumCredits.Value > 0 ? premiumCredits.Value : 0
             };
             result.GetCreditsResultStatus = GetCreditsResultStatus.Success;
 

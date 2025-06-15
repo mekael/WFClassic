@@ -34,7 +34,8 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 });
             }
 
- 
+            var premiumCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.Platinum).Select(s => s.CurrentBalance).Sum();
+            var regularCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.StandardCredits).Select(s => s.CurrentBalance).Sum();
        
             return new GetInventoryResultDetails()
 
@@ -70,8 +71,8 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 ReceivedStartingGear = player.ReceivedStartingGear,
                 SubscribedToEmails = Convert.ToInt32(player.SubscribedToEmails),
                 TrainingDate = new MongoDate(player.TrainingDate),
-                PremiumCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.Platinum).Select(s => s.CurrentBalance).Sum(),
-                RegularCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.StandardCredits).Select(s => s.CurrentBalance).Sum(),
+                PremiumCredits = premiumCredits >0 ? premiumCredits: 0,
+                RegularCredits = regularCredits > 0 ? regularCredits : 0,
                 TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node }).ToList(),
                 Upgrades = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Upgrades),                
             };
