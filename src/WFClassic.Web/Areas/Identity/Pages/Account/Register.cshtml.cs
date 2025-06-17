@@ -82,8 +82,7 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account
             [Display(Name = "Display Name")]
             public string DisplayName { get; set; }
 
-            [Display(Name = "Steam Id")]
-            public string SteamId { get; set; }
+ 
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -120,7 +119,7 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 string hashedPassword = Utils.GetWhirlpoolHash(Input.Password);
                 user.DisplayName = Input.DisplayName;
-                user.SteamId = Input.SteamId;
+                user.SteamId = "0";
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

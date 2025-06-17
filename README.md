@@ -53,7 +53,8 @@ Builds after 7.10 do not work as of now, and may never work. There seem to eithe
 # Features
 
 Nothing related to multiplayer has been added to the code base, and most likely never will. This is due to the fact that I dont want to get sued.
-IRC has not yet been implemented, though this is a feature planned for a later release.
+ 
+
 
 ## Client Features
 
@@ -72,7 +73,7 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | Get the world state | Gameplay || Partially | Can be configured via db, alerts work for the most part.  operations are not implemented|
 | Validate daily mission bonus status| Gameplay || Fully | |
 | purchase more revives | Economy || Fully ||
-| update taunt state | Gameplay ||Fully*| There may be a bug surrounding the initial lotus explanation after completing training |
+| update taunt state | Gameplay ||Fully|  |
 | Get updated credits/plat| Economy || Fully ||
 | Purchase Item | Economy ||Some work started||
 | Craft item in Foundry | Foundry ||Fully|all known recipes as of 7.10.0 are included|
@@ -104,6 +105,9 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | change guild rank | Guild ||Nothing||
 | Get Messages (Api) | ||Nothing| No idea what this is and it might be a vestigial endpoint|
 | Send Messages (Api) | ||Nothing| No idea what this is and it might be a vestigial endpoint|
+| Get Ignored IRC Users | Client:IRC ||| |
+| Add IRC User To Ignore List | Client:IRC ||| |
+| Remove IRC User From Ignore List | Client:IRC ||| |
 
 
 ## Web Features
@@ -121,3 +125,30 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | Trading system  | ||No work done||
 | confirm account via email	|||||
 | ban player	|||||
+
+
+
+
+## IRC
+
+In order to use IRC at the moment, you must run the client on port 80 or 443. Any IRC server can be used as long as it is running on ports 6695 to 6699. 
+This IRC server will not, by default, be secured as the WF client does not provide a user/password combo. Instead the userId and and current nonce are provided as part of the USER command. 
+
+```
+USER {UserIdGuid} 0 ** {CurrentNonce}
+```
+
+
+If you are utilizing inspircd you can configure sqlauth to query the sqlite db, the current nonce will be used as one time password, similar to how the client utilizes it. 
+It's unknown whether or not the warframe client will routinely attempt to reauthenticate with the IRC server, so irc connections might not be dropped if the wfclassic server restarts.
+
+```sql 
+select  id
+from AspNetUsers anu 
+where 
+id = '$ident'
+and CurrentNonce  = $real
+and CurrentNonce != 0
+limit 1
+```
+

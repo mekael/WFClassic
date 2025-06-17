@@ -1,8 +1,21 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration configuration
+@{
+    string clientVersion = configuration.GetValue<string>("BuildLabel");
+    string serverVersion = configuration.GetValue<string>("ServerVersion");
+    bool automaticCreationOfLoginViaClient = configuration.GetValue<bool>("AutomaticallyCreateAccountUponInitialLogin");
+    var serverIp = this.Context.Features.Get<IHttpConnectionFeature>()?.LocalIpAddress.ToString();
+}
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Server Version: @serverVersion</p>
+    <p>Supported Client Version:  @clientVersion </p>
+    <p>Automatic creation of account enabled:  @automaticCreationOfLoginViaClient </p>
+    <p>Server Ip Address: @serverIp </p>
 </div>
