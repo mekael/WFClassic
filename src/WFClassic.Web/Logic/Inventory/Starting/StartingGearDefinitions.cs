@@ -47,6 +47,7 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Melee,
                 ItemType = "/Lotus/Weapons/Tenno/Melee/LongSword/LongSword",
                 ItemName = "LongSword",
+                 UpgradeVer=101
             },
               new InventoryItem()
             {
@@ -54,6 +55,7 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Pistols,
                 ItemType = "/Lotus/Weapons/Tenno/Pistol/Pistol",
                 ItemName = "Lato",
+                 UpgradeVer=101
             },
             new InventoryItem()
             {
@@ -61,6 +63,7 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 InternalInventoryItemType = Data.Enums.InternalInventoryItemType.LongGuns,
                 ItemType = "/Lotus/Weapons/Tenno/Rifle/Rifle",
                 ItemName = "MK1-Braton",
+                 UpgradeVer=101
             }
             };
         }

@@ -98,7 +98,7 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                     ItemName = recipe.ResultItemPrettyName,
                     PlayerId = player.Id,
                     InternalInventoryItemType = recipe.InternalInventoryItemType,
-                    UpgradeVer = 100
+                    UpgradeVer = 101
                 };
                 _applicationDbContext.InventoryItems.Add(builtItem);
             }
