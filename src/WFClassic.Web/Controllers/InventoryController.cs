@@ -186,7 +186,6 @@ namespace WFClassic.Web.Controllers
             }
 
 
-            result = _attachModsHandler.Handle(attachMods);
 
             if (result.AttachModsResultStatus == AttachModsResultStatus.ValidationErrors)
             {
@@ -198,7 +197,7 @@ namespace WFClassic.Web.Controllers
                 return StatusCode(500);
             }
 
-            return new JsonResult("");
+            return Ok();
         }
 
         [HttpGet]
