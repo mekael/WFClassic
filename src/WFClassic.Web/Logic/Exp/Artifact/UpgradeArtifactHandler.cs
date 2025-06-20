@@ -77,7 +77,7 @@ namespace WFClassic.Web.Logic.Exp.Artifact
                 result.UpgradeArtifactResultStatus = UpgradeArtifactResultStatus.ValidationErrors;
                 return result;
             }
-            else if (itemToUpgrade.UpgradeFingerprint != itemToUpgrade.UpgradeFingerprint)
+            else if (itemToUpgrade.UpgradeFingerprint != inventoryItemToUpgrade.UpgradeFingerprint)
             {
                 // already upgraded
                 _logger.LogError("UpgradeArtifactHandler => accountId {AccountID} nonce {Nonce} => Artifact has already been updated", upgradeArtifact.AccountId, upgradeArtifact.Nonce);
@@ -109,7 +109,7 @@ namespace WFClassic.Web.Logic.Exp.Artifact
                 return result;
             }
 
-            inventoryItemToUpgrade.UpgradeFingerprint = itemToUpgrade.UpgradeFingerprint;
+            inventoryItemToUpgrade.UpgradeFingerprint = upgradeArtifact.IncomingUpgradeArtifactRequest.Fingerprint;
             _applicationDbContext.Entry(inventoryItemToUpgrade).State = EntityState.Modified;
             foreach (var consumedItem in consumedItems)
             {
