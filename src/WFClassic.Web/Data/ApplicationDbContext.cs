@@ -12,6 +12,24 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     {
     }
 
+    public override int SaveChanges()
+    {
+        var addedOrUpdatedEntries = ChangeTracker.Entries<EntityBase>().Where(w => w.State == EntityState.Added || w.State == EntityState.Modified);
+        var addedEntries = ChangeTracker.Entries<EntityBase>().Where(w => w.State == EntityState.Added);
+        foreach(var entry in addedOrUpdatedEntries)
+        {
+            entry.Entity.LastModificationTimestamp = DateTimeOffset.Now;
+        }
+
+        foreach (var entry in addedEntries)
+        {
+            entry.Entity.CreationTimestamp = DateTimeOffset.Now;
+        }
+
+        return base.SaveChanges();
+    }
+
+
     public DbSet<LoginTrackingItem> LoginTrackingItems { get; set; }
     public DbSet<BankAccount> BankAccounts { get; set; }
     public DbSet<BankAccountTransaction> BankAccountsTransaction { get; set; }
