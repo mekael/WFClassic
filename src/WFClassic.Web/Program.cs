@@ -107,7 +107,13 @@ builder.Services.AddHttpLogging();
 
 
 builder.Services.AddScheduler();
+
+#if DEBUG
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+#else
+builder.Services.AddControllersWithViews();
+#endif
+
 
 var loggerConfig = new LoggerConfiguration();
 loggerConfig.WriteTo.Console();
