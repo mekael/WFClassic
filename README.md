@@ -7,6 +7,12 @@ Currently using .net9 and sqlite for persistence, linux and windows are both sup
 
 # Getting started
 
+Download the version of the 7x branch you'd like to play using the steam console, here is the command to download the 7.9 version
+
+```
+download_depot 230410 230411 6399786153404128119
+```
+
 
 1.  Unzip the package to your desired location
 2. In appsettings.json , set  ```BuildLabel``` to the corresponding version of your client.  
@@ -21,7 +27,7 @@ You can either create an account via the web interface (http://localhost:5000) o
 In the steam content folder, ```C:\Program Files (x86)\Steam\steamapps\content\app_230410\depot_230411```, run the following
 
 ```
-Warframe.x64.exe -log -dx11:1 -webserver:http://localhost:5000/api/ -fullscreen
+.\Warframe.x64.exe -log -dx11:1 -webserver:http://localhost:5000/api/ -fullscreen
 ```
 
 
