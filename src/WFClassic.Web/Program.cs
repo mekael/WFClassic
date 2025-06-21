@@ -42,6 +42,7 @@ using WFClassic.Web.Logic.Economics.Slots;
 using WFClassic.Web.Logic;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WFClassic.Web.Logic.Middleware;
+using Serilog.Filters;
 
 
 
@@ -116,11 +117,13 @@ builder.Services.AddControllersWithViews();
 
 
 var loggerConfig = new LoggerConfiguration();
-loggerConfig.WriteTo.Console();
 
+loggerConfig.WriteTo.Console();
+loggerConfig.Filter.ByExcluding(Matching.FromSource("Microsoft.EntityFrameworkCore.Database.Command"));
+ 
 if (builder.Configuration.GetValue<bool>("LogToDisk"))
 {
-    loggerConfig.WriteTo.File("./logs/wfclassic.log", rollOnFileSizeLimit: true);
+    loggerConfig.WriteTo.File("./logs/wfclassic.log", rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day);
 }
 
 Log.Logger = loggerConfig.CreateLogger();
