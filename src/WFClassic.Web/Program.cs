@@ -43,6 +43,7 @@ using WFClassic.Web.Logic;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WFClassic.Web.Logic.Middleware;
 using Serilog.Filters;
+using WFClassic.Web.Logic.UI.ListPlayers;
 
 
 
@@ -104,6 +105,8 @@ builder.Services.AddTransient<SetAvatarIconRequestHandler>();
 builder.Services.AddTransient<PurchaseRevivesHandler>();
 builder.Services.AddTransient<PurchaseSlotsHandler>();
 builder.Services.AddTransient<ProblemDetailsFactory, WFClassicProblemDetailsFactory>();
+builder.Services.AddTransient<GetPlayerListHandler>();
+
 builder.Services.AddHttpLogging();
 
 
