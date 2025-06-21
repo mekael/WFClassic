@@ -330,6 +330,7 @@ VALUES('42eb5a8b-1699-46bd-9c45-e73c6c84ed6f', 15, '/Lotus/Types/Sentinels/Senti
 
 
             migrationBuilder.Sql(@"
+
 INSERT INTO RecipeItems
 (Id, CreationTimestamp, ItemCountNeeded, ItemName, LastModificationTimestamp, PrettyName, RecipeId)
 VALUES('35f6d5dd-0bf4-4b45-b9ef-baffc8986eda', '2025-05-09 10:44:56.198218-05:00', 1, '/Lotus/Types/Items/MiscItems/NeuralSensor', '2025-05-09 10:44:56.198218-05:00', 'NeuralSensor', 'f434d141-244c-4947-8920-90d3fba30b20');
