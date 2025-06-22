@@ -1,4 +1,5 @@
-﻿using WFClassic.Web.Data;
+﻿using System.Text.Json;
+using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
 namespace WFClassic.Web.Logic.Stats.Upload
@@ -28,6 +29,7 @@ namespace WFClassic.Web.Logic.Stats.Upload
             }
 
             List<MetricItem> metricItems = new List<MetricItem>();
+            Guid traceId = Guid.NewGuid();
 
             if (uploadStats.StatsObject.Counters != null)
             {
@@ -43,7 +45,8 @@ namespace WFClassic.Web.Logic.Stats.Upload
                         Set = counterStat.Set,
                         ApplicationUserId = uploadStats.AccountId,
                         AssociatedNonce = uploadStats.Nonce,
-                        DisplayName = uploadStats.StatsObject.DisplayName
+                        DisplayName = uploadStats.StatsObject.DisplayName, 
+                        TraceId= traceId
                     });
                 }
             }
@@ -61,9 +64,29 @@ namespace WFClassic.Web.Logic.Stats.Upload
                         Seconds = timerStat.Seconds,
                         ApplicationUserId = uploadStats.AccountId,
                         AssociatedNonce = uploadStats.Nonce,
-                        DisplayName = uploadStats.StatsObject.DisplayName
+                        DisplayName = uploadStats.StatsObject.DisplayName,
+                        TraceId = traceId
                     });
                 }
+            }
+
+            if(uploadStats.StatsObject.Events !=null && uploadStats.StatsObject.Events.Any())
+            {
+                var eventString = JsonSerializer.Serialize(uploadStats.StatsObject.Events);
+                _logger.LogInformation("UploadStatsHandler => accountId {AccountID} nonce {Nonce} => Found events to parse {eventString}", uploadStats.AccountId, uploadStats.Nonce, eventString);
+
+                metricItems.Add(new MetricItem()
+                {
+                    EventName = "Events",
+                    ItemName = eventString,
+                    Seconds = 0,
+                    ApplicationUserId = uploadStats.AccountId,
+                    AssociatedNonce = uploadStats.Nonce,
+                    DisplayName = uploadStats.StatsObject.DisplayName,
+                    TraceId = traceId
+                });
+
+
             }
 
             try
