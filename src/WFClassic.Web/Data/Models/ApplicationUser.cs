@@ -12,6 +12,8 @@ namespace WFClassic.Web.Data.Models
         public int TotalNumberOfDaysLoginCount { get; set; }
         public int LoginStreak { get; set; }
 
+        public string Motto { get; set; }
+
         public ICollection<LoginTrackingItem> LoginTrackingItems { get; set; }
     }
 }

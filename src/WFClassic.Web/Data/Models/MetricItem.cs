@@ -17,5 +17,6 @@ namespace WFClassic.Web.Data.Models
         public string ItemName { get; set; }
         public bool? Set { get; set; }
         public float? Seconds { get; set; }
+        public Guid?  TraceId { get; set; }
     }
 }
