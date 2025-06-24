@@ -33,6 +33,15 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                             new InventoryItem() { ItemCount = 1, InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Upgrades, UpgradeFingerprint="lvl=0|", ItemType = "/Lotus/Powersuits/Loki/SwitchAbilityCard", ItemName = "Switch Teleport", }
                                                 };
             }
+            else if (warframeName == "Volt")
+            {
+                return new List<InventoryItem>() {
+                            new InventoryItem() { ItemCount = 1, InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Upgrades, UpgradeFingerprint="lvl=0|", ItemType = "/Lotus/Powersuits/Volt/OverloadAbilityCard", ItemName = "Overload", },
+                            new InventoryItem() { ItemCount = 1, InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Upgrades, UpgradeFingerprint="lvl=0|", ItemType = "/Lotus/Powersuits/Volt/ShieldAbilityCard", ItemName = "Shield", },
+                            new InventoryItem() { ItemCount = 1, InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Upgrades, UpgradeFingerprint="lvl=0|", ItemType = "/Lotus/Powersuits/Volt/ShockAbilityCard", ItemName = "Shock", },
+                            new InventoryItem() { ItemCount = 1, InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Upgrades, UpgradeFingerprint="lvl=0|", ItemType = "/Lotus/Powersuits/Volt/SpeedAbilityCard", ItemName = "Ability", }
+                                                };
+            }
 
             return new List<InventoryItem>();
         }
