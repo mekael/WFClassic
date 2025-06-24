@@ -37,6 +37,18 @@ namespace WFClassic.Web.Logic.Inventory.Starting
             return new List<InventoryItem>();
         }
 
+
+        public static List<InventoryItem> GetStartingAvatarImages()
+        {
+            return new List<InventoryItem>() {
+                            new InventoryItem() { ItemCount = 1, InternalInventoryItemType = Data.Enums.InternalInventoryItemType.FlavourItems, ItemType = "/Lotus/Types/StoreItems/AvatarImages/AvatarImageItem1", ItemName = "AvatarImageItem1", },
+                            new InventoryItem() { ItemCount = 1, InternalInventoryItemType = Data.Enums.InternalInventoryItemType.FlavourItems, ItemType = "/Lotus/Types/StoreItems/AvatarImages/AvatarImageItem2", ItemName = "AvatarImageItem2", },
+                            new InventoryItem() { ItemCount = 1, InternalInventoryItemType = Data.Enums.InternalInventoryItemType.FlavourItems, ItemType = "/Lotus/Types/StoreItems/AvatarImages/AvatarImageItem3", ItemName = "AvatarImageItem3", },
+                            new InventoryItem() { ItemCount = 1, InternalInventoryItemType = Data.Enums.InternalInventoryItemType.FlavourItems, ItemType = "/Lotus/Types/StoreItems/AvatarImages/AvatarImageItem4", ItemName = "AvatarImageItem4", }
+                 };
+        }
+
+
         public static List<InventoryItem> GetStartingWeapons()
         {
             return new List<InventoryItem>()
