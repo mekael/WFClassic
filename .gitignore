@@ -56,3 +56,4 @@ nunit-*.xml
 .vs/
 
 src/WFClassic.Web/app.db
+/docs/internal_data/2013_7.10

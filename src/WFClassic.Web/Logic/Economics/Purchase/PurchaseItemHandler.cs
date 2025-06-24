@@ -39,15 +39,17 @@ namespace WFClassic.Web.Logic.Economics.Purchase
             MarketPackageDefinition marketPackageDefinition = null;
             try
             {
-                _logger.LogInformation("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", purchaseItem.AccountId, purchaseItem.Nonce);
+                _logger.LogInformation("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player and market item", purchaseItem.AccountId, purchaseItem.Nonce);
                 player = _applicationDbContext.Players
                                                     .Include(i => i.InventoryItems)
                                                     .Include(i => i.PlayerPurchaseRecords)
                                                     .Include(i => i.InventoryBins)
                                                     .FirstOrDefault(w => w.ApplicationUserId == purchaseItem.AccountId);
-                marketPackageDefinition = _applicationDbContext.MarketPackageDefinitions.Include(i => i.MarketPackageItemDefinitions)
+                marketPackageDefinition = _applicationDbContext.MarketPackageDefinitions.AsNoTracking()
+                                                                                        .Include(i => i.MarketPackageItemDefinitions)
+                                                                                        .AsNoTracking()
                                                                                         .FirstOrDefault(i => i.ItemType == purchaseItem.ProductName);
-                _logger.LogInformation("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", purchaseItem.AccountId, purchaseItem.Nonce);
+                _logger.LogInformation("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player and market item", purchaseItem.AccountId, purchaseItem.Nonce);
             }
             catch (Exception ex)
             {
@@ -59,101 +61,100 @@ namespace WFClassic.Web.Logic.Economics.Purchase
 
             if (marketPackageDefinition == null)
             {
-                // can't find anything. bad request. bad bad request. 
+                _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Item definition does not exist {ProductName}", purchaseItem.AccountId, purchaseItem.Nonce, purchaseItem.ProductName);
+
+                result.PurchaseItemResultStatus = PurchaseItemResultStatus.ValidationErrors;
+                return result;       // can't find anything. bad request. bad bad request. 
 
             }
-                        // check to see if the player has already purchased the item and if it is a one time purchase or not
+            // check to see if the player has already purchased the item and if it is a one time purchase or not
 
 
             if (player.PlayerPurchaseRecords.Any(a => a.MarketPackageDefinitionId == marketPackageDefinition.Id) && !marketPackageDefinition.CanBePurchasedMultipleTimes)
             {
-
+                _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Item  {ProductName} can only be purchased once", purchaseItem.AccountId, purchaseItem.Nonce, purchaseItem.ProductName);
+                result.PurchaseItemResultStatus = PurchaseItemResultStatus.ValidationErrors;
+                return result;
             }
 
             var getCreditsResult = _getCreditsHandler.Handle(new GetCredits() { AccountId = purchaseItem.AccountId, Nonce = purchaseItem.Nonce });
             if (getCreditsResult.GetCreditsResultStatus != GetCreditsResultStatus.Success)
             {
-                // server issues
+                _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Unable to determine if user has enough credits {ProductName}", purchaseItem.AccountId, purchaseItem.Nonce, purchaseItem.ProductName);
+                result.PurchaseItemResultStatus = PurchaseItemResultStatus.ValidationErrors;
+                return result;
             }
             // check to see if the user has enough cash in that specific account
- 
-
             else if (
                 !(
-                (marketPackageDefinition.CanBePurchasedWithPlat && purchaseItem.UsePremium && getCreditsResult.GetCreditsResultDetails.PremiumCredits >= marketPackageDefinition.CostInPlat)
+                (marketPackageDefinition.CanBePurchasedWithPlat && purchaseItem.UsePremium==1 && getCreditsResult.GetCreditsResultDetails.PremiumCredits >= marketPackageDefinition.CostInPlat)
                 ||
-                (marketPackageDefinition.CanBePurchasedWithCredits && !purchaseItem.UsePremium && getCreditsResult.GetCreditsResultDetails.RegularCredits >= marketPackageDefinition.CostInCredits)
+                (marketPackageDefinition.CanBePurchasedWithCredits && purchaseItem.UsePremium != 1 && getCreditsResult.GetCreditsResultDetails.RegularCredits >= marketPackageDefinition.CostInCredits)
                 )
                 )
             {
-                // return bad request
+                _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => User does not have enough credits to purchase  {ProductName}", purchaseItem.AccountId, purchaseItem.Nonce, purchaseItem.ProductName);
+                result.PurchaseItemResultStatus = PurchaseItemResultStatus.ValidationErrors;
+                return result;
             }
 
             // this is essentially UpdateInventory, but inventory is provided server side rather than client
             // the call is coming from inside the house. 
 
-            try {
+            try
+            {
 
                 foreach (var packageItem in marketPackageDefinition.MarketPackageItemDefinitions)
                 {
-                    if (packageItem.IsUniqueItem && packageItem.CanBeAddedRepeatedly) {
+                    if (packageItem.IsUniqueItem && packageItem.CanBeAddedRepeatedly)
+                    {
                         // weapons, suits, etc
+                        _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Adding {PackageItemName} which is 'unique' but can be added multiple time", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
                         _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id));
                     }
-                    else if (packageItem.IsUniqueItem && !packageItem.CanBeAddedRepeatedly)
+                    // keys and such, i think. 
+                    else if (packageItem.IsUniqueItem && !packageItem.CanBeAddedRepeatedly && !player.InventoryItems.Any(fod => fod.ItemType == packageItem.ItemType))
                     {
-                        // keys and such, i think. 
- 
-                        InventoryItem inventoryItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == packageItem.ItemType);
-                        // only create a new item if one doesn't exist
-
-                        if (inventoryItem == null)
-                        {
-                            _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id));
-                        }
+                        _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Adding {PackageItemName}. it's unique but can be added multiple times", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
+                        _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id));
                     }
                     // we have some sort of resource.
                     else
                     {
                         InventoryItem inventoryItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == packageItem.ItemType);
-                        if(inventoryItem == null)
+                        if (inventoryItem == null)
                         {
+                            _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Adding {PackageItemName}. ", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
                             _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id));
                         }
                         else
                         {
+                            _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Updating {PackageItemName}. ", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
                             inventoryItem.ItemCount += packageItem.ItemCountToBeAdded;
                             _applicationDbContext.Entry(inventoryItem).State = EntityState.Modified;
                         }
+                    }
+
+                    if (packageItem.AddInventoryBin)
+                    {
+                        _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Adding iventory bin as  {PackageItemName} grants one. ", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
+                        var bin = player.InventoryBins.First(f => f.InventoryBinType == packageItem.InventoryBinTypeToAdd);
+                        bin.Slots++;
+                        _applicationDbContext.Entry(bin).State = EntityState.Modified;
                     }
                     // add a bin if necessary
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-
+                _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Exception while processing  {ProductName} : {Ex}", purchaseItem.AccountId, purchaseItem.Nonce, purchaseItem.ProductName, ex );
+                result.PurchaseItemResultStatus = PurchaseItemResultStatus.ValidationErrors;
+                return result;
             }
 
-
-
-
-
-
-
-
-
-            // add the associated items to the inventory
-            // for each item that needs it, add an inventory bin
-            // add a new bank account transaction. 
-
-
-
-
-
-
-            var amount = purchaseItem.UsePremium ? marketPackageDefinition.CostInPlat : marketPackageDefinition.CostInCredits;
-            var currencyType = purchaseItem.UsePremium ? CurrencyType.Platinum : CurrencyType.StandardCredits;
+            var amount = purchaseItem.UsePremium == 1 ? marketPackageDefinition.CostInPlat : marketPackageDefinition.CostInCredits;
+            var currencyType = purchaseItem.UsePremium == 1 ? CurrencyType.Platinum : CurrencyType.StandardCredits;
 
 
             var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = purchaseItem.AccountId, Amount = amount, BankAccountTransactionType = BankAccountTransactionType.Credit, BankAccountType = currencyType, MemoCode = "ItemSale" });
@@ -165,21 +166,9 @@ namespace WFClassic.Web.Logic.Economics.Purchase
                 return result;
             }
 
-
-
-
-
-
-
-
-
-
-
             try
             {
                 _logger.LogInformation("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Updating Inventory", purchaseItem.AccountId, purchaseItem.Nonce);
-
-
                 _applicationDbContext.SaveChanges();
                 _logger.LogInformation("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Inventory Updated", purchaseItem.AccountId, purchaseItem.Nonce);
                 result.PurchaseItemResultStatus = PurchaseItemResultStatus.Success;
@@ -196,20 +185,19 @@ namespace WFClassic.Web.Logic.Economics.Purchase
 
         InventoryItem CreateNewInventoryItemInstance(MarketPackageItemDefinition packageDefinition, Guid playerId)
         {
-            return   new InventoryItem()
+            return new InventoryItem()
             {
                 PlayerId = playerId,
                 ItemCount = Math.Max(packageDefinition.ItemCountToBeAdded, 1),
-                ItemName = packageDefinition.ItemName, 
-                InternalInventoryItemType= packageDefinition.InternalInventoryItemType,
-                ExtraCapacity = packageDefinition.ExtraCapacity, 
-                ExtraRemaining = packageDefinition.ExtraCapacity, 
-                XP = 0, 
-                UpgradeVer = packageDefinition.UpgradeVer,  
-                UpgradeFingerprint = packageDefinition.UpgradeFingerprint, 
+                ItemName = packageDefinition.ItemName,
+                InternalInventoryItemType = packageDefinition.InternalInventoryItemType,
+                ExtraCapacity = packageDefinition.ExtraCapacity,
+                ExtraRemaining = packageDefinition.ExtraCapacity,
+                XP = 0,
+                UpgradeVer = packageDefinition.UpgradeVer,
+                UpgradeFingerprint = packageDefinition.UpgradeFingerprint,
                 ItemType = packageDefinition.ItemType,
                 UnlockLevel = packageDefinition.UnlockLevel
-                
             };
         }
     }
