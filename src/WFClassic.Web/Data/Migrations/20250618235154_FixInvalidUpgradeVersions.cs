@@ -13,8 +13,8 @@ namespace WFClassic.Web.Data.Migrations
 
             migrationBuilder.Sql(@"
                             update InventoryItems 
-                            set UpgradeVer = 101
-                            where UpgradeVer = 0
+                            set UpgradeVer = 100
+                            where  UpgradeVer <100
                             and InternalInventoryItemType in (0,1,5,3);
 
                             ");
