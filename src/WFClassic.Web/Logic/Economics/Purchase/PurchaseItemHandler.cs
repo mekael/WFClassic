@@ -157,7 +157,7 @@ namespace WFClassic.Web.Logic.Economics.Purchase
             var currencyType = purchaseItem.UsePremium == 1 ? CurrencyType.Platinum : CurrencyType.StandardCredits;
 
 
-            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = purchaseItem.AccountId, Amount = amount, BankAccountTransactionType = BankAccountTransactionType.Credit, BankAccountType = currencyType, MemoCode = "ItemSale" });
+            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = purchaseItem.AccountId, Amount = amount, BankAccountTransactionType = BankAccountTransactionType.Debit, BankAccountType = currencyType, MemoCode = "ItemSale" });
 
             if (addAccountTransactionResult.AddAccountTransactionResultStatus != AddAccountTransactionResultStatus.Success)
             {
