@@ -118,6 +118,8 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonPropertyName("ActiveAvatarImageType")]
         public string ActiveAvatarImageType { get; set; }
+        [JsonPropertyName("WeaponSkins")]
+        public List<GetInventoryResultJsonFlavourItem> WeaponSkins { get; set; }
 
     }
 

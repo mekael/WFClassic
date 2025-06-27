@@ -59,6 +59,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 Consumables = GetJsonTypeCount(InternalInventoryItemType.Consumables, player.InventoryItems),
                 MiscItems = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
                 Recipes = GetJsonTypeCount(InternalInventoryItemType.Recipes, player.InventoryItems),
+                WeaponSkins = player.InventoryItems.Where(w=> w.InternalInventoryItemType == InternalInventoryItemType.WeaponSkins).Select(s=>  new GetInventoryResultJsonFlavourItem() { ItemType= s.ItemType}).ToList(),
                 //Components = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
                 FlavourItems = player.InventoryItems.Where(w=>w.InternalInventoryItemType == InternalInventoryItemType.FlavourItems).Select(s=> new GetInventoryResultJsonFlavourItem() { ItemType = s.ItemType}).ToList(),
                 ActiveAvatarImageType = player.ActiveAvatarImageType,
