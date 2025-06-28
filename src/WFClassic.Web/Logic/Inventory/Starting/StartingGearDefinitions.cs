@@ -82,8 +82,8 @@ namespace WFClassic.Web.Logic.Inventory.Starting
             {
                 ItemCount = 1,
                 InternalInventoryItemType = Data.Enums.InternalInventoryItemType.LongGuns,
-                ItemType = "/Lotus/Weapons/Tenno/Rifle/Rifle",
-                ItemName = "MK1-Braton",
+                ItemType = "/Lotus/Weapons/Tenno/Rifle/StartingRifle",
+                ItemName = "Braton",
                  UpgradeVer=101
             }
             };
