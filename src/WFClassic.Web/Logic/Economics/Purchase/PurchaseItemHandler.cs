@@ -100,6 +100,7 @@ namespace WFClassic.Web.Logic.Economics.Purchase
 
             // this is essentially UpdateInventory, but inventory is provided server side rather than client
             // the call is coming from inside the house. 
+            var currencyType = purchaseItem.UsePremium == 1 ? CurrencyType.Platinum : CurrencyType.StandardCredits;
 
             try
             {
@@ -110,13 +111,13 @@ namespace WFClassic.Web.Logic.Economics.Purchase
                     {
                         // weapons, suits, etc
                         _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Adding {PackageItemName} which is 'unique' but can be added multiple time", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
-                        _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id));
+                        _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id, currencyType));
                     }
                     // keys and such, i think. 
                     else if (packageItem.IsUniqueItem && !packageItem.CanBeAddedRepeatedly && !player.InventoryItems.Any(fod => fod.ItemType == packageItem.ItemType))
                     {
                         _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Adding {PackageItemName}. it's unique but can be added multiple times", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
-                        _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id));
+                        _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id, currencyType));
                     }
                     // we have some sort of resource.
                     else
@@ -125,7 +126,7 @@ namespace WFClassic.Web.Logic.Economics.Purchase
                         if (inventoryItem == null)
                         {
                             _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Adding {PackageItemName}. ", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
-                            _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id));
+                            _applicationDbContext.InventoryItems.Add(CreateNewInventoryItemInstance(packageItem, player.Id, currencyType));
                         }
                         else
                         {
@@ -135,9 +136,9 @@ namespace WFClassic.Web.Logic.Economics.Purchase
                         }
                     }
 
-                    if (packageItem.AddInventoryBin)
+                    if (packageItem.AddInventoryBin && currencyType == CurrencyType.Platinum)
                     {
-                        _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Adding iventory bin as  {PackageItemName} grants one. ", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
+                        _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Adding Inventory bin as  {PackageItemName} grants one. ", purchaseItem.AccountId, purchaseItem.Nonce, packageItem.ItemName);
                         var bin = player.InventoryBins.First(f => f.InventoryBinType == packageItem.InventoryBinTypeToAdd);
                         bin.Slots++;
                         _applicationDbContext.Entry(bin).State = EntityState.Modified;
@@ -154,7 +155,6 @@ namespace WFClassic.Web.Logic.Economics.Purchase
             }
 
             var amount = purchaseItem.UsePremium == 1 ? marketPackageDefinition.CostInPlat : marketPackageDefinition.CostInCredits;
-            var currencyType = purchaseItem.UsePremium == 1 ? CurrencyType.Platinum : CurrencyType.StandardCredits;
 
 
             var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = purchaseItem.AccountId, Amount = amount, BankAccountTransactionType = BankAccountTransactionType.Debit, BankAccountType = currencyType, MemoCode = "ItemSale" });
@@ -183,7 +183,7 @@ namespace WFClassic.Web.Logic.Economics.Purchase
         }
 
 
-        InventoryItem CreateNewInventoryItemInstance(MarketPackageItemDefinition packageDefinition, Guid playerId)
+        InventoryItem CreateNewInventoryItemInstance(MarketPackageItemDefinition packageDefinition, Guid playerId, CurrencyType currencyType = CurrencyType.StandardCredits)
         {
             return new InventoryItem()
             {
@@ -194,10 +194,10 @@ namespace WFClassic.Web.Logic.Economics.Purchase
                 ExtraCapacity = packageDefinition.ExtraCapacity,
                 ExtraRemaining = packageDefinition.ExtraCapacity,
                 XP = 0,
-                UpgradeVer = packageDefinition.UpgradeVer,
+                UpgradeVer = packageDefinition.UpgradeVer ,
                 UpgradeFingerprint = packageDefinition.UpgradeFingerprint,
                 ItemType = packageDefinition.ItemType,
-                UnlockLevel = packageDefinition.UnlockLevel
+                UnlockLevel = currencyType == CurrencyType.Platinum ? packageDefinition.UnlockLevel :0
             };
         }
     }
