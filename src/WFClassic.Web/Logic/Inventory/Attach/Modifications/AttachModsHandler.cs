@@ -48,6 +48,15 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 
             foreach (var upgradeToAttach in attachMods.IncomingAttachRequest.UpgradesToAttach)
             {
+
+
+                InventoryItemAttachment existingAttachment = modAttachments.FirstOrDefault(w => w.AttachedInventoryItemId == Guid.Parse(upgradeToAttach.ItemId.Id));
+
+                if(existingAttachment != null)
+                {
+                    _applicationDbContext.Entry(existingAttachment).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+                }
+
                 InventoryItemAttachment attachment = new InventoryItemAttachment()
                 {
                     ParentInventoryItemId = Guid.Parse(attachMods.IncomingAttachRequest.Weapon.ItemId.Id),

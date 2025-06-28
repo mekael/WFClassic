@@ -24,7 +24,11 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Orokin
             _applicationDbContext = applicationDbContext;
             _logger = logger;
         }
-
+        /// <summary>
+        /// Attaches a potato. 
+        /// </summary>
+        /// <param name="attachMods"></param>
+        /// <returns></returns>
         public AttachModsResult Handle(AttachMods attachMods)
         {
             AttachModsResult result = new AttachModsResult();
