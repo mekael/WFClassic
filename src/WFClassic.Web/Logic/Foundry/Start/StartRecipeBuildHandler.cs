@@ -59,13 +59,6 @@ namespace WFClassic.Web.Logic.Foundry.Start
                 StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.ValidationErrors;
                 return StartRecipeBuildResult;
             }
-            else if (player.PendingRecipes.Count == 4)
-            {
-                // we can only have 4 pending recipes it looks like
-                _logger.LogError("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => Already have 4 builds in process   ", startRecipeBuild.AccountId, startRecipeBuild.Nonce, startRecipeBuild.RecipeName);
-                StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.ValidationErrors;
-                return StartRecipeBuildResult;
-            }
             else if (player.PendingRecipes.Any(a => a.RecipeId == recipe.Id))
             {
                 // we can only have 4 pending recipes it looks like
