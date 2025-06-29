@@ -36,8 +36,10 @@ namespace WFClassic.Web.Logic.Economics.Sell
             try
             {
                 _logger.LogInformation("SellItemHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", sellItem.AccountId, sellItem.Nonce);
-                player = _applicationDbContext.Players
+                player = _applicationDbContext.Players.AsSplitQuery()
                                                     .Include(i => i.InventoryItems)
+                                                    .Include(i=> i.PendingRecipes)
+                                                    .ThenInclude(i=> i.Recipe)
                                                     .FirstOrDefault(w => w.ApplicationUserId == sellItem.AccountId);
                 _logger.LogInformation("SellItemHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", sellItem.AccountId, sellItem.Nonce);
             }
@@ -91,6 +93,11 @@ namespace WFClassic.Web.Logic.Economics.Sell
                     else if (inventoryItem.ItemCount - itemToSell.Count < 0)
                     {
                         _logger.LogError("SellItemHandler => accountId {AccountID} nonce {Nonce} => User does not have enough of item on hand {itemId} ", sellItem.AccountId, sellItem.Nonce, itemToSell.String);
+                        canBeUpdated = false;
+                    }
+                    else if (inventoryItem.InternalInventoryItemType == InternalInventoryItemType.Recipes && inventoryItem.ItemCount == 1 && player.PendingRecipes.Any(a => a.Recipe.RecipeItemName == inventoryItem.ItemType))
+                    {
+                        _logger.LogError("SellItemHandler => accountId {AccountID} nonce {Nonce} => Unable to sell in progress recipe {itemId} ", sellItem.AccountId, sellItem.Nonce, itemToSell.String);
                         canBeUpdated = false;
                     }
                     else
