@@ -64,4 +64,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<SystemTaskHistory> SystemTaskHistory { get; set; }
 
+    public DbSet<WarframeItem> WarframeItems { get; set; }
+    public DbSet<WarframeItemComponent> WarframeItemComponents { get; set; }
+
 }

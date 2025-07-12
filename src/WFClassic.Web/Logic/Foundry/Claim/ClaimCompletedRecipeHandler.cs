@@ -43,6 +43,7 @@ namespace WFClassic.Web.Logic.Foundry.Claim
 
             Player player = null;
             Recipe recipe = null;
+            WarframeItem warframeItem = null;
             try
             {
                 _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce}  recipeName {RecipeName} => querying for recipe and player   ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
@@ -54,6 +55,11 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 recipe = _applicationDbContext.Recipes.AsNoTracking()
                                                       .Include(i => i.RecipeComponentItems)
                                                       .FirstOrDefault(fod => fod.RecipeItemName == claimCompletedRecipe.RecipeName);
+                warframeItem = _applicationDbContext.WarframeItems
+                                                  .AsNoTracking()
+                                                  .Include(i => i.WarframeItemComponents)
+                                                  .FirstOrDefault(w => w.ItemType == recipe.ResultItemName && w.WarframeItemLocation == WarframeItemLocation.Foundry)
+                                                  ;
             }
             catch (Exception ex)
             {
@@ -66,6 +72,13 @@ namespace WFClassic.Web.Logic.Foundry.Claim
             {
                 _logger.LogError("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => No matching recipe definition found  ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                 // we can't build due to not having a recipe
+                claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;
+                return claimCompletedRecipeResult;
+            }
+            else if (warframeItem == null)
+            {
+                _logger.LogError("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => No matching warframe item found ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
+                // we can't do anything if we don't have a warframe item to give the user. 
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;
                 return claimCompletedRecipeResult;
             }
@@ -87,48 +100,62 @@ namespace WFClassic.Web.Logic.Foundry.Claim
             InventoryItem recipeItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == recipe.RecipeItemName);
             PendingRecipe pendingRecipe = player.PendingRecipes.FirstOrDefault(fod => fod.RecipeId == recipe.Id);
 
-            InventoryItem builtItem = null;
 
-            if (_uniqueTypes.Contains(recipe.InternalInventoryItemType))
+            foreach (var warframeItemComponent in warframeItem.WarframeItemComponents)
             {
-                builtItem = new InventoryItem()
+                if (warframeItemComponent.IsUniqueItem)
                 {
-                    ItemCount = 1,
-                    ItemType = recipe.ResultItemName,
-                    ItemName = recipe.ResultItemPrettyName,
-                    PlayerId = player.Id,
-                    InternalInventoryItemType = recipe.InternalInventoryItemType,
-                    UpgradeVer = 101
-                };
-                _applicationDbContext.InventoryItems.Add(builtItem);
-            }
-            else
-            {
-                builtItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == recipe.ResultItemName);
-
-                if (builtItem == null)
-                {
-                    _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item does not already exist creating new record    ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
-
-                    builtItem = new InventoryItem()
+                    _applicationDbContext.InventoryItems.Add(new InventoryItem()
                     {
-                        ItemCount = 1,
-                        ItemType = recipe.ResultItemName,
-                        ItemName = recipe.ResultItemPrettyName,
+                        ItemCount = warframeItemComponent.Count,
+                        ItemType = warframeItemComponent.ItemType,
+                        ItemName = warframeItemComponent.ItemName,
                         PlayerId = player.Id,
-                        InternalInventoryItemType = recipe.InternalInventoryItemType
-                    };
-                    _applicationDbContext.InventoryItems.Add(builtItem);
+                        InternalInventoryItemType = warframeItemComponent.InternalInventoryItemType,
+                        UpgradeVer = warframeItemComponent.UpgradeVer,
+                        UpgradeFingerprint = warframeItemComponent.UpgradeFingerprint,
+                        Charge = warframeItemComponent.Charge,
+                        ExtraCapacity = warframeItemComponent.ExtraCapacity,
+                        ExtraRemaining = warframeItemComponent.ExtraRemaining,
+                        UnlockLevel = warframeItemComponent.UnlockLevel,
+                        XP = warframeItemComponent.XP
+                    });
                 }
                 else
                 {
-                    _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item exists incrementing counter    ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
-                    builtItem.ItemCount++;
-                    _applicationDbContext.Entry(builtItem).State = EntityState.Modified;
+                    var existingItem = player.InventoryItems.FirstOrDefault(fod => fod.ItemType == recipe.ResultItemName);
+
+                    if (existingItem == null)
+                    {
+                        _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item does not already exist creating new record    ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
+
+                        _applicationDbContext.InventoryItems.Add(new InventoryItem()
+                        {
+                            ItemCount = warframeItemComponent.Count,
+                            ItemType = warframeItemComponent.ItemType,
+                            ItemName = warframeItemComponent.ItemName,
+                            PlayerId = player.Id,
+                            InternalInventoryItemType = warframeItemComponent.InternalInventoryItemType,
+                            UpgradeVer = warframeItemComponent.UpgradeVer,
+                            UpgradeFingerprint = warframeItemComponent.UpgradeFingerprint,
+                            Charge = warframeItemComponent.Charge,
+                            ExtraCapacity = warframeItemComponent.ExtraCapacity,
+                            ExtraRemaining = warframeItemComponent.ExtraRemaining,
+                            UnlockLevel = warframeItemComponent.UnlockLevel,
+                            XP = warframeItemComponent.XP
+                        });
+                    }
+                    else
+                    {
+                        _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName} => Built item exists incrementing counter    ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
+                        existingItem.ItemCount += warframeItemComponent.Count;
+                        _applicationDbContext.Entry(existingItem).State = EntityState.Modified;
+                    }
                 }
             }
-
             _applicationDbContext.Entry(pendingRecipe).State = EntityState.Deleted;
+            // this deals with the fact that we need to retain the recipe/blueprint until we're done with teh build, else we can't display anything in the foundry.
+            // im sure this was fixed at some point. 
             recipeItem.ItemCount--;
             _applicationDbContext.Entry(recipeItem).State = EntityState.Modified;
 
@@ -148,6 +175,7 @@ namespace WFClassic.Web.Logic.Foundry.Claim
             }
 
             return claimCompletedRecipeResult;
+
         }
     }
 }
