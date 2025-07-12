@@ -18,5 +18,13 @@ namespace WFClassic.Web.Logic.Foundry.Start
 
         [JsonPropertyName("usePremium")]
         public long UsePremium { get; set; }
+
+        [JsonIgnore]
+        public StartRecipeBuildNamedItems StartRecipeBuildNamedItems { get; set; }
+    }
+
+    public class StartRecipeBuildNamedItems
+    {
+        public List<string> Ids { get; set; }
     }
 }

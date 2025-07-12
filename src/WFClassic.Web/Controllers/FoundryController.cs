@@ -5,6 +5,7 @@ using WFClassic.Web.Logic.Foundry.Pending;
 using WFClassic.Web.Logic.Foundry.Rush;
 using WFClassic.Web.Logic.Foundry.Start;
 using WFClassic.Web.Logic.Middleware;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Controllers
 {
@@ -80,6 +81,9 @@ namespace WFClassic.Web.Controllers
         [Route("/api/startRecipe.php")]
         public ActionResult StartRecipe([FromQuery] StartRecipeBuild startRecipeBuild)
         {
+             
+            startRecipeBuild.StartRecipeBuildNamedItems = Utils.GetRequestObject<StartRecipeBuildNamedItems>(this.HttpContext)
+            ;
             _logger.LogInformation("RecipeController => in action startRecipe");
             var result = _startRecipeBuildHandler.Handle(startRecipeBuild);
 
