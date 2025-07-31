@@ -39,12 +39,12 @@ using WFClassic.Web.Logic.Friendship.Icon;
 using WFClassic.Web.Logic.Economics.Revives;
 using Serilog;
 using WFClassic.Web.Logic.Economics.Slots;
-using WFClassic.Web.Logic;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WFClassic.Web.Logic.Middleware;
 using Serilog.Filters;
 using WFClassic.Web.Logic.UI.ListPlayers;
 using WFClassic.Web.Logic.Sys.PlayerData;
+using WFClassic.Web.Logic.Sys.PlayerBans;
 
 
 
@@ -108,6 +108,7 @@ builder.Services.AddTransient<PurchaseSlotsHandler>();
 builder.Services.AddTransient<ProblemDetailsFactory, WFClassicProblemDetailsFactory>();
 builder.Services.AddTransient<GetPlayerListHandler>();
 builder.Services.AddTransient<DownloadPlayerDataHandler>();
+builder.Services.AddTransient<RemoveScheduledPlayerBansHandler>();
 
 builder.Services.AddHttpLogging();
 
@@ -124,8 +125,12 @@ builder.Services.AddControllersWithViews();
 var loggerConfig = new LoggerConfiguration();
 
 loggerConfig.WriteTo.Console();
+//todo: Enrcich all log events with class and method in order to reduce boilerplate
+// why didnt i save all the doco locally. 
+
+
 loggerConfig.Filter.ByExcluding(Matching.FromSource("Microsoft.EntityFrameworkCore.Database.Command"));
- 
+
 if (builder.Configuration.GetValue<bool>("LogToDisk"))
 {
     loggerConfig.WriteTo.File("./logs/wfclassic.log", rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day);
@@ -179,6 +184,7 @@ using (var serviceScope = app.Services.CreateScope())
 
     serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
     serviceScope.ServiceProvider.GetRequiredService<ResetWarframeRevivesHandler>().Handle(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false });
+    serviceScope.ServiceProvider.GetRequiredService<RemoveScheduledPlayerBansHandler>().Handle();
 }
 
 app.Services.UseScheduler(
@@ -187,7 +193,5 @@ app.Services.UseScheduler(
         scheduler.Schedule<MassLogoutUsersHandler>().DailyAtHour(0);
         scheduler.ScheduleWithParams<ResetWarframeRevivesHandler>(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false }).DailyAtHour(0);
     });
-
-
 
 app.Run();

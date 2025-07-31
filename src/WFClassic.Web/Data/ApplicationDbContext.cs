@@ -16,7 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     {
         var addedOrUpdatedEntries = ChangeTracker.Entries<EntityBase>().Where(w => w.State == EntityState.Added || w.State == EntityState.Modified);
         var addedEntries = ChangeTracker.Entries<EntityBase>().Where(w => w.State == EntityState.Added);
-        foreach(var entry in addedOrUpdatedEntries)
+        foreach (var entry in addedOrUpdatedEntries)
         {
             entry.Entity.LastModificationTimestamp = DateTimeOffset.Now;
         }
@@ -66,5 +66,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<WarframeItem> WarframeItems { get; set; }
     public DbSet<WarframeItemComponent> WarframeItemComponents { get; set; }
+    
+    public DbSet<PlayerBan> PlayerBans { get; set; }
 
 }
