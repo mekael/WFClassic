@@ -2,7 +2,7 @@
 
 A server emulator which allows you to play older versions of warframe, 7.3 => 7.10.
 
-This work a combination of information from the SpaceNinjaServer project, additional reverse engineering of earlier builds, trial and error, and a decent amount of coffee.
+This work a combination of information from the [SpaceNinjaServer](https://onlyg.it/OpenWF/SpaceNinjaServer) project, additional reverse engineering of earlier builds, trial and error, and a decent amount of coffee.
 Currently using .net9 and sqlite for persistence, linux and windows are both supported and builds are self contained, so no runtime install is necessary. 
 
 # Getting started
