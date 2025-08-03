@@ -51,9 +51,15 @@ There is also an online server available which supports the 7.9 build that is li
 | 7.4 | 2013.03.27.09.43/ | 1958670258248515033 | | |
 | 7.3 | 2013.03.25.11.45/ | 9176710083987114410 | | Oddities with the starchart, least performant of the tested builds. |
 
+## How to play versions after 7.10
+
+Builds after 7.10 do not work as is, and may never work as is. There seem to either be missing assets or a missing endpoint which causes issues in the client itself. But you can pull in those assets with a hackish workaround.
 
 
-Builds after 7.10 do not work as of now, and may never work. There seem to either be missing assets or a missing endpoint.
+1. download version 2013.05.03.18.06
+2. Download any version after that but before 8.0 (2013.05.23.16.06)
+3. Delete Warframe64.exe and Warframe.exe from the newer version
+4. Copy Warframe64.exe and Warframe.exe from 2013.05.03.18.06 to your newer versions
 
 
 # Features
