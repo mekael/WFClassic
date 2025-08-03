@@ -60,7 +60,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
 
     public DbSet<MarketPackageDefinition> MarketPackageDefinitions { get; set; }
-    public DbSet<MarketPackageItemDefinition> MarketPackageItemDefintions { get; set; }
 
     public DbSet<SystemTaskHistory> SystemTaskHistory { get; set; }
 

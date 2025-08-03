@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WFClassic.Web.Data;
 
@@ -10,9 +11,11 @@ using WFClassic.Web.Data;
 namespace WFClassic.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250803173821_AddBinsToWarframeItemComponent")]
+    partial class AddBinsToWarframeItemComponent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -718,12 +721,70 @@ namespace WFClassic.Web.Data.Migrations
                     b.Property<DateTimeOffset>("LastModificationTimestamp")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("WarframeItemType")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("MarketPackageDefinitions");
+                });
+
+            modelBuilder.Entity("WFClassic.Web.Data.Models.MarketPackageItemDefinition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("AddInventoryBin")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("CanBeAddedRepeatedly")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset>("CreationTimestamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ExtraCapacity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("InternalInventoryItemType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("InventoryBinTypeToAdd")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsUniqueItem")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ItemCountToBeAdded")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ItemName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ItemType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("LastModificationTimestamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("MarketPackageDefinitionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("NumberOfBinsToAdd")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UnlockLevel")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UpgradeFingerprint")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UpgradeVer")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MarketPackageDefinitionId");
+
+                    b.ToTable("MarketPackageItemDefintions");
                 });
 
             modelBuilder.Entity("WFClassic.Web.Data.Models.MetricItem", b =>
@@ -1520,6 +1581,17 @@ namespace WFClassic.Web.Data.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("WFClassic.Web.Data.Models.MarketPackageItemDefinition", b =>
+                {
+                    b.HasOne("WFClassic.Web.Data.Models.MarketPackageDefinition", "MarketPackageDefinition")
+                        .WithMany("MarketPackageItemDefinitions")
+                        .HasForeignKey("MarketPackageDefinitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MarketPackageDefinition");
+                });
+
             modelBuilder.Entity("WFClassic.Web.Data.Models.MetricItem", b =>
                 {
                     b.HasOne("WFClassic.Web.Data.Models.ApplicationUser", "ApplicationUser")
@@ -1699,6 +1771,11 @@ namespace WFClassic.Web.Data.Migrations
             modelBuilder.Entity("WFClassic.Web.Data.Models.BankAccount", b =>
                 {
                     b.Navigation("BankAccountTransactions");
+                });
+
+            modelBuilder.Entity("WFClassic.Web.Data.Models.MarketPackageDefinition", b =>
+                {
+                    b.Navigation("MarketPackageItemDefinitions");
                 });
 
             modelBuilder.Entity("WFClassic.Web.Data.Models.MissionReport", b =>

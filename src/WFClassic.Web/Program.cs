@@ -45,6 +45,7 @@ using Serilog.Filters;
 using WFClassic.Web.Logic.UI.ListPlayers;
 using WFClassic.Web.Logic.Sys.PlayerData;
 using WFClassic.Web.Logic.Sys.PlayerBans;
+using WFClassic.Web.Logic.Inventory.WarframeItemAddition;
 
 
 
@@ -109,6 +110,7 @@ builder.Services.AddTransient<ProblemDetailsFactory, WFClassicProblemDetailsFact
 builder.Services.AddTransient<GetPlayerListHandler>();
 builder.Services.AddTransient<DownloadPlayerDataHandler>();
 builder.Services.AddTransient<RemoveScheduledPlayerBansHandler>();
+builder.Services.AddTransient<AddWarframeItemHandler>();
 
 builder.Services.AddHttpLogging();
 

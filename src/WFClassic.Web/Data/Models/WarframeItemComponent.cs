@@ -22,5 +22,14 @@ namespace WFClassic.Web.Data.Models
         public int ExtraRemaining { get; set; }
         public string UpgradeFingerprint { get; set; }
         public int Charge { get; set; }
+
+
+        // if we are buying a frame, sentinel, or a weapon, then we need to add at least one bin for that 
+        // specific item.  Since items are only associated with one bin, we don't need to have a separate table. 
+        public bool AddInventoryBin { get; set; }
+        public InventoryBinType? InventoryBinTypeToAdd { get; set; }
+        public int NumberOfBinsToAdd { get; set; }
+
+
     }
 }
