@@ -54,6 +54,11 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
                 result.GetLeaderboardStatsResultStatus = GetLeaderboardStatsResultStatus.DatabaseErrors;
             }
 
+            for(int i = 0; i < topTenKillers.Count; i++)
+            {
+                topTenKillers[i].rank = i + 1;
+            }
+
             //TODO: Deal with the players rank amongst other players
             // add them to the top ten list.
             // will need to get their displayname from the users table
