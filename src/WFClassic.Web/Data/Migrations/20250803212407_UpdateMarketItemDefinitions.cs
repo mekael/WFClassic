@@ -1742,7 +1742,7 @@ VALUES('6022F0C0-ADD9-4FA6-BEEB-1DCF51F0F746', '94E40EF9-E5E4-4A78-8F29-02FCECCE
 INSERT INTO WarframeItemComponents
 (Id, WarframeItemId, ItemType, ItemName, InternalInventoryItemType, Count, IsUniqueItem, UpgradeVer, XP, UnlockLevel, ExtraCapacity, ExtraRemaining, UpgradeFingerprint, Charge, CreationTimestamp, LastModificationTimestamp, AddInventoryBin, InventoryBinTypeToAdd, NumberOfBinsToAdd)
 VALUES('02DC95A1-9AE2-4D3C-8B4E-DEBF46CDF683', '4B321E1B-2907-4EAA-B799-8FA95B63013F', '/Lotus/Types/Recipes/WarframeRecipes/VOLTBlueprint', 'VOLTBlueprint', 13, 1, 0, 0, 0, 0, 0, 0, '', 0, '2025-08-03 00:00:00.000000-05:00', '2025-08-03 00:00:00.000000-05:00', 0, 4, 0);
-
+ 
 ");
         }
 
