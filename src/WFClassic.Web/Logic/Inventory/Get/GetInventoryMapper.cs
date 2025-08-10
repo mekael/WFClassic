@@ -20,7 +20,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         {
             List<GetInventoryResultJsonUpgradeItem> JsonUpgradeItems = new List<GetInventoryResultJsonUpgradeItem>();
 
-            foreach (var upgrade in player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades  ))
+            foreach (var upgrade in player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades))
             {
                 InventoryItemAttachment attachment = attachments.FirstOrDefault(w => w.AttachedInventoryItemId == upgrade.Id);
 
@@ -36,7 +36,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
             var premiumCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.Platinum).Select(s => s.CurrentBalance).Sum();
             var regularCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.StandardCredits).Select(s => s.CurrentBalance).Sum();
-       
+
             return new GetInventoryResultDetails()
 
             {
@@ -59,9 +59,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 Consumables = GetJsonTypeCount(InternalInventoryItemType.Consumables, player.InventoryItems),
                 MiscItems = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
                 Recipes = GetJsonTypeCount(InternalInventoryItemType.Recipes, player.InventoryItems),
-                WeaponSkins = player.InventoryItems.Where(w=> w.InternalInventoryItemType == InternalInventoryItemType.WeaponSkins).Select(s=>  new GetInventoryResultJsonFlavourItem() { ItemType= s.ItemType}).ToList(),
+                 Boosters = GetBoosters(player.InventoryItems),
+                WeaponSkins = player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.WeaponSkins).Select(s => new GetInventoryResultJsonFlavourItem() { ItemType = s.ItemType }).ToList(),
                 //Components = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
-                FlavourItems = player.InventoryItems.Where(w=>w.InternalInventoryItemType == InternalInventoryItemType.FlavourItems).Select(s=> new GetInventoryResultJsonFlavourItem() { ItemType = s.ItemType}).ToList(),
+                FlavourItems = player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.FlavourItems).Select(s => new GetInventoryResultJsonFlavourItem() { ItemType = s.ItemType }).ToList(),
                 ActiveAvatarImageType = player.ActiveAvatarImageType,
                 Missions = player.Missions == null ? new List<GetInventoryResultJsonMission>() : player.Missions.Select(s => new GetInventoryResultJsonMission() { BestRating = s.BestRatings, Completes = s.Completes, Tag = s.Tag }).ToList(),
                 PlayerLevel = player.PlayerLevel,
@@ -72,10 +73,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 ReceivedStartingGear = player.ReceivedStartingGear,
                 SubscribedToEmails = Convert.ToInt32(player.SubscribedToEmails),
                 TrainingDate = new MongoDate(player.TrainingDate),
-                PremiumCredits = premiumCredits >0 ? premiumCredits: 0,
+                PremiumCredits = premiumCredits > 0 ? premiumCredits : 0,
                 RegularCredits = regularCredits > 0 ? regularCredits : 0,
                 TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node }).ToList(),
-                Upgrades = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Upgrades),                
+                Upgrades = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Upgrades),
             };
         }
 
@@ -127,5 +128,12 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
             return JsonUpgradeItems;
         }
+
+        private static List<GetInventoryResultJsonBoosterItem> GetBoosters(List<InventoryItem> inventoryItems) 
+        {
+            return inventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Boosters && w.ExpiryDate >= DateTime.Now)
+                                 .Select(s => new GetInventoryResultJsonBoosterItem() { ItemType = s.ItemType, ExpiryDate = (long)((s.ExpiryDate - DateTime.UnixEpoch).TotalSeconds)  }).ToList();
+        }
+
     }
 }

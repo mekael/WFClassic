@@ -17,6 +17,8 @@ namespace WFClassic.Web.Logic.Economics.Purchase
         public int UsePremium { get; set; }
 
         [JsonPropertyName("durability")]
+        // only used for boosters
+        // if this is set to 1, then we add the 7 day booster, else add the 3 day one. 
         public int? Durability { get; set; }
 
     }

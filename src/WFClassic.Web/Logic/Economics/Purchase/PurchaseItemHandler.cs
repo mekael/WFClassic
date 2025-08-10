@@ -63,13 +63,23 @@ namespace WFClassic.Web.Logic.Economics.Purchase
             {
                 _logger.LogError("PurchaseItemHandler => accountId {AccountID} nonce {Nonce} => Item definition does not exist {ProductName}", purchaseItem.AccountId, purchaseItem.Nonce, purchaseItem.ProductName);
                 result.PurchaseItemResultStatus = PurchaseItemResultStatus.ValidationErrors;
+
                 return result;       // can't find anything. bad request. bad bad request. 
 
             }
 
 
+            var addWarframeItem = new AddWarframeItem()
+            {
+                AccountId = purchaseItem.AccountId,
+                ItemType = purchaseItem.ProductName,
+                WarframeItemLocation = WarframeItemLocation.Market,
+                NumberOfDaysForBooster = purchaseItem.ProductName.Contains("/Boosters/") && purchaseItem.Durability.HasValue && purchaseItem.Durability.Value == 1 ? 7 : 3
+            };
 
-            _addWarframeItemHandler.Handle(new AddWarframeItem() { AccountId = purchaseItem.AccountId, ItemType = purchaseItem.ProductName, WarframeItemLocation = WarframeItemLocation.Market });
+
+
+            var addWarframeItemResult = _addWarframeItemHandler.Handle(addWarframeItem);
 
 
 
@@ -85,7 +95,7 @@ namespace WFClassic.Web.Logic.Economics.Purchase
             // check to see if the user has enough cash in that specific account
             else if (
                 !(
-                (marketPackageDefinition.CanBePurchasedWithPlat && purchaseItem.UsePremium==1 && getCreditsResult.GetCreditsResultDetails.PremiumCredits >= marketPackageDefinition.CostInPlat)
+                (marketPackageDefinition.CanBePurchasedWithPlat && purchaseItem.UsePremium == 1 && getCreditsResult.GetCreditsResultDetails.PremiumCredits >= marketPackageDefinition.CostInPlat)
                 ||
                 (marketPackageDefinition.CanBePurchasedWithCredits && purchaseItem.UsePremium != 1 && getCreditsResult.GetCreditsResultDetails.RegularCredits >= marketPackageDefinition.CostInCredits)
                 )
@@ -96,7 +106,7 @@ namespace WFClassic.Web.Logic.Economics.Purchase
                 return result;
             }
 
- 
+
 
 
 
@@ -130,6 +140,6 @@ namespace WFClassic.Web.Logic.Economics.Purchase
         }
 
 
-      
+
     }
 }

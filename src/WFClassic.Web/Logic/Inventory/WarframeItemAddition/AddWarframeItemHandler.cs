@@ -68,7 +68,8 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
                         ExtraCapacity = warframeItemComponent.ExtraCapacity,
                         ExtraRemaining = warframeItemComponent.ExtraRemaining,
                         UnlockLevel = warframeItemComponent.UnlockLevel,
-                        XP = warframeItemComponent.XP
+                        XP = warframeItemComponent.XP,
+                        ExpiryDate = warframeItemComponent.InternalInventoryItemType == Data.Enums.InternalInventoryItemType.Boosters ? DateTime.Now.AddDays(addWarframeItem.NumberOfDaysForBooster): DateTime.MinValue
                     });
                 }
                 else

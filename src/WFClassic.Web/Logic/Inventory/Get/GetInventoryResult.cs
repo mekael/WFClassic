@@ -121,6 +121,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
         [JsonPropertyName("WeaponSkins")]
         public List<GetInventoryResultJsonFlavourItem> WeaponSkins { get; set; }
 
+        [JsonPropertyName("Boosters")]
+        public List<GetInventoryResultJsonBoosterItem> Boosters { get; set; }
+
+
     }
 
     public class GetInventoryResultJsonFlavourItem
@@ -234,6 +238,15 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public string ItemType { get; set; }
         public int Rank { get; set; }
         public int AmountRemaining { get; set; }
+    }
+
+    public class GetInventoryResultJsonBoosterItem
+    {
+        [JsonPropertyName("ExpiryDate")]
+        public long ExpiryDate { get; set; }
+        
+        [JsonPropertyName("ItemType")]
+        public string ItemType { get; set; }
     }
 
     public enum GetInventoryResultStatus
