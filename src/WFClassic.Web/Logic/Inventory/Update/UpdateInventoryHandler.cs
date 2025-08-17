@@ -59,7 +59,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 // update equipment
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating equipment", updateInventory.AccountId, updateInventory.Nonce);
 
- 
+
                 List<JsonIncomingEquipmentItem> equipmentItems = new List<JsonIncomingEquipmentItem>()
                                                                                                      .Union(updateInventory.UpdateInventoryFromMissionObject.LongGuns)
                                                                                                      .Union(updateInventory.UpdateInventoryFromMissionObject.Pistols)
@@ -82,18 +82,18 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 }
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating mods", updateInventory.AccountId, updateInventory.Nonce);
 
-                
-                    foreach (var mod in updateInventory.UpdateInventoryFromMissionObject.Upgrades)
+
+                foreach (var mod in updateInventory.UpdateInventoryFromMissionObject.Upgrades)
+                {
+                    _applicationDbContext.InventoryItems.Add(new InventoryItem()
                     {
-                        _applicationDbContext.InventoryItems.Add(new InventoryItem()
-                        {
-                            ItemType = mod.ItemType,
-                            UpgradeFingerprint = mod.UpgradeFingerprint,
-                            PlayerId = player.Id,
-                            InternalInventoryItemType = InternalInventoryItemType.Upgrades
-                        });
-                    }
-                 
+                        ItemType = mod.ItemType,
+                        UpgradeFingerprint = mod.UpgradeFingerprint,
+                        PlayerId = player.Id,
+                        InternalInventoryItemType = InternalInventoryItemType.Upgrades
+                    });
+                }
+
 
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating misc/consumables/recipes", updateInventory.AccountId, updateInventory.Nonce);
 
@@ -171,7 +171,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
 
         private void UpdateItemCountInventory(List<ItemCountPair> incomingEquipmentItems, List<InventoryItem> existingItems, InternalInventoryItemType internalInventoryItemType, Guid playerId)
         {
-            if(incomingEquipmentItems == null || !incomingEquipmentItems.Any())
+            if (incomingEquipmentItems == null || !incomingEquipmentItems.Any())
             {
                 return;
             }
@@ -182,6 +182,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 if (item != null)
                 {
                     item.ItemCount += equipmentItem.ItemCount;
+                    item.Charge += (equipmentItem.Charge.HasValue)? equipmentItem.Charge.Value :0;
                     _applicationDbContext.Entry(item).State = EntityState.Modified;
                 }
                 else
@@ -241,5 +242,14 @@ namespace WFClassic.Web.Logic.Inventory.Update
             }
             return report;
         }
+
+        private void CheckForCheating(UpdateInventoryFromMissionObject updateInventoryFromMissionObject)
+        {
+            // check to make sure we haven't gotten an insane amount of credits (over 100k)
+            // check to make sure that the time taken isn't sus. 
+            //TODO: come up with a way to tell how long a given level should take. 
+
+        }
+
     }
 }

@@ -92,7 +92,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public List<string> CompletedAlerts { get; set; }
 
         [JsonPropertyName("Consumables")]
-        public List<GetInventoryResultJsonTypeCount> Consumables { get; set; }
+        public List<GetInventoryResultJsonTypeCountCharge> Consumables { get; set; }
 
         [JsonPropertyName("MiscItems")]
         public List<GetInventoryResultJsonTypeCount> MiscItems { get; set; }
@@ -177,6 +177,18 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonProperty("ItemCount")]
         public int ItemCount { get; set; }
+    }
+
+    public class GetInventoryResultJsonTypeCountCharge
+    {
+        [JsonProperty("ItemType")]
+        public string ItemType { get; set; }
+
+        [JsonProperty("ItemCount")]
+        public int ItemCount { get; set; }
+
+        [JsonProperty("Charge")]
+        public int Charge { get; set; }
     }
 
     public class GetInventoryResultJsonTauntHistoryItem

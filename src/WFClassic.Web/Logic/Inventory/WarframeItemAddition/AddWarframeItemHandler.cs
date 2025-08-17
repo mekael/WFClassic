@@ -100,6 +100,7 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
                     {
                         _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>  Cannot find resource for    {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
                         existingItem.ItemCount += warframeItemComponent.Count;
+                        existingItem.Charge += warframeItemComponent.Charge;
                         _applicationDbContext.Entry(existingItem).State = EntityState.Modified;
                     }
                 }

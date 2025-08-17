@@ -145,5 +145,8 @@ namespace WFClassic.Web.Logic.Inventory.Update
     {
         public int ItemCount { get; set; }
         public string ItemType { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? Charge { get; set; }
     }
 }

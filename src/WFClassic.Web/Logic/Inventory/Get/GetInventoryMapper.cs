@@ -56,7 +56,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 Suits = GetEquipmentByType(InternalInventoryItemType.Suits, player.InventoryItems),
                 Sentinels = GetEquipmentByType(InternalInventoryItemType.Sentinels, player.InventoryItems),
                 SentinelWeapons = GetEquipmentByType(InternalInventoryItemType.SentinelWeapons, player.InventoryItems),
-                Consumables = GetJsonTypeCount(InternalInventoryItemType.Consumables, player.InventoryItems),
+                Consumables = GetJsonTypeCountCharge(InternalInventoryItemType.Consumables, player.InventoryItems),
                 MiscItems = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
                 Recipes = GetJsonTypeCount(InternalInventoryItemType.Recipes, player.InventoryItems),
                  Boosters = GetBoosters(player.InventoryItems),
@@ -92,6 +92,12 @@ namespace WFClassic.Web.Logic.Inventory.Get
         {
             return inventoryItems.Where(w => w.InternalInventoryItemType == internalInventoryItemType).Select(s => new GetInventoryResultJsonTypeCount() { ItemType = s.ItemType, ItemCount = s.ItemCount }).ToList();
         }
+
+        private static List<GetInventoryResultJsonTypeCountCharge> GetJsonTypeCountCharge(InternalInventoryItemType internalInventoryItemType, List<InventoryItem> inventoryItems)
+        {
+            return inventoryItems.Where(w => w.InternalInventoryItemType == internalInventoryItemType).Select(s => new GetInventoryResultJsonTypeCountCharge() { ItemType = s.ItemType, ItemCount = s.ItemCount , Charge = s.Charge}).ToList();
+        }
+
 
         private static List<GetInventoryResultJsonEquipmentItem> GetEquipmentByType(InternalInventoryItemType internalInventoryItemType, List<InventoryItem> inventoryItems)
         {
