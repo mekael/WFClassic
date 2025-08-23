@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -8,9 +9,9 @@ namespace WFClassic.Web.Logic.Inventory.Update
 {
     public class UpdateInventoryHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<UpdateInventoryHandler> _logger;
-        private AddAccountTransactionHandler _addAccountTransactionHandler;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<UpdateInventoryHandler> _logger;
+        private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
 
         public UpdateInventoryHandler(ApplicationDbContext applicationDbContext, ILogger<UpdateInventoryHandler> logger, AddAccountTransactionHandler addAccountTransactionHandler)
         {
@@ -182,7 +183,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
                 if (item != null)
                 {
                     item.ItemCount += equipmentItem.ItemCount;
-                    item.Charge += (equipmentItem.Charge.HasValue)? equipmentItem.Charge.Value :0;
+                    item.Charge += (equipmentItem.Charge.HasValue) ? equipmentItem.Charge.Value : 0;
                     _applicationDbContext.Entry(item).State = EntityState.Modified;
                 }
                 else

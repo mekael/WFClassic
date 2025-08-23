@@ -8,7 +8,7 @@ namespace WFClassic.Web.Data.Models
         public Guid AlertConfigurationId { get; set; }
         public AlertConfiguration AlertConfiguration { get; set; }
         public RewardProvidedAtLocation RewardProvidedAtLocation { get; set; }
- 
+
 
         public int Credits { get; set; }
         public int Xp { get; set; }

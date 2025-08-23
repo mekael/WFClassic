@@ -10,5 +10,3 @@
         public int Tier { get; set; }
     }
 }
-
- 

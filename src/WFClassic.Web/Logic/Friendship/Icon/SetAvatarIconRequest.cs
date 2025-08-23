@@ -16,6 +16,6 @@ namespace WFClassic.Web.Logic.Friendship.Icon
         [JsonPropertyName("avatarImage")]
         public string AvatarImage { get; set; }
 
- 
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -9,8 +10,8 @@ namespace WFClassic.Web.Logic.Foundry.Claim
 {
     public class ClaimCompletedRecipeHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<ClaimCompletedRecipeHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<ClaimCompletedRecipeHandler> _logger;
         private readonly AddWarframeItemHandler _addWarframeItemHandler;
 
         public ClaimCompletedRecipeHandler(ApplicationDbContext applicationDbContext, ILogger<ClaimCompletedRecipeHandler> logger, AddWarframeItemHandler addWarframeItemHandler)

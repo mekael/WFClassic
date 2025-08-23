@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
@@ -27,7 +29,7 @@ namespace WFClassic.Web.Controllers
 
             var result = await _warframeLoginHandler.Handle(request);
             if (result.WarframeLoginResultStatus == WarframeLoginResultStatus.BadRequest
-                && result.WarframeLoginResultStatus == WarframeLoginResultStatus.InvalidCredentials)
+                || result.WarframeLoginResultStatus == WarframeLoginResultStatus.InvalidCredentials)
             {
                 return BadRequest();
             }

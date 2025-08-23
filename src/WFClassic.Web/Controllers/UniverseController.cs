@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.Bonus.Daily;
 using WFClassic.Web.Logic.Bonus.Rewards;
 using WFClassic.Web.Logic.Middleware;
@@ -11,9 +13,9 @@ namespace WFClassic.Web.Controllers
     [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class UniverseController : ControllerBase
     {
-        private GetLoginRewardsHandler _getLoginRewardsHandler;
-        private GetWorldStateHandler _getWorldStateHandler;
-        private GetDailyMissionBonusHandler _getDailyMissionBonusHandler;
+        private readonly GetLoginRewardsHandler _getLoginRewardsHandler;
+        private readonly GetWorldStateHandler _getWorldStateHandler;
+        private readonly GetDailyMissionBonusHandler _getDailyMissionBonusHandler;
         public UniverseController(GetLoginRewardsHandler getLoginRewardsHandler, GetWorldStateHandler getWorldStateHandler, GetDailyMissionBonusHandler getDailyMissionBonusHandler)
         {
             _getLoginRewardsHandler = getLoginRewardsHandler;

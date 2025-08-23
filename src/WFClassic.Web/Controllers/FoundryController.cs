@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.Foundry.Claim;
 using WFClassic.Web.Logic.Foundry.Pending;
 using WFClassic.Web.Logic.Foundry.Rush;
@@ -13,11 +15,11 @@ namespace WFClassic.Web.Controllers
     [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class FoundryController : ControllerBase
     {
-        private CheckPendingRecipesQueryHandler _checkPendingRecipesQueryHandler;
-        private StartRecipeBuildHandler _startRecipeBuildHandler;
-        private ClaimCompletedRecipeHandler _claimCompletedRecipeHandler;
-        private RushRecipeHandler _rushRecipeHandler;
-        private ILogger<FoundryController> _logger;
+        private readonly CheckPendingRecipesQueryHandler _checkPendingRecipesQueryHandler;
+        private readonly StartRecipeBuildHandler _startRecipeBuildHandler;
+        private readonly ClaimCompletedRecipeHandler _claimCompletedRecipeHandler;
+        private readonly RushRecipeHandler _rushRecipeHandler;
+        private readonly ILogger<FoundryController> _logger;
 
         public FoundryController(ILogger<FoundryController> logger, CheckPendingRecipesQueryHandler checkPendingRecipesQueryHandler,
             StartRecipeBuildHandler startRecipeBuildHandler, ClaimCompletedRecipeHandler claimCompletedRecipeHandler,
@@ -81,7 +83,7 @@ namespace WFClassic.Web.Controllers
         [Route("/api/startRecipe.php")]
         public ActionResult StartRecipe([FromQuery] StartRecipeBuild startRecipeBuild)
         {
-             
+
             startRecipeBuild.StartRecipeBuildNamedItems = Utils.GetRequestObject<StartRecipeBuildNamedItems>(this.HttpContext)
             ;
             _logger.LogInformation("RecipeController => in action startRecipe");

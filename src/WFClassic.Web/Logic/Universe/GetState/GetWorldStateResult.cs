@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Universe.GetState
@@ -59,7 +60,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
         public string location { get; set; }
         public string levelOverride { get; set; }
         public string enemySpec { get; set; }
-        public List<GetWorldStateResultJsonEnemy> enemies { get; set; } 
+        public List<GetWorldStateResultJsonEnemy> enemies { get; set; }
         public string vipAgent { get; set; }
         public int minEnemyLevel { get; set; }
         public int maxEnemyLevel { get; set; }
@@ -94,11 +95,10 @@ namespace WFClassic.Web.Logic.Universe.GetState
     {
         public string ItemType { get; set; }
         public int ItemCount { get; set; }
- 
+
     }
 
 
 
 
 }
-

@@ -28,12 +28,12 @@ namespace WFClassic.Web.Logic.Inventory.Update
             Recipes = new List<ItemCountPair>();
         }
 
-        public List<JsonIncomingEquipmentItem> LongGuns { get; set; }  
-        public List<JsonIncomingEquipmentItem> Pistols { get; set; }  
-        public List<JsonIncomingEquipmentItem> Suits { get; set; }  
-        public List<JsonIncomingEquipmentItem> Melee { get; set; }  
-        public List<JsonIncomingEquipmentItem> Sentinels { get; set; }  
-        public List<JsonIncomingEquipmentItem> SentinelWeapons { get; set; }  
+        public List<JsonIncomingEquipmentItem> LongGuns { get; set; }
+        public List<JsonIncomingEquipmentItem> Pistols { get; set; }
+        public List<JsonIncomingEquipmentItem> Suits { get; set; }
+        public List<JsonIncomingEquipmentItem> Melee { get; set; }
+        public List<JsonIncomingEquipmentItem> Sentinels { get; set; }
+        public List<JsonIncomingEquipmentItem> SentinelWeapons { get; set; }
         public object[] WeaponSkins { get; set; }
         public List<Upgrade> Upgrades { get; set; }
         public object[] Boosters { get; set; }

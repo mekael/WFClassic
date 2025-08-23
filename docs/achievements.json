@@ -1,0 +1,631 @@
+[
+     {
+          "Name": "A Watchful Eye",
+          "Description": "Obtain a [[Sentinel]]."
+     },
+     {
+          "Name": "Agent",
+          "Description": "Solve a Cipher."
+     },
+
+     {
+          "Name": "All for One",
+          "Description": "Revive an Ally."
+     },
+     {
+          "Name": "Angel of Death",
+          "Description": "Get 100 kills in a single mission."
+     },
+     {
+          "Name": "Behold the Possibilities",
+          "Description": "Find 20 mods."
+     },
+     {
+          "Name": "Blade Mastery I",
+          "Description": "Reach Rank 10 with any five Longsword or Dual Short Blades weapons."
+     },
+     {
+          "Name": "Blade Mastery II",
+          "Description": "Reach Rank 20 with any five Longsword or Dual Short Blades weapons."
+     },
+     {
+          "Name": "Blade Mastery III",
+          "Description": "Reach Rank 30 with any five Longsword or Dual Short Blades weapons."
+     },
+     {
+          "Name": "Blade Proficiency I",
+          "Description": "Reach Rank 10 with any Longsword or Dual Short Blades weapon."
+     },
+     {
+          "Name": "Blade Proficiency II",
+          "Description": "Reach Rank 20 with any Longsword or Dual Short Blades weapon."
+     },
+     {
+          "Name": "Blade Proficiency III",
+          "Description": "Reach Rank 30 with any Longsword or Dual Short Blades weapon."
+     },
+     {
+          "Name": "Bow Mastery I",
+          "Description": "Reach Rank 10 with any two Bow weapons."
+     },
+     {
+          "Name": "Bow Mastery II",
+          "Description": "Reach Rank 20 with any two Bow weapons."
+     },
+     {
+          "Name": "Bow Mastery III",
+          "Description": "Reach Rank 30 with any two Bow weapons."
+     },
+     {
+          "Name": "Bow Proficiency I",
+          "Description": "Reach Rank 10 with any Bow weapon."
+     },
+     {
+          "Name": "Bow Proficiency II",
+          "Description": "Reach Rank 20 with any Bow weapon."
+     },
+     {
+          "Name": "Bow Proficiency III",
+          "Description": "Reach Rank 30 with any Bow weapon."
+     },
+     {
+          "Name": "Brawler Mastery I",
+          "Description": "Reach Rank 10 with any three Gauntlets or Hand-to-Hand weapons."
+     },
+     {
+          "Name": "Brawler Mastery II",
+          "Description": "Reach Rank 20 with any three Gauntlets or Hand-to-Hand weapons."
+     },
+     {
+          "Name": "Brawler Mastery III",
+          "Description": "Reach Rank 30 with any three Gauntlets or Hand-to-Hand weapons."
+     },
+     {
+          "Name": "Brawler Proficiency I",
+          "Description": "Reach Rank 10 with any Gauntlets or Hand-to-Hand weapon."
+     },
+     {
+          "Name": "Brawler Proficiency II",
+          "Description": "Reach Rank 20 with any Gauntlets or Hand-to-Hand weapon."
+     },
+     {
+          "Name": "Brawler Proficiency III",
+          "Description": "Reach Rank 30 with any Gauntlets or Hand-to-Hand weapon."
+     },
+     {
+          "Name": "Building a Stable",
+          "Description": "Obtain 2 Warframes."
+     },
+     {
+          "Name": "Cheater of Death",
+          "Description": "Revive 1000 allies."
+     },
+     {
+          "Name": "Collector",
+          "Description": "Find 100 Mods."
+     },
+     {
+          "Name": "Counter Intelligence",
+          "Description": "Solve a Cipher in under 5 seconds."
+     },
+     {
+          "Name": "Cryptographer",
+          "Description": "Solve 1000 Ciphers."
+     },
+     {
+          "Name": "Dagger Mastery I",
+          "Description": "Reach Rank 10 with any three Dagger or Dual Daggers weapons."
+     },
+     {
+          "Name": "Dagger Mastery II",
+          "Description": "Reach Rank 20 with any three Dagger or Dual Daggers weapons."
+     },
+     {
+          "Name": "Dagger Mastery III",
+          "Description": "Reach Rank 30 with any three Dagger or Dual Daggers weapons."
+     },
+     {
+          "Name": "Dagger Proficiency I",
+          "Description": "Reach Rank 10 with any Dagger or Dual Daggers weapon."
+     },
+     {
+          "Name": "Dagger Proficiency II",
+          "Description": "Reach Rank 20 with any Dagger or Dual Daggers weapon."
+     },
+     {
+          "Name": "Dagger Proficiency III",
+          "Description": "Reach Rank 30 with any Dagger or Dual Daggers weapon."
+     },
+     {
+          "Name": "Disciple",
+          "Description": "Achieve the rank of Disciple."
+     },
+     {
+          "Name": "Dragon",
+          "Description": "Achieve the rank of Dragon."
+     },
+     {
+          "Name": "Each Tool with Its Own Purpose",
+          "Description": "Obtain 10 [[Warframes]]."
+     },
+     {
+          "Name": "Eagle",
+          "Description": "Achieve the rank of Eagle."
+     },
+     {
+          "Name": "Entrepreneur",
+          "Description": "Sell an item in the market."
+     },
+     {
+          "Name": "Field Medic",
+          "Description": "Revive 100 allies."
+     },
+     {
+          "Name": "Gold Disciple",
+          "Description": "Achieve the rank of Gold Disciple."
+     },
+     {
+          "Name": "Gold Dragon",
+          "Description": "Achieve the rank of Gold Dragon."
+     },
+     {
+          "Name": "Gold Eagle",
+          "Description": "Achieve the rank of Gold Eagle."
+     },
+     {
+          "Name": "Gold Hunter",
+          "Description": "Achieve the rank of Gold Hunter."
+     },
+     {
+          "Name": "Gold Initiate",
+          "Description": "Achieve the rank of Gold Initiate."
+     },
+     {
+          "Name": "Gold Novice",
+          "Description": "Achieve the rank of Gold Novice."
+     },
+     {
+          "Name": "Gold Sage",
+          "Description": "Achieve the rank of Gold Sage."
+     },
+     {
+          "Name": "Gold Seeker",
+          "Description": "Achieve the rank of Gold Seeker."
+     },
+     {
+          "Name": "Gold Tiger",
+          "Description": "Achieve the rank of Gold Tiger."
+     },
+     {
+          "Name": "Hats off to you!",
+          "Description": "Destroy 200 Corpus Crewman helmets."
+     },
+     {
+          "Name": "Healer",
+          "Description": "Revive 10 allies."
+     },
+     {
+          "Name": "Heavy Weapon Mastery I",
+          "Description": "Reach Rank 10 with any two Heavy Axe, Heavy Hammer, or Heavy Sword weapons."
+     },
+     {
+          "Name": "Heavy Weapon Mastery II",
+          "Description": "Reach Rank 20 with any two Heavy Axe, Heavy Hammer, or Heavy Sword weapons."
+     },
+     {
+          "Name": "Heavy Weapon Mastery III",
+          "Description": "Reach Rank 30 with any two Heavy Axe, Heavy Hammer, or Heavy Sword weapons."
+     },
+     {
+          "Name": "Heavy Weapon Proficiency I",
+          "Description": "Reach Rank 10 with any Heavy Axe, Heavy Hammer, or Heavy Sword weapon."
+     },
+     {
+          "Name": "Heavy Weapon Proficiency II",
+          "Description": "Reach Rank 20 with any Heavy Axe, Heavy Hammer, or Heavy Sword weapon."
+     },
+     {
+          "Name": "Heavy Weapon Proficiency III",
+          "Description": "Reach Rank 30 with any Heavy Axe, Heavy Hammer, or Heavy Sword weapon."
+     },
+     {
+          "Name": "Hooked",
+          "Description": "Play for 2 hours."
+     },
+     {
+          "Name": "Hunter",
+          "Description": "Achieve the rank of Hunter."
+     },
+     {
+          "Name": "Initiate",
+          "Description": "Achieve the rank of Initiate."
+     },
+     {
+          "Name": "Into the Void",
+          "Description": "Complete 10 Void Fissure missions."
+     },
+     {
+          "Name": "Inventor",
+          "Description": "Build 10 items in the Foundry."
+     },
+     {
+          "Name": "It Keeps Getting Better",
+          "Description": "Play for 10 hours."
+     },
+     {
+          "Name": "KABOOM!",
+          "Description": "Kill 10 or more enemies with a single explosion ({{Weapon"
+     },
+     {
+          "Name": "Kill It With Fire",
+          "Description": "Burn 100 Infested pods."
+     },
+     {
+          "Name": "Liberator",
+          "Description": "Set 10 Hostages free without triggering the execution timer."
+     },
+     {
+          "Name": "Master",
+          "Description": "Achieve the rank of Master."
+     },
+     {
+          "Name": "Merchant",
+          "Description": "Sell 10000 credits' worth of items."
+     },
+     {
+          "Name": "Middle Master",
+          "Description": "Achieve the rank of Middle Master."
+     },
+     {
+          "Name": "Money is Power",
+          "Description": "Earn 1,000,000 Credits."
+     },
+     {
+          "Name": "Nestegg",
+          "Description": "Earn 10,000 Credits."
+     },
+     {
+          "Name": "No Longer a Rookie",
+          "Description": "Reach Rank 2 with any Warframe."
+     },
+     {
+          "Name": "No Witnesses",
+          "Description": "Successfully perform 100 stealth kills."
+     },
+     {
+          "Name": "Novice",
+          "Description": "Achieve the rank of Novice."
+     },
+     {
+          "Name": "Operative",
+          "Description": "Solve 100 Ciphers."
+     },
+     {
+          "Name": "Our Tools Shape Us",
+          "Description": "Apply 4 different Mods to a single weapon or Warframe."
+     },
+     {
+          "Name": "Payday",
+          "Description": "Earn 1000 Credits."
+     },
+     {
+          "Name": "Pistol Mastery I",
+          "Description": "Reach Rank 10 with any five Pistol or Akimbo Pistols weapons."
+     },
+     {
+          "Name": "Pistol Mastery II",
+          "Description": "Reach Rank 20 with any five Pistol or Akimbo Pistols weapons."
+     },
+     {
+          "Name": "Pistol Mastery III",
+          "Description": "Reach Rank 30 with any five Pistol or Akimbo Pistols weapons."
+     },
+     {
+          "Name": "Pistol Proficiency I",
+          "Description": "Reach Rank 10 with any Pistol or Akimbo Pistols weapon."
+     },
+     {
+          "Name": "Pistol Proficiency II",
+          "Description": "Reach Rank 20 with any Pistol or Akimbo Pistols weapon."
+     },
+     {
+          "Name": "Pistol Proficiency III",
+          "Description": "Reach Rank 30 with any Pistol or Akimbo Pistols weapon."
+     },
+     {
+          "Name": "Plague Doctor",
+          "Description": "Defeat [[Phorid]] and get to extraction."
+     },
+     {
+          "Name": "Pole Weapon Mastery I",
+          "Description": "Reach Rank 10 with any three Scythe, Pole-arm or Staff weapons."
+     },
+     {
+          "Name": "Pole Weapon Mastery II",
+          "Description": "Reach Rank 20 with any three Scythe, Pole-arm or Staff weapons."
+     },
+     {
+          "Name": "Pole Weapon Mastery III",
+          "Description": "Reach Rank 30 with any three Scythe, Pole-arm or Staff weapons."
+     },
+     {
+          "Name": "Pole Weapon Proficiency I",
+          "Description": "Reach Rank 10 with any Scythe, Pole-arm or Staff weapon."
+     },
+     {
+          "Name": "Pole Weapon Proficiency II",
+          "Description": "Reach Rank 20 with any Scythe, Pole-arm or Staff weapon."
+     },
+     {
+          "Name": "Pole Weapon Proficiency III",
+          "Description": "Reach Rank 30 with any Scythe, Pole-arm or Staff weapon."
+     },
+     {
+          "Name": "Practice Makes Perfect",
+          "Description": "Reach Rank 2 with any weapon."
+     },
+     {
+          "Name": "Pride of The Lotus",
+          "Description": "Play for 100 hours."
+     },
+     {
+          "Name": "Ride the Wave",
+          "Description": "Complete 20 waves of Defense and successfully extract."
+     },
+     {
+          "Name": "Rifle Mastery I",
+          "Description": "Reach Rank 10 with any five Rifle or Machine Gun weapons."
+     },
+     {
+          "Name": "Rifle Mastery II",
+          "Description": "Reach Rank 20 with any five Rifle or Machine Gun weapons."
+     },
+     {
+          "Name": "Rifle Mastery III",
+          "Description": "Reach Rank 30 with any five Rifle or Machine Gun weapons."
+     },
+     {
+          "Name": "Rifle Proficiency I",
+          "Description": "Reach Rank 10 with any Rifle or Machine Gun weapon."
+     },
+     {
+          "Name": "Rifle Proficiency II",
+          "Description": "Reach Rank 20 with any Rifle or Machine Gun weapon."
+     },
+     {
+          "Name": "Rifle Proficiency III",
+          "Description": "Reach Rank 30 with any Rifle or Machine Gun weapon."
+     },
+     {
+          "Name": "Sage",
+          "Description": "Achieve the rank of Sage."
+     },
+     {
+          "Name": "Saviour of Ceres",
+          "Description": "Kill the boss in the [[Ceres]] region ([[Lieutenant Lech Kril]]) and get to extraction."
+     },
+     {
+          "Name": "Saviour of Earth",
+          "Description": "Kill the boss of the [[Earth]] region ([[Vay Hek]]) and get to extraction."
+     },
+     {
+          "Name": "Saviour of Europa",
+          "Description": "Kill the boss of the [[Europa]] region ([[Raptors]]) and get to extraction."
+     },
+     {
+          "Name": "Saviour of Jupiter",
+          "Description": "Kill the boss of the [[Jupiter]] region ([[Alad V]]) and get to extraction."
+     },
+     {
+          "Name": "Saviour of Mars",
+          "Description": "Kill the boss of the [[Mars]] region ([[The Sergeant]]) and get to extraction."
+     },
+     {
+          "Name": "Saviour of Mercury",
+          "Description": "Kill the boss of the [[Mercury]] region ([[Captain Vor]]) and get to extraction."
+     },
+     {
+          "Name": "Saviour of Neptune",
+          "Description": "Kill the bosses of the [[Neptune]] region ([[Hyena Pack]]) and get to extraction."
+     },
+     {
+          "Name": "Saviour of Phobos",
+          "Description": "Kill the bosses of the [[Phobos]] region ([[Captain Vor]] and [[Lieutenant Lech Kril]]) and get to extraction."
+     },
+     {
+          "Name": "Saviour of Pluto",
+          "Description": "Kill the boss of the [[Pluto]] region ([[Ambulas]]), and get to extraction."
+     },
+     {
+          "Name": "Saviour of Saturn",
+          "Description": "Kill the boss of the [[Saturn]] region ([[General Sargas Ruk]]), and get to extraction."
+     },
+     {
+          "Name": "Saviour of Sedna",
+          "Description": "Kill the boss of the [[Sedna]] region ([[Kela De Thaym]]), and get to extraction."
+     }, 
+     {
+          "Name": "Saviour of Uranus",
+          "Description": "Kill the boss of the [[Uranus]] region ([[Tyl Regor]]), and get to extraction."
+     },
+     {
+          "Name": "Saviour of Venus",
+          "Description": "Kill the boss of the [[Venus]] region ([[Jackal]]), and get to extraction."
+     },
+     {
+          "Name": "Scientist",
+          "Description": "Build 20 items in the Foundry."
+     },
+     {
+          "Name": "Secrets of the Orokin",
+          "Description": "Find a Mod."
+     },
+     {
+          "Name": "Seeker",
+          "Description": "Achieve the rank of Seeker."
+     },
+     {
+          "Name": "Sentinel Mastery I",
+          "Description": "Reach Rank 10 with any three Sentinels."
+     },
+     {
+          "Name": "Sentinel Mastery II",
+          "Description": "Reach Rank 20 with any three Sentinels."
+     },
+     {
+          "Name": "Sentinel Mastery III",
+          "Description": "Reach Rank 30 with any three Sentinels."
+     },
+     {
+          "Name": "Sentinel Proficiency I",
+          "Description": "Reach Rank 10 with any Sentinel."
+     },
+     {
+          "Name": "Sentinel Proficiency II",
+          "Description": "Reach Rank 20 with any Sentinel."
+     },
+     {
+          "Name": "Sentinel Proficiency III",
+          "Description": "Reach Rank 30 with any Sentinel."
+     },
+     {
+          "Name": "Shield Saver",
+          "Description": "Deflect 1,000 projectiles with your melee weapon."
+     },
+     {
+          "Name": "Shotgun Mastery I",
+          "Description": "Reach Rank 10 with any two Shotgun weapons."
+     },
+     {
+          "Name": "Shotgun Mastery II",
+          "Description": "Reach Rank 20 with any two Shotgun weapons."
+     },
+     {
+          "Name": "Shotgun Mastery III",
+          "Description": "Reach Rank 30 with any two Shotgun weapons."
+     },
+     {
+          "Name": "Shotgun Proficiency I",
+          "Description": "Reach Rank 10 with any Shotgun weapon."
+     },
+     {
+          "Name": "Shotgun Proficiency II",
+          "Description": "Reach Rank 20 with any Shotgun weapon."
+     },
+     {
+          "Name": "Shotgun Proficiency III",
+          "Description": "Reach Rank 30 with any Shotgun weapon."
+     },
+     {
+          "Name": "Shuriken Mastery I",
+          "Description": "Reach Rank 10 with any three Boomerang, Throwing Discs or Throwing Daggers weapon."
+     },
+     {
+          "Name": "Shuriken Mastery II",
+          "Description": "Reach Rank 20 with any three Boomerang, Throwing Discs or Throwing Daggers weapon."
+     },
+     {
+          "Name": "Shuriken Mastery III",
+          "Description": "Reach Rank 30 with any three Boomerang, Throwing Discs or Throwing Daggers weapon."
+     },
+     {
+          "Name": "Shuriken Proficiency I",
+          "Description": "Reach Rank 10 with any Boomerang, Throwing Discs or Throwing Daggers weapon."
+     },
+     {
+          "Name": "Shuriken Proficiency II",
+          "Description": "Reach Rank 20 with any Boomerang, Throwing Discs or Throwing Daggers weapon."
+     },
+     {
+          "Name": "Shuriken Proficiency III",
+          "Description": "Reach Rank 30 with any Boomerang, Throwing Discs or Throwing Daggers weapon."
+     },
+     {
+          "Name": "Silver Disciple",
+          "Description": "Achieve the rank of Silver Disciple."
+     },
+     {
+          "Name": "Silver Dragon",
+          "Description": "Achieve the rank of Silver Dragon."
+     },
+     {
+          "Name": "Silver Eagle",
+          "Description": "Achieve the rank of Silver Eagle."
+     },
+     {
+          "Name": "Silver Hunter",
+          "Description": "Achieve the rank of Silver Hunter."
+     },
+     {
+          "Name": "Silver Initiate",
+          "Description": "Achieve the rank of Silver Initiate."
+     },
+     {
+          "Name": "Silver Novice",
+          "Description": "Achieve the rank of Silver Novice."
+     },
+     {
+          "Name": "Silver Sage",
+          "Description": "Achieve the rank of Silver Sage."
+     },
+     {
+          "Name": "Silver Seeker",
+          "Description": "Achieve the rank of Silver Seeker."
+     },
+     {
+          "Name": "Silver Tiger",
+          "Description": "Achieve the rank of Silver Tiger."
+     },
+     {
+          "Name": "So Many Choices",
+          "Description": "Find 1,000 Mods."
+     },
+     {
+          "Name": "Special Agent",
+          "Description": "Solve 10 Ciphers."
+     },
+     {
+          "Name": "Tailor Made",
+          "Description": "Customize the color of a Warframe."
+     },
+     {
+          "Name": "Tenno of all trades",
+          "Description": "Score a kill with your equipped primary, secondary and melee weapons in 5 seconds or less."
+     },
+     {
+          "Name": "The 8-Fold Path",
+          "Description": "Survive 8 waves of [[Defense]] using only melee attacks!"
+     },
+     {
+          "Name": "The Camera Adds 10 pounds",
+          "Description": "Destroy 150 Security Cameras."
+     },
+     {
+          "Name": "The Right Tool for the Job",
+          "Description": "Obtain 5 Warframes."
+     },
+     {
+          "Name": "The Sword Alone",
+          "Description": "Complete 10 missions without any primary or secondary weapons equipped."
+     },
+     {
+          "Name": "Tiger",
+          "Description": "Achieve the rank of Tiger."
+     },
+     {
+          "Name": "True Master",
+          "Description": "Achieve the rank of True Master."
+     },
+     {
+          "Name": "We Shape Our Tools",
+          "Description": "Apply a Mod to a weapon or Warframe."
+     },
+     {
+          "Name": "Weapon Smith",
+          "Description": "Build an item in the Foundry."
+     },
+     {
+          "Name": "Where Credit is Due",
+          "Description": "Earn 100,000 Credits."
+     }
+]

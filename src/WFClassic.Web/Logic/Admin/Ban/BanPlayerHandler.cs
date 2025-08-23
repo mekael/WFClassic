@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
@@ -11,7 +12,7 @@ namespace WFClassic.Web.Logic.Admin.Ban
     public class BanPlayerHandler
     {
 
-        private ILogger<BanPlayerHandler> _logger;
+        private readonly ILogger<BanPlayerHandler> _logger;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly ApplicationDbContext _applicationDbContext;
 

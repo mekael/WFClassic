@@ -6,7 +6,7 @@ namespace WFClassic.Web.Logic.Economics.Purchase
     {
         [JsonPropertyName("accountId")]
         public Guid AccountId { get; set; }
-        
+
         [JsonPropertyName("nonce")]
         public long Nonce { get; set; }
 

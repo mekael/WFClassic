@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared.Models;
@@ -7,8 +8,8 @@ namespace WFClassic.Web.Logic.Friendship.Get
 {
     public class GetFriendsRequestHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GetFriendsRequestHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GetFriendsRequestHandler> _logger;
 
         public GetFriendsRequestHandler(ApplicationDbContext applicationDbContext, ILogger<GetFriendsRequestHandler> logger)
         {

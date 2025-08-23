@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -9,10 +10,10 @@ namespace WFClassic.Web.Logic.Economics.Revives
 {
     public class PurchaseRevivesHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<PurchaseRevivesHandler> _logger;
-        private AddAccountTransactionHandler _addAccountTransactionHandler;
-        private GetCreditsHandler _getCreditsHandler;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<PurchaseRevivesHandler> _logger;
+        private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
+        private readonly GetCreditsHandler _getCreditsHandler;
 
         public PurchaseRevivesHandler(ApplicationDbContext applicationDbContext, ILogger<PurchaseRevivesHandler> logger,
             AddAccountTransactionHandler addAccountTransactionHandler, GetCreditsHandler getCreditsHandler)
@@ -103,11 +104,14 @@ namespace WFClassic.Web.Logic.Economics.Revives
 
             // add plat transaction. 
             // honestly we don't care if this succeed 
-            _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = purchaseRevives.AccountId, 
-                                                                                Amount = 3 * revivesToPurchase, 
-                                                                                BankAccountTransactionType = BankAccountTransactionType.Debit, 
-                                                                                BankAccountType = CurrencyType.Platinum, 
-                                                                                MemoCode = "Purchase revives" });
+            _addAccountTransactionHandler.Handle(new AddAccountTransaction()
+            {
+                AccountId = purchaseRevives.AccountId,
+                Amount = 3 * revivesToPurchase,
+                BankAccountTransactionType = BankAccountTransactionType.Debit,
+                BankAccountType = CurrencyType.Platinum,
+                MemoCode = "Purchase revives"
+            });
             return result;
         }
 

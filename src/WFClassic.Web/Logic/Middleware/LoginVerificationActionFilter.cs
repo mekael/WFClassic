@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+
 using WFClassic.Web.Logic.Admin.CheckOnline;
 
 namespace WFClassic.Web.Logic.Middleware
 {
     public class LoginVerificationActionFilter : ActionFilterAttribute
     {
-        private ILogger<LoginVerificationActionFilter> _logger;
-        private IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
+        private readonly ILogger<LoginVerificationActionFilter> _logger;
+        private readonly IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
 
         public LoginVerificationActionFilter(ILogger<LoginVerificationActionFilter> logger, IsUserOnlineQueryHandler isUserOnlineQueryHandler)
         {

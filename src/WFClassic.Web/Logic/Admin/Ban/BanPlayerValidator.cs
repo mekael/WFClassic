@@ -1,4 +1,5 @@
 using System;
+
 using FluentValidation;
 
 namespace WFClassic.Web.Logic.Admin.Ban;

@@ -8,7 +8,7 @@ public class PlayerBan : EntityBase
     public ApplicationUser ApplicationUser { get; set; }
 
     public Guid BannedByUserId { get; set; }
-        public ApplicationUser BannedByUser { get; set; }
+    public ApplicationUser BannedByUser { get; set; }
 
     public string BanReason { get; set; }
     public DateTimeOffset BanStartedOn { get; set; }

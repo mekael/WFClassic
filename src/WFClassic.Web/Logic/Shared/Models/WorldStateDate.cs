@@ -2,7 +2,7 @@
 {
     public class WorldStateDate
     {
- 
+
         public WorldStateDate(DateTimeOffset date)
         {
             this.sec = date.ToUnixTimeSeconds();

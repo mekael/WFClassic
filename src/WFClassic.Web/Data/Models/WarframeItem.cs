@@ -8,6 +8,6 @@ namespace WFClassic.Web.Data.Models
         public string ItemType { get; set; }
         public WarframeItemLocation WarframeItemLocation { get; set; }
         public List<WarframeItemComponent> WarframeItemComponents { get; set; }
-    
+
     }
 }

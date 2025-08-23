@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -6,8 +7,8 @@ namespace WFClassic.Web.Logic.Friendship.Icon
 {
     public class SetAvatarIconRequestHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<SetAvatarIconRequestHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<SetAvatarIconRequestHandler> _logger;
 
         public SetAvatarIconRequestHandler(ApplicationDbContext applicationDbContext, ILogger<SetAvatarIconRequestHandler> logger)
         {
@@ -28,11 +29,11 @@ namespace WFClassic.Web.Logic.Friendship.Icon
                 return result;
             }
 
-            bool playerHasAvatarInInventory = false ;
- 
+            bool playerHasAvatarInInventory = false;
+
             try
             {
-                _logger.LogInformation("SetAvatarIconRequestHandler => accountId {AccountID} nonce {Nonce} =>  checking to see if player has icon in inventory ", setAvatarIconRequest.AccountId, setAvatarIconRequest.Nonce );
+                _logger.LogInformation("SetAvatarIconRequestHandler => accountId {AccountID} nonce {Nonce} =>  checking to see if player has icon in inventory ", setAvatarIconRequest.AccountId, setAvatarIconRequest.Nonce);
                 playerHasAvatarInInventory = _applicationDbContext.InventoryItems.Any(a => a.Player.ApplicationUserId == setAvatarIconRequest.AccountId && a.ItemType == setAvatarIconRequest.AvatarImageType);
             }
             catch (Exception ex)
@@ -42,7 +43,7 @@ namespace WFClassic.Web.Logic.Friendship.Icon
                 return result;
             }
 
-            if(!playerHasAvatarInInventory)
+            if (!playerHasAvatarInInventory)
             {
                 _logger.LogError("SetAvatarIconRequestHandler => accountId {AccountID} nonce {Nonce} =>  Player does not have avatar image in inventory  ", setAvatarIconRequest.AccountId, setAvatarIconRequest.Nonce);
                 result.SetAvatarIconResultStatus = SetAvatarIconResultStatus.ValidationErrors;

@@ -1,17 +1,19 @@
 ﻿using Coravel.Invocable;
+
 using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 
 namespace WFClassic.Web.Logic.Sys.Scheduled
 {
-    public class ResetWarframeRevivesHandler :IInvocable, IInvocableWithPayload<ResetWarframeRevives>
+    public class ResetWarframeRevivesHandler : IInvocable, IInvocableWithPayload<ResetWarframeRevives>
     {
 
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<ResetWarframeRevivesHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<ResetWarframeRevivesHandler> _logger;
 
-        public ResetWarframeRevives  Payload { get; set; }
+        public ResetWarframeRevives Payload { get; set; }
 
         public ResetWarframeRevivesHandler(ApplicationDbContext applicationDbContext, ILogger<ResetWarframeRevivesHandler> logger)
         {
@@ -34,25 +36,25 @@ namespace WFClassic.Web.Logic.Sys.Scheduled
 
             DateTimeOffset lastReviveResetDate = DateTimeOffset.MinValue;
 
-            try 
+            try
             {
                 _logger.LogInformation("ResetWarframeRevives => resetReason {ResetReason} => Searching for last successful reset ", resetWarframeRevives.ResetReason);
                 lastReviveResetDate = _applicationDbContext.SystemTaskHistory
                                                                             .Where(w => w.SystemTaskType == SystemTaskType.ResetRevives && w.TaskWasSuccessful)
                                                                             .Select(s => s.TaskExecutionTimestamp)
                                                                             .ToList()
-                                                                            .OrderByDescending(obd=> obd)
+                                                                            .OrderByDescending(obd => obd)
                                                                             .FirstOrDefault();
                 _logger.LogInformation("ResetWarframeRevives => resetReason {ResetReason} =>  Reset timestamp obtained", resetWarframeRevives.ResetReason);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
                 _logger.LogInformation("ResetWarframeRevivesHandler => resetReason {ResetReason} => Exception while searching for last reset date {Ex}", resetWarframeRevives.ResetReason, ex);
                 //TODO: determine whether or not we create a separate handler for tracking the system task execution status 
             }
 
-            _logger.LogInformation("ResetWarframeRevivesHandler => resetReason {ResetReason} => Revives last reset on {LastResetDate}",resetWarframeRevives.ResetReason, lastReviveResetDate);
+            _logger.LogInformation("ResetWarframeRevivesHandler => resetReason {ResetReason} => Revives last reset on {LastResetDate}", resetWarframeRevives.ResetReason, lastReviveResetDate);
 
 
             if (resetWarframeRevives.ResetRegardless)
@@ -60,13 +62,14 @@ namespace WFClassic.Web.Logic.Sys.Scheduled
                 _logger.LogInformation("ResetWarframeRevivesHandler => resetReason {ResetReason} => We are going to reset no matter what", resetWarframeRevives.ResetReason);
             }
 
-            if(lastReviveResetDate.Date == DateTimeOffset.Now.Date && !resetWarframeRevives.ResetRegardless)
+            if (lastReviveResetDate.Date == DateTimeOffset.Now.Date && !resetWarframeRevives.ResetRegardless)
             {
                 _logger.LogInformation("ResetWarframeRevivesHandler => Not time to reset, carry on.");
                 return;
             }
 
-            try {
+            try
+            {
                 _logger.LogInformation("ResetWarframeRevivesHandler => resetReason {ResetReason} => Updating db, setting extra remaining to 4", resetWarframeRevives.ResetReason);
                 _applicationDbContext.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Suits
                                                    && w.ExtraRemaining < 4)

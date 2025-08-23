@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.Middleware;
 
 namespace WFClassic.Web.Controllers
@@ -107,7 +108,7 @@ namespace WFClassic.Web.Controllers
 }
 
 ";
-             return cat;
+            return cat;
         }
     }
 }

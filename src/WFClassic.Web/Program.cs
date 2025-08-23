@@ -1,13 +1,23 @@
+using Coravel;
+
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+
+using Serilog;
+using Serilog.Filters;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Admin.CheckOnline;
+using WFClassic.Web.Logic.Bonus.Daily;
 using WFClassic.Web.Logic.Bonus.Rewards;
 using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Economics.Purchase;
+using WFClassic.Web.Logic.Economics.Revives;
 using WFClassic.Web.Logic.Economics.Sell;
+using WFClassic.Web.Logic.Economics.Slots;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Exp.Training;
 using WFClassic.Web.Logic.Foundry.Claim;
@@ -17,35 +27,28 @@ using WFClassic.Web.Logic.Foundry.Start;
 using WFClassic.Web.Logic.Friendship.Add;
 using WFClassic.Web.Logic.Friendship.AddPending;
 using WFClassic.Web.Logic.Friendship.Get;
+using WFClassic.Web.Logic.Friendship.Icon;
 using WFClassic.Web.Logic.Friendship.Remove;
 using WFClassic.Web.Logic.Inventory.Attach.Modifications;
 using WFClassic.Web.Logic.Inventory.Attach.Orokin;
 using WFClassic.Web.Logic.Inventory.Get;
 using WFClassic.Web.Logic.Inventory.Starting;
 using WFClassic.Web.Logic.Inventory.Update;
+using WFClassic.Web.Logic.Inventory.WarframeItemAddition;
+using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Stats.Leaderboard;
 using WFClassic.Web.Logic.Stats.ProfileStats;
 using WFClassic.Web.Logic.Stats.Upload;
+using WFClassic.Web.Logic.Sys.PlayerBans;
+using WFClassic.Web.Logic.Sys.PlayerData;
+using WFClassic.Web.Logic.Sys.Scheduled;
+using WFClassic.Web.Logic.Sys.SystemLogout;
 using WFClassic.Web.Logic.Taunt;
+using WFClassic.Web.Logic.UI.ListPlayers;
 using WFClassic.Web.Logic.Universe.GetState;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
-using WFClassic.Web.Logic.Sys.SystemLogout;
-using WFClassic.Web.Logic.Sys.Scheduled;
-using Coravel;
-using WFClassic.Web.Logic.Bonus.Daily;
-using WFClassic.Web.Logic.Friendship.Icon;
-using WFClassic.Web.Logic.Economics.Revives;
-using Serilog;
-using WFClassic.Web.Logic.Economics.Slots;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using WFClassic.Web.Logic.Middleware;
-using Serilog.Filters;
-using WFClassic.Web.Logic.UI.ListPlayers;
-using WFClassic.Web.Logic.Sys.PlayerData;
-using WFClassic.Web.Logic.Sys.PlayerBans;
-using WFClassic.Web.Logic.Inventory.WarframeItemAddition;
 
 
 

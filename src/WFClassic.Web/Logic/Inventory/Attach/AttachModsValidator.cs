@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+
 using WFClassic.Web.Logic.Inventory.Attach.Modifications;
 
 namespace WFClassic.Web.Logic.Inventory.Attach

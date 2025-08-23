@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+
 using WFClassic.Web.Data.Models;
 
 namespace WFClassic.Web.Logic.Admin.CheckOnline
 {
     public class IsUserOnlineQueryHandler
     {
-        private ILogger<IsUserOnlineQueryHandler> _logger;
+        private readonly ILogger<IsUserOnlineQueryHandler> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public IsUserOnlineQueryHandler(UserManager<ApplicationUser> userManager, ILogger<IsUserOnlineQueryHandler> logger)

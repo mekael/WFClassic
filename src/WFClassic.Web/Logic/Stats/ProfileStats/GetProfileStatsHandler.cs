@@ -5,8 +5,8 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
 {
     public class GetProfileStatsHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GetProfileStatsHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GetProfileStatsHandler> _logger;
 
         public GetProfileStatsHandler(ApplicationDbContext applicationDbContext,
                                     ILogger<GetProfileStatsHandler> logger)
@@ -15,7 +15,7 @@ namespace WFClassic.Web.Logic.Stats.ProfileStats
             _logger = logger;
         }
 
-        private List<string> weaponEventNames = new List<string>()
+        private readonly List<string> weaponEventNames = new List<string>()
         {
             "FIRE_WEAPON",
             "HEADSHOT_ITEM",

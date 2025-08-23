@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -8,9 +9,9 @@ namespace WFClassic.Web.Logic.Economics.Sell
 {
     public class SellItemHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<SellItemHandler> _logger;
-        private AddAccountTransactionHandler _addAccountTransactionHandler;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<SellItemHandler> _logger;
+        private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
 
         public SellItemHandler(ApplicationDbContext applicationDbContext, ILogger<SellItemHandler> logger, AddAccountTransactionHandler addAccountTransactionHandler)
         {
@@ -38,8 +39,8 @@ namespace WFClassic.Web.Logic.Economics.Sell
                 _logger.LogInformation("SellItemHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", sellItem.AccountId, sellItem.Nonce);
                 player = _applicationDbContext.Players.AsSplitQuery()
                                                     .Include(i => i.InventoryItems)
-                                                    .Include(i=> i.PendingRecipes)
-                                                    .ThenInclude(i=> i.Recipe)
+                                                    .Include(i => i.PendingRecipes)
+                                                    .ThenInclude(i => i.Recipe)
                                                     .FirstOrDefault(w => w.ApplicationUserId == sellItem.AccountId);
                 _logger.LogInformation("SellItemHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", sellItem.AccountId, sellItem.Nonce);
             }

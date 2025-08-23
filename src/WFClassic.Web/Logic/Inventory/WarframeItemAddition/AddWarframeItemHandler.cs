@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
- 
+
 namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
 {
     public class AddWarframeItemHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<AddWarframeItemHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<AddWarframeItemHandler> _logger;
 
         public AddWarframeItemHandler(ApplicationDbContext applicationDbContext, ILogger<AddWarframeItemHandler> logger)
         {
@@ -22,7 +23,7 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
 
             if (!validationResults.IsValid)
             {
-                _logger.LogError("UpdateLoadoutHandler => accountId {AccountID}   => Validation failure {ValidationErrors}", addWarframeItem.AccountId,  string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
+                _logger.LogError("UpdateLoadoutHandler => accountId {AccountID}   => Validation failure {ValidationErrors}", addWarframeItem.AccountId, string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
                 result.AddWarframeItemResultStatus = AddWarframeItemResultStatus.ValidationErrors;
                 return result;
             }
@@ -32,10 +33,11 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
             List<InventoryBin> inventoryBins = null;
             Guid playerId = Guid.Empty;
 
-            try {
+            try
+            {
                 _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>  ", addWarframeItem.AccountId, addWarframeItem.ItemType);
                 playerId = _applicationDbContext.Players.First(f => f.ApplicationUserId == addWarframeItem.AccountId).Id;
-                warframeItem = _applicationDbContext.WarframeItems.Include(i=> i.WarframeItemComponents).FirstOrDefault(fod => fod.ItemType == addWarframeItem.ItemType && fod.WarframeItemLocation == addWarframeItem.WarframeItemLocation);
+                warframeItem = _applicationDbContext.WarframeItems.Include(i => i.WarframeItemComponents).FirstOrDefault(fod => fod.ItemType == addWarframeItem.ItemType && fod.WarframeItemLocation == addWarframeItem.WarframeItemLocation);
                 inventoryItems = _applicationDbContext.InventoryItems.Where(w => w.Player.Id == playerId).ToList();
                 inventoryBins = _applicationDbContext.InventoryBins.Where(w => w.InventoryId == playerId).ToList();
                 _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>  ", addWarframeItem.AccountId, addWarframeItem.ItemType);
@@ -69,7 +71,7 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
                         ExtraRemaining = warframeItemComponent.ExtraRemaining,
                         UnlockLevel = warframeItemComponent.UnlockLevel,
                         XP = warframeItemComponent.XP,
-                        ExpiryDate = warframeItemComponent.InternalInventoryItemType == Data.Enums.InternalInventoryItemType.Boosters ? DateTime.Now.AddDays(addWarframeItem.NumberOfDaysForBooster): DateTime.MinValue
+                        ExpiryDate = warframeItemComponent.InternalInventoryItemType == Data.Enums.InternalInventoryItemType.Boosters ? DateTime.Now.AddDays(addWarframeItem.NumberOfDaysForBooster) : DateTime.MinValue
                     });
                 }
                 else
@@ -108,7 +110,7 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
                 {
                     _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  => Adding bin for    {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
                     InventoryBin binToModify = inventoryBins.FirstOrDefault(fod => fod.InventoryBinType == warframeItemComponent.InventoryBinTypeToAdd);
-                    if(binToModify!= null)
+                    if (binToModify != null)
                     {
                         binToModify.Slots += warframeItemComponent.NumberOfBinsToAdd;
                         binToModify.Extra += warframeItemComponent.NumberOfBinsToAdd;

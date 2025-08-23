@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+
 using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Credits.Get;
@@ -8,9 +10,9 @@ namespace WFClassic.Web.Logic.Inventory.Get
 {
     public class GetInventoryHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GetInventoryHandler> _logger;
-        private GetCreditsHandler _getCreditsHandler;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GetInventoryHandler> _logger;
+        private readonly GetCreditsHandler _getCreditsHandler;
 
         public GetInventoryHandler(ApplicationDbContext applicationDbContext, ILogger<GetInventoryHandler> logger, GetCreditsHandler getCreditsHandler)
         {

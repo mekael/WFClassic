@@ -5,8 +5,8 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 {
     public class AttachModsHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<AttachModsHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<AttachModsHandler> _logger;
 
         public AttachModsHandler(ApplicationDbContext applicationDbContext, ILogger<AttachModsHandler> logger)
         {
@@ -52,7 +52,7 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 
                 InventoryItemAttachment existingAttachment = modAttachments.FirstOrDefault(w => w.AttachedInventoryItemId == Guid.Parse(upgradeToAttach.ItemId.Id));
 
-                if(existingAttachment != null)
+                if (existingAttachment != null)
                 {
                     _applicationDbContext.Entry(existingAttachment).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
                 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -6,8 +7,8 @@ namespace WFClassic.Web.Logic.Friendship.Remove
 {
     public class RemoveFriendRequestHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<RemoveFriendRequestHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<RemoveFriendRequestHandler> _logger;
 
         public RemoveFriendRequestHandler(ApplicationDbContext applicationDbContext, ILogger<RemoveFriendRequestHandler> logger)
         {

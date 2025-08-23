@@ -2,7 +2,7 @@
 {
     public enum WarframeItemLocation
     {
-        Foundry, 
+        Foundry,
         Market
     }
 }

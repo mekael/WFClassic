@@ -2,15 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
+
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.WFAuth.Initialize;
@@ -82,7 +84,7 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account
             [Display(Name = "Display Name")]
             public string DisplayName { get; set; }
 
- 
+
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

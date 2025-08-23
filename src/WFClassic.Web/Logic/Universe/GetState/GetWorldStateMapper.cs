@@ -1,4 +1,5 @@
 ﻿using WFClassic.Web.Data.Models;
+
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WFClassic.Web.Logic.Universe.GetState

@@ -6,8 +6,8 @@ namespace WFClassic.Web.Logic.Exp.Training
 {
     public class AddLevelBasedOnTrainingHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<AddLevelBasedOnTrainingHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<AddLevelBasedOnTrainingHandler> _logger;
 
         public AddLevelBasedOnTrainingHandler(ApplicationDbContext applicationDbContext, ILogger<AddLevelBasedOnTrainingHandler> logger)
         {

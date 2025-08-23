@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared;
@@ -21,7 +22,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
 
         public WarframeLoginHandler(ILogger<WarframeLoginHandler> logger, ApplicationDbContext applicationDbContext,
             SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration,
-            CreatePlayerHandler createPlayerHandler, IUserStore<ApplicationUser> userStore )
+            CreatePlayerHandler createPlayerHandler, IUserStore<ApplicationUser> userStore)
         {
             this._logger = logger;
             this._applicationDbContext = applicationDbContext;
@@ -61,9 +62,9 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 warframeLoginResult.WarframeLoginResultStatus = WarframeLoginResultStatus.UserNotFound;
                 return warframeLoginResult;
             }
-            else if(user == null && createUserIfDoesNotExist)
+            else if (user == null && createUserIfDoesNotExist)
             {
-                _logger.LogInformation ("WarframeLoginHandler => email {email} =>  User not found ", warframeLoginRequest.email);
+                _logger.LogInformation("WarframeLoginHandler => email {email} =>  User not found ", warframeLoginRequest.email);
                 _logger.LogWarning("WarframeLoginHandler => email {email} =>  Creating new user instance ", warframeLoginRequest.email);
                 user = Activator.CreateInstance<ApplicationUser>();
                 user.DisplayName = warframeLoginRequest.email.Split("@")[0];
@@ -140,7 +141,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 warframeLoginResult.WarframeLoginResultDetails = new WarframeLoginResultDetails()
                 {
                     id = user.Id.ToString(),
-                    BuildLabel = _configuration.GetValue<string>("BuildLabel"), 
+                    BuildLabel = _configuration.GetValue<string>("BuildLabel"),
                     DisplayName = user.DisplayName,
                     NatHash = "127.0.0.1:88",
                     Nonce = user.CurrentNonce,

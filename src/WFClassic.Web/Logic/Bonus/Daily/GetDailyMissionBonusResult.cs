@@ -20,5 +20,5 @@
         public int DailyMissionBonus { get; set; }
     }
 
- 
+
 }

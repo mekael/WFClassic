@@ -4,8 +4,8 @@ namespace WFClassic.Web.Logic.Friendship.AddPending
 {
     public class AddPendingFriendHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<AddPendingFriendHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<AddPendingFriendHandler> _logger;
 
         public AddPendingFriendHandler(ApplicationDbContext applicationDbContext, ILogger<AddPendingFriendHandler> logger)
         {
