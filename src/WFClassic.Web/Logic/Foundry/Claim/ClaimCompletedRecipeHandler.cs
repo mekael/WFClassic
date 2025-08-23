@@ -36,18 +36,19 @@ namespace WFClassic.Web.Logic.Foundry.Claim
             Recipe recipe = null;
             InventoryItem recipeItem = null;
             PendingRecipe pendingRecipe = null;
-
+            List<InventoryBin> slots = null;
             try
             {
                 _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce}  recipeName {RecipeName} => querying for recipe and player   ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                 playerId = _applicationDbContext.Players.FirstOrDefault(fod => fod.ApplicationUserId == claimCompletedRecipe.AccountId).Id;
- 
+
                 recipeItem = _applicationDbContext.InventoryItems.FirstOrDefault(fod => fod.ItemType == claimCompletedRecipe.RecipeName);
 
                 recipe = _applicationDbContext.Recipes.AsNoTracking()
                                                       .FirstOrDefault(fod => fod.RecipeItemName == claimCompletedRecipe.RecipeName);
 
                 pendingRecipe = _applicationDbContext.PendingRecipes.FirstOrDefault(fod => fod.PlayerId == playerId && fod.RecipeId == recipe.Id);
+                slots = _applicationDbContext.InventoryBins.Where(w => w.InventoryId == playerId).ToList();
             }
             catch (Exception ex)
             {
@@ -63,13 +64,13 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;
                 return claimCompletedRecipeResult;
             }
-            else if (pendingRecipe== null)
+            else if (pendingRecipe == null)
             {
                 _logger.LogError("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => No pending recipe found ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;
                 return claimCompletedRecipeResult;
             }
-            else if (recipeItem == null || recipeItem.ItemCount==0)
+            else if (recipeItem == null || recipeItem.ItemCount == 0)
             {
                 _logger.LogError("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => No matching blueprint found ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;
@@ -78,8 +79,21 @@ namespace WFClassic.Web.Logic.Foundry.Claim
 
             _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName}  => Found blueprint item, pending item, and recipe ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
 
-            AddWarframeItemResult addWarframeItemResult = this._addWarframeItemHandler.Handle(new AddWarframeItem() { AccountId = claimCompletedRecipe.AccountId, ItemType = recipe.ResultItemName, WarframeItemLocation = WarframeItemLocation.Foundry });
 
+            // check to make sure we have enough slots (if the item is a weapon or suit or a sentinel)
+
+
+            if ((recipe.ResultItemName.StartsWith("/Lotus/Types/StoreItems/PowerSuits/") && slots.Where(w => w.InventoryBinType == InventoryBinType.Suit).FirstOrDefault().Slots == 0)
+             || (recipe.ResultItemName.StartsWith("/Lotus/Types/StoreItems/Weapons/") && slots.Where(w => w.InventoryBinType == InventoryBinType.Weapon).FirstOrDefault().Slots == 0)
+            || (recipe.ResultItemName.StartsWith("/Lotus/Types/StoreItems/Sentinels/") && slots.Where(w => w.InventoryBinType == InventoryBinType.Weapon).FirstOrDefault().Slots < 2))
+            {
+                _logger.LogError("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => Not enough slots available to claim item", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
+                claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.NoSlotsAvailable;
+                return claimCompletedRecipeResult;
+            }
+              
+
+            AddWarframeItemResult addWarframeItemResult = this._addWarframeItemHandler.Handle(new AddWarframeItem() { AccountId = claimCompletedRecipe.AccountId, ItemType = recipe.ResultItemName, WarframeItemLocation = WarframeItemLocation.Foundry });
 
 
             _applicationDbContext.Entry(pendingRecipe).State = EntityState.Deleted;

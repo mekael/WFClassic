@@ -9,6 +9,7 @@
     public enum ClaimCompletedRecipeResultStatus
     {
         ValidationErrors,
+        NoSlotsAvailable,
         DatabaseErrors,
         MappingFailure,
         Success
