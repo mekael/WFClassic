@@ -81,12 +81,21 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/purchase.php")]
-        public ActionResult Purchase([FromQuery] PurchaseItem purchaseItem)
+        public IActionResult Purchase([FromQuery] PurchaseItem purchaseItem)
         {
             var result = _purchaseItemHandler.Handle(purchaseItem);
 
             // purchase something from the shop
-            return new JsonResult("{}");
+            // if successful we send 1 (true) for a normal item
+            // if we have purchased a booster pack (pack of mods) then we need to send a comma separated list of the mods
+            // right now we just return 1 due to the fact that we haven't implemented the ability to purchase boosters
+            // and probably won't 
+            if (result.PurchaseItemResultStatus == PurchaseItemResultStatus.Success)
+            {
+                return  new JsonResult(1);
+            }
+
+            return StatusCode(500);
         }
 
         [HttpPost]
