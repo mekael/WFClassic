@@ -6,8 +6,8 @@ namespace WFClassic.Web.Logic.WFAuth.Initialize
 {
     public class CreatePlayerHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<CreatePlayerHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<CreatePlayerHandler> _logger;
 
         public CreatePlayerHandler(ApplicationDbContext applicationDbContext, ILogger<CreatePlayerHandler> logger)
         {
@@ -49,7 +49,7 @@ namespace WFClassic.Web.Logic.WFAuth.Initialize
                       new BankAccount()
                                         {
                                             BankAccountType = CurrencyType.StandardCredits,
-                                            CurrentBalance = 0 
+                                            CurrentBalance = 0
                                         }
                 }
             };

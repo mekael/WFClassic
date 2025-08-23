@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -6,8 +7,8 @@ namespace WFClassic.Web.Logic.Foundry.Pending
 {
     public class CheckPendingRecipesQueryHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<CheckPendingRecipesQueryHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<CheckPendingRecipesQueryHandler> _logger;
 
         public CheckPendingRecipesQueryHandler(ApplicationDbContext applicationDbContext, ILogger<CheckPendingRecipesQueryHandler> logger)
         {

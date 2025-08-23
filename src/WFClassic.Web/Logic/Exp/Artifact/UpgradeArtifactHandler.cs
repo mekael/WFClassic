@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Credits.Add;
@@ -8,10 +9,10 @@ namespace WFClassic.Web.Logic.Exp.Artifact
 {
     public class UpgradeArtifactHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<UpgradeArtifactHandler> _logger;
-        private AddAccountTransactionHandler _addAccountTransactionHandler;
-        private GetCreditsHandler _getCreditsHandler;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<UpgradeArtifactHandler> _logger;
+        private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
+        private readonly GetCreditsHandler _getCreditsHandler;
 
         public UpgradeArtifactHandler(ApplicationDbContext applicationDbContext, ILogger<UpgradeArtifactHandler> logger,
             AddAccountTransactionHandler addAccountTransactionHandler, GetCreditsHandler getCreditsHandler)

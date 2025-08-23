@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -6,12 +7,12 @@ namespace WFClassic.Web.Logic.Universe.GetState
 {
     public class GetWorldStateHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GetWorldStateHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GetWorldStateHandler> _logger;
         private readonly IConfiguration _configuration;
 
         public GetWorldStateHandler(ApplicationDbContext applicationDbContext,
-                                    ILogger<GetWorldStateHandler> logger, 
+                                    ILogger<GetWorldStateHandler> logger,
                                     IConfiguration configuration)
         {
             _applicationDbContext = applicationDbContext;
@@ -46,8 +47,8 @@ namespace WFClassic.Web.Logic.Universe.GetState
                 // get the alerts
                 worldStateEventMessages = _applicationDbContext.WorldStateEventMessages.Where(w => w.IsActive).ToList();
                 worldStateAlerts = _applicationDbContext.AlertConfigurations
-                                                                         .Include(i=> i.AlertEnemyConfigurations)
-                                                                         .Include(i=> i.AlertRewardConfigurations)
+                                                                         .Include(i => i.AlertEnemyConfigurations)
+                                                                         .Include(i => i.AlertRewardConfigurations)
                                                                          .Where(w => w.IsActive)
                                                                          .ToList();
 
@@ -61,7 +62,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
                 result.GetWorldStateResultStatus = GetWorldStateResultStatus.DatabaseErrors;
             }
 
-            try 
+            try
             {
                 _logger.LogInformation("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} =>   ", getWorldState.AccountId, getWorldState.Nonce);
                 result.GetWorldStateResultJson = GetWorldStateMapper.Map(worldStateEventMessages, worldStateAlerts, _configuration.GetValue<string>("BuildLabel"));

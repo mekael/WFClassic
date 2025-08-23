@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.UI.ListPlayers;
+
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WFClassic.Web.Controllers
@@ -9,7 +11,7 @@ namespace WFClassic.Web.Controllers
     public class UIPlayerController : Controller
     {
 
-        GetPlayerListHandler _getPlayerListHandler;
+        readonly GetPlayerListHandler _getPlayerListHandler;
 
         public UIPlayerController(GetPlayerListHandler getPlayerListHandler)
         {
@@ -20,7 +22,7 @@ namespace WFClassic.Web.Controllers
         [Route("/players/")]
         public IActionResult Index()
         {
-           
+
             return View();
         }
 
@@ -29,9 +31,9 @@ namespace WFClassic.Web.Controllers
         [HttpGet]
         public IActionResult GetPlayerData()
         {
-       
-                GetPlayerList getPlayerList = new GetPlayerList() { NumberOfItemsPerPage = 50, PageNumber = 1 };
-          
+
+            GetPlayerList getPlayerList = new GetPlayerList() { NumberOfItemsPerPage = 50, PageNumber = 1 };
+
 
             var result = _getPlayerListHandler.Handle(getPlayerList);
 
@@ -44,7 +46,7 @@ namespace WFClassic.Web.Controllers
                 return BadRequest();
             }
 
-            var jsonData = new {  recordsFiltered = result.GetPlayerListResultDetailItems.Count, recordsTotal = result.GetPlayerListResultDetailItems.Count, data = result.GetPlayerListResultDetailItems };
+            var jsonData = new { recordsFiltered = result.GetPlayerListResultDetailItems.Count, recordsTotal = result.GetPlayerListResultDetailItems.Count, data = result.GetPlayerListResultDetailItems };
             return Ok(jsonData);
         }
 

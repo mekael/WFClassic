@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+
 using WFClassic.Web.Data.Enums;
 
 namespace WFClassic.Web.Data.Models

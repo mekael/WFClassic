@@ -1,8 +1,11 @@
-﻿using Coravel.Invocable;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+using Coravel.Invocable;
+
+using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -12,8 +15,8 @@ namespace WFClassic.Web.Logic.Sys.PlayerData
     public class DownloadPlayerDataHandler
     {
 
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<DownloadPlayerDataHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<DownloadPlayerDataHandler> _logger;
 
 
         public DownloadPlayerDataHandler(ApplicationDbContext applicationDbContext, ILogger<DownloadPlayerDataHandler> logger)

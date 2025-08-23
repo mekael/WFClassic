@@ -9,7 +9,7 @@ namespace WFClassic.Web.Logic.Economics.Slots
         public string IncomingPurchaseSlotsJsonObject { get; set; }
     }
 
-  
+
 
     public class IncomingPurchaseSuitsJsonObject
     {

@@ -5,8 +5,8 @@ namespace WFClassic.Web.Logic.Friendship.Add
 {
     public class AcceptFriendRequestHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<AcceptFriendRequestHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<AcceptFriendRequestHandler> _logger;
 
         public AcceptFriendRequestHandler(ApplicationDbContext applicationDbContext, ILogger<AcceptFriendRequestHandler> logger)
         {

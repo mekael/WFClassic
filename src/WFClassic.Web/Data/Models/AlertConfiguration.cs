@@ -5,7 +5,7 @@
         public bool IsActive { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
-      
+
         public int AllowReplay { get; set; }
         // Mission information
         public string MissionType { get; set; }
@@ -23,7 +23,7 @@
         public string Location { get; set; }
         public string LevelOverride { get; set; }
         public string EnemySpec { get; set; }
-       
+
         public string VIPAgent { get; set; }
         public int MinEnemyLevel { get; set; }
         public int MaxEnemyLevel { get; set; }
@@ -33,7 +33,7 @@
         public List<AlertRewardConfiguration> AlertRewardConfigurations { get; set; }
         public List<AlertEnemyConfiguration> AlertEnemyConfigurations { get; set; }
 
- 
+
 
 
 
@@ -41,4 +41,3 @@
 
     }
 }
-

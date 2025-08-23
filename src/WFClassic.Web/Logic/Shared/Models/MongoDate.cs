@@ -9,7 +9,7 @@ namespace WFClassic.Web.Logic.Shared.Models
 
         public MongoDate(DateTime date)
         {
-            if(date == DateTime.MinValue)
+            if (date == DateTime.MinValue)
             {
                 date = DateTime.Now;
             }

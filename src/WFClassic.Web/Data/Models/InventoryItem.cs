@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+
 using WFClassic.Web.Data.Enums;
 
 namespace WFClassic.Web.Data.Models
@@ -23,4 +24,4 @@ namespace WFClassic.Web.Data.Models
         public int Charge { get; set; }
         public DateTime ExpiryDate { get; set; }
     }
-} 
+}

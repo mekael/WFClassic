@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WFClassic.Web.Areas.Identity.Pages.Account
@@ -14,4 +15,3 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account
         }
     }
 }
-

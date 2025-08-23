@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.Friendship.Add;
 using WFClassic.Web.Logic.Friendship.AddPending;
 using WFClassic.Web.Logic.Friendship.Get;
@@ -14,11 +16,11 @@ namespace WFClassic.Web.Controllers
     [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class FriendsController : ControllerBase
     {
-        private AddPendingFriendHandler _addPendingFriendHandler;
-        private GetFriendsRequestHandler _getFriendsRequestHandler;
-        private AcceptFriendRequestHandler _acceptFriendRequestHandler;
-        private RemoveFriendRequestHandler _removeFriendRequestHandler;
-        private SetAvatarIconRequestHandler _setAvatarIconRequestHandler;
+        private readonly AddPendingFriendHandler _addPendingFriendHandler;
+        private readonly GetFriendsRequestHandler _getFriendsRequestHandler;
+        private readonly AcceptFriendRequestHandler _acceptFriendRequestHandler;
+        private readonly RemoveFriendRequestHandler _removeFriendRequestHandler;
+        private readonly SetAvatarIconRequestHandler _setAvatarIconRequestHandler;
 
         public FriendsController(AddPendingFriendHandler addPendingFriendHandler, GetFriendsRequestHandler getFriendsRequestHandler,
             AcceptFriendRequestHandler acceptFriendRequestHandler, RemoveFriendRequestHandler removeFriendRequestHandler,
@@ -33,7 +35,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpGet]
         [Route("/api/addFriendImage.php")]
-        public ActionResult AddFriendImage( [FromQuery]  SetAvatarIconRequest setAvatarIconRequest )
+        public ActionResult AddFriendImage([FromQuery] SetAvatarIconRequest setAvatarIconRequest)
         {
             //GET /api/addFriendImage.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=8779661927687983114&avatarImageType=/Lotus/Types/StoreItems/AvatarImages/AvatarImageItem4&avatarImage=Icon04.png HTTP/1.1
 
@@ -56,7 +58,7 @@ namespace WFClassic.Web.Controllers
             Utils.GetRequestObjectAsString(this.HttpContext);
             return new JsonResult("{}");
         }
- 
+
 
 
         [HttpGet]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Credits.Add;
@@ -7,9 +8,9 @@ namespace WFClassic.Web.Logic.Foundry.Start
 {
     public class StartRecipeBuildHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<StartRecipeBuildHandler> _logger;
-        private AddAccountTransactionHandler _addAccountTransactionHandler;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<StartRecipeBuildHandler> _logger;
+        private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
 
         public StartRecipeBuildHandler(ApplicationDbContext applicationDbContext, ILogger<StartRecipeBuildHandler> logger,
             AddAccountTransactionHandler addAccountTransactionHandler)
@@ -86,12 +87,12 @@ namespace WFClassic.Web.Logic.Foundry.Start
                 inventoryItemsToUpdate.Add(inventoryItem);
             }
 
-            if(startRecipeBuild.StartRecipeBuildNamedItems != null && startRecipeBuild.StartRecipeBuildNamedItems.Ids.Count != 0)
+            if (startRecipeBuild.StartRecipeBuildNamedItems != null && startRecipeBuild.StartRecipeBuildNamedItems.Ids.Count != 0)
             {
-                foreach(var item in startRecipeBuild.StartRecipeBuildNamedItems.Ids.Where(w=> !string.IsNullOrWhiteSpace(w)))
+                foreach (var item in startRecipeBuild.StartRecipeBuildNamedItems.Ids.Where(w => !string.IsNullOrWhiteSpace(w)))
                 {
                     InventoryItem inventoryItem = player.InventoryItems.Where(w => w.Id == Guid.Parse(item)).FirstOrDefault();
-                    if (inventoryItem == null || inventoryItem.ItemCount ==0 )
+                    if (inventoryItem == null || inventoryItem.ItemCount == 0)
                     {
                         // bail early with a validation error
                         _logger.LogError("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} recipeName {RecipeName}  => Unable to find {ItemId} ", startRecipeBuild.AccountId, startRecipeBuild.Nonce, startRecipeBuild.RecipeName, item);

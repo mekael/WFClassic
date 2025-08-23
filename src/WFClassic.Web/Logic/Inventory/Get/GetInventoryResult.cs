@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+
+using Newtonsoft.Json;
+
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Get
@@ -114,7 +116,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public List<GetInventoryResultJsonUpgradeItem> Upgrades { get; set; }
 
         [JsonPropertyName("FlavourItems")]
-        public List<GetInventoryResultJsonFlavourItem> FlavourItems { get;set; }
+        public List<GetInventoryResultJsonFlavourItem> FlavourItems { get; set; }
 
         [JsonPropertyName("ActiveAvatarImageType")]
         public string ActiveAvatarImageType { get; set; }
@@ -152,7 +154,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public MongoId ItemId { get; set; }
 
         [JsonPropertyName("ParentId")]
-        [System.Text.Json.Serialization.JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)]
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public MongoId ParentId { get; set; }
 
         [JsonPropertyName("Slot")]
@@ -239,7 +241,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public int ExtraCapacity { get; set; }
 
         [JsonPropertyName("ExtraRemaining")]
-        public int ExtraRemaining { get; set; }  
+        public int ExtraRemaining { get; set; }
 
 
 
@@ -256,7 +258,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
     {
         [JsonPropertyName("ExpiryDate")]
         public long ExpiryDate { get; set; }
-        
+
         [JsonPropertyName("ItemType")]
         public string ItemType { get; set; }
     }

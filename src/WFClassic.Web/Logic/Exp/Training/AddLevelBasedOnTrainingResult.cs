@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Exp.Training

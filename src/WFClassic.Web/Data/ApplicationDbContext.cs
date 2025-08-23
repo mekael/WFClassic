@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data.Models;
 
 namespace WFClassic.Web.Data;
@@ -65,7 +66,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<WarframeItem> WarframeItems { get; set; }
     public DbSet<WarframeItemComponent> WarframeItemComponents { get; set; }
-    
+
     public DbSet<PlayerBan> PlayerBans { get; set; }
 
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -9,10 +10,10 @@ namespace WFClassic.Web.Logic.Economics.Slots
 {
     public class PurchaseSlotsHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<PurchaseSlotsHandler> _logger;
-        private AddAccountTransactionHandler _addAccountTransactionHandler;
-        private GetCreditsHandler _getCreditsHandler;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<PurchaseSlotsHandler> _logger;
+        private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
+        private readonly GetCreditsHandler _getCreditsHandler;
 
         public PurchaseSlotsHandler(ApplicationDbContext applicationDbContext, ILogger<PurchaseSlotsHandler> logger,
             AddAccountTransactionHandler addAccountTransactionHandler, GetCreditsHandler getCreditsHandler)
@@ -107,7 +108,7 @@ namespace WFClassic.Web.Logic.Economics.Slots
             _addAccountTransactionHandler.Handle(new AddAccountTransaction()
             {
                 AccountId = purchaseSlots.AccountId,
-                Amount =   platToCharge,
+                Amount = platToCharge,
                 BankAccountTransactionType = BankAccountTransactionType.Debit,
                 BankAccountType = CurrencyType.Platinum,
                 MemoCode = "Purchase revives"

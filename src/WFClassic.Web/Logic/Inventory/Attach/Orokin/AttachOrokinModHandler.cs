@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -8,10 +9,10 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Orokin
 {
     public class AttachOrokinModHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<AttachOrokinModHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<AttachOrokinModHandler> _logger;
 
-        private List<InternalInventoryItemType> weaponTypes = new List<InternalInventoryItemType>() {
+        private readonly List<InternalInventoryItemType> weaponTypes = new List<InternalInventoryItemType>() {
             InternalInventoryItemType.Melee,
             InternalInventoryItemType.LongGuns,
             InternalInventoryItemType.Pistols,

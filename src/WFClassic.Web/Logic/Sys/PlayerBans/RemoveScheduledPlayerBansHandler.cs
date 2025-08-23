@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Identity;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
 namespace WFClassic.Web.Logic.Sys.PlayerBans;
 
-public class RemoveScheduledPlayerBansHandler 
+public class RemoveScheduledPlayerBansHandler
 {
 
     private readonly ApplicationDbContext _applicationDbContext;
@@ -47,7 +48,7 @@ public class RemoveScheduledPlayerBansHandler
             playerBan.BanRescindedOnDate = banInEffectUntilDate;
             playerBan.BanRescindedReason = "Ban rescinded by scheduled job. ";
             playerBan.BanRescindedBy = "System";
-            var user =   _userStore.FindByIdAsync(playerBan.ApplicationUserId.ToString(), CancellationToken.None).Result;
+            var user = _userStore.FindByIdAsync(playerBan.ApplicationUserId.ToString(), CancellationToken.None).Result;
 
             if (user.LockoutEnabled && user.LockoutEnd.HasValue && user.LockoutEnd.Value.Date == banInEffectUntilDate)
             {

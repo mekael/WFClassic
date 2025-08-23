@@ -4,8 +4,8 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
 {
     public class GetLeaderboardStatsHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GetLeaderboardStatsHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GetLeaderboardStatsHandler> _logger;
 
         public GetLeaderboardStatsHandler(ApplicationDbContext applicationDbContext,
                                     ILogger<GetLeaderboardStatsHandler> logger)
@@ -54,7 +54,7 @@ namespace WFClassic.Web.Logic.Stats.Leaderboard
                 result.GetLeaderboardStatsResultStatus = GetLeaderboardStatsResultStatus.DatabaseErrors;
             }
 
-            for(int i = 0; i < topTenKillers.Count; i++)
+            for (int i = 0; i < topTenKillers.Count; i++)
             {
                 topTenKillers[i].rank = i + 1;
             }

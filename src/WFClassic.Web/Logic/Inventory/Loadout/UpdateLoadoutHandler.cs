@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Inventory.Loadout;
@@ -7,8 +8,8 @@ namespace WFClassic.Web.Logic.Inventory.Get
 {
     public class UpdateLoadoutHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<UpdateLoadoutHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<UpdateLoadoutHandler> _logger;
 
         public UpdateLoadoutHandler(ApplicationDbContext applicationDbContext, ILogger<UpdateLoadoutHandler> logger)
         {

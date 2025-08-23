@@ -1,5 +1,6 @@
-﻿using Org.BouncyCastle.Crypto.Digests;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace WFClassic.Web.Logic.Shared
 {
@@ -31,6 +32,6 @@ namespace WFClassic.Web.Logic.Shared
             return bodyBytes;
         }
 
-        
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -6,8 +7,8 @@ namespace WFClassic.Web.Logic.Credits.Add
 {
     public class AddAccountTransactionHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<AddAccountTransactionHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<AddAccountTransactionHandler> _logger;
 
         public AddAccountTransactionHandler(ApplicationDbContext applicationDbContext, ILogger<AddAccountTransactionHandler> logger)
         {

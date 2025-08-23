@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.Stats.Leaderboard;
@@ -12,9 +14,9 @@ namespace WFClassic.Web.Controllers
     [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class StatsController : ControllerBase
     {
-        private UploadStatsHandler _uploadStatsHandler;
-        private GetLeaderboardStatsHandler _getLeaderboardStatsHandler;
-        private GetProfileStatsHandler _getProfileStatsHandler;
+        private readonly UploadStatsHandler _uploadStatsHandler;
+        private readonly GetLeaderboardStatsHandler _getLeaderboardStatsHandler;
+        private readonly GetProfileStatsHandler _getProfileStatsHandler;
 
         public StatsController(UploadStatsHandler uploadStatsHandler, GetLeaderboardStatsHandler getLeaderboardStatsHandler, GetProfileStatsHandler getProfileStatsHandler)
         {

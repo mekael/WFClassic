@@ -6,7 +6,7 @@ namespace WFClassic.Web.Data.Models
     {
         [JsonIgnore]
         public Guid Id { get; set; }
-        
+
         [JsonIgnore]
         public DateTimeOffset CreationTimestamp { get; set; } = DateTimeOffset.Now;
 

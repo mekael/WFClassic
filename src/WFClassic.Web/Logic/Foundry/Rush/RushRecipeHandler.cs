@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Credits.Add;
@@ -9,11 +10,11 @@ namespace WFClassic.Web.Logic.Foundry.Rush
 {
     public class RushRecipeHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<RushRecipeHandler> _logger;
-        private AddAccountTransactionHandler _addAccountTransactionHandler;
-        private GetCreditsHandler _getCreditsHandler;
-        private ClaimCompletedRecipeHandler _claimCompletedRecipeHandler;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<RushRecipeHandler> _logger;
+        private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
+        private readonly GetCreditsHandler _getCreditsHandler;
+        private readonly ClaimCompletedRecipeHandler _claimCompletedRecipeHandler;
 
         public RushRecipeHandler(ApplicationDbContext applicationDbContext, ILogger<RushRecipeHandler> logger,
           AddAccountTransactionHandler addAccountTransactionHandler, GetCreditsHandler getCreditsHandler,
@@ -96,7 +97,7 @@ namespace WFClassic.Web.Logic.Foundry.Rush
             }
 
             //TODO: fix this, or turn it into an atomic action.
-            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = rushRecipe.AccountId, Amount =  recipe.SkipBuildPriceInPlatinum, BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit, BankAccountType = Data.Enums.CurrencyType.Platinum, MemoCode = recipe.RecipeItemName });
+            var addAccountTransactionResult = _addAccountTransactionHandler.Handle(new AddAccountTransaction() { AccountId = rushRecipe.AccountId, Amount = recipe.SkipBuildPriceInPlatinum, BankAccountTransactionType = Data.Enums.BankAccountTransactionType.Debit, BankAccountType = Data.Enums.CurrencyType.Platinum, MemoCode = recipe.RecipeItemName });
 
             rushRecipeResult.RushRecipeResultStatus = RushRecipeResultStatus.Success;
             return rushRecipeResult;

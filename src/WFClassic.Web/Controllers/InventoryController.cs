@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.Economics.Slots;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Inventory.Attach;
@@ -18,14 +20,14 @@ namespace WFClassic.Web.Controllers
     [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class InventoryController : ControllerBase
     {
-        private UpdateInventoryHandler _updateInventoryHandler;
-        private GiveStartingGearHandler _giveStartingGearHandler;
-        private GetInventoryHandler _getInventoryHandler;
-        private AttachModsHandler _attachModsHandler;
-        private UpgradeArtifactHandler _upgradeArtifactHandler;
-        private UpdateLoadoutHandler _updateLoadoutHandler;
-        private AttachOrokinModHandler _attachOrokinModHandler;
-        private PurchaseSlotsHandler _purchaseSlotsHandler;
+        private readonly UpdateInventoryHandler _updateInventoryHandler;
+        private readonly GiveStartingGearHandler _giveStartingGearHandler;
+        private readonly GetInventoryHandler _getInventoryHandler;
+        private readonly AttachModsHandler _attachModsHandler;
+        private readonly UpgradeArtifactHandler _upgradeArtifactHandler;
+        private readonly UpdateLoadoutHandler _updateLoadoutHandler;
+        private readonly AttachOrokinModHandler _attachOrokinModHandler;
+        private readonly PurchaseSlotsHandler _purchaseSlotsHandler;
         public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler,
             UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler, UpgradeArtifactHandler upgradeArtifactHandler,
             UpdateLoadoutHandler updateLoadoutHandler, AttachOrokinModHandler attachOrokinModHandler, PurchaseSlotsHandler purchaseSlotsHandler)
@@ -42,7 +44,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/inventorySlots.php")]
-        public ActionResult InventorySlots([FromQuery]Guid accountId, [FromQuery] long nonce)
+        public ActionResult InventorySlots([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
 
             PurchaseSlots purchaseSlots = new PurchaseSlots()
@@ -181,7 +183,8 @@ namespace WFClassic.Web.Controllers
                 result = _attachOrokinModHandler.Handle(attachMods);
 
             }
-            else {
+            else
+            {
                 result = _attachModsHandler.Handle(attachMods);
             }
 

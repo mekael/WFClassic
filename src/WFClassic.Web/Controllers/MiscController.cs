@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.Exp.Training;
 using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.Shared;
@@ -11,8 +13,8 @@ namespace WFClassic.Web.Controllers
     [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class MiscController : ControllerBase
     {
-        private AddLevelBasedOnTrainingHandler _addLevelBasedOnTrainingHandler;
-        private AddTauntHandler _addTauntHandler;
+        private readonly AddLevelBasedOnTrainingHandler _addLevelBasedOnTrainingHandler;
+        private readonly AddTauntHandler _addTauntHandler;
 
         public MiscController(AddLevelBasedOnTrainingHandler addLevelBasedOnTrainingHandler, AddTauntHandler addTauntHandler)
         {

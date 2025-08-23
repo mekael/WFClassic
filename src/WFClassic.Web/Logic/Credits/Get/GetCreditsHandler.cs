@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -6,8 +7,8 @@ namespace WFClassic.Web.Logic.Credits.Get
 {
     public class GetCreditsHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GetCreditsHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GetCreditsHandler> _logger;
 
         public GetCreditsHandler(ApplicationDbContext applicationDbContext, ILogger<GetCreditsHandler> logger)
         {
@@ -49,7 +50,7 @@ namespace WFClassic.Web.Logic.Credits.Get
 
             result.GetCreditsResultDetails = new GetCreditsResultDetails()
             {
-                RegularCredits = regularCredits.HasValue && regularCredits.Value >0 ? regularCredits.Value : 0,
+                RegularCredits = regularCredits.HasValue && regularCredits.Value > 0 ? regularCredits.Value : 0,
                 PremiumCredits = premiumCredits.HasValue && premiumCredits.Value > 0 ? premiumCredits.Value : 0
             };
             result.GetCreditsResultStatus = GetCreditsResultStatus.Success;

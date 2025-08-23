@@ -1,5 +1,5 @@
-﻿using WFClassic.Web.Data.Models;
-using WFClassic.Web.Data;
+﻿using WFClassic.Web.Data;
+using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Taunt;
 
 namespace WFClassic.Web.Logic.UI.ListPlayers
@@ -7,8 +7,8 @@ namespace WFClassic.Web.Logic.UI.ListPlayers
     public class GetPlayerListHandler
     {
 
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GetPlayerListHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GetPlayerListHandler> _logger;
 
         public GetPlayerListHandler(ApplicationDbContext applicationDbContext, ILogger<GetPlayerListHandler> logger)
         {
@@ -20,7 +20,7 @@ namespace WFClassic.Web.Logic.UI.ListPlayers
         {
             GetPlayerListResult result = new GetPlayerListResult();
 
- 
+
             getPlayerList.NumberOfItemsPerPage = getPlayerList.NumberOfItemsPerPage <= 0 ? 50 : getPlayerList.NumberOfItemsPerPage;
             getPlayerList.PageNumber = getPlayerList.PageNumber <= 0 ? 1 : getPlayerList.PageNumber;
 
@@ -32,9 +32,9 @@ namespace WFClassic.Web.Logic.UI.ListPlayers
                 _logger.LogInformation("GetPlayerListHandler => Starting player query");
 
                 result.GetPlayerListResultDetailItems = _applicationDbContext.Players
-                                        //            .OrderBy(obd => obd.ApplicationUser.DisplayName)
-                                               //     .Skip(getPlayerList.NumberOfItemsPerPage * getPlayerList.PageNumber)
-                                                //    .Take(getPlayerList.NumberOfItemsPerPage)
+                                                    //            .OrderBy(obd => obd.ApplicationUser.DisplayName)
+                                                    //     .Skip(getPlayerList.NumberOfItemsPerPage * getPlayerList.PageNumber)
+                                                    //    .Take(getPlayerList.NumberOfItemsPerPage)
                                                     .Select(s => new GetPlayerListResultDetailItem()
                                                     {
                                                         Id = s.Id,

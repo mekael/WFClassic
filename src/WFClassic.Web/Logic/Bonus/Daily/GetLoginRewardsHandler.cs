@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+
 using Microsoft.AspNetCore.Identity;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -7,9 +9,9 @@ namespace WFClassic.Web.Logic.Bonus.Daily
 {
     public class GetDailyMissionBonusHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GetDailyMissionBonusHandler> _logger;
-        private UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GetDailyMissionBonusHandler> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public GetDailyMissionBonusHandler(ApplicationDbContext applicationDbContext, ILogger<GetDailyMissionBonusHandler> logger, UserManager<ApplicationUser> userManager)
         {
@@ -18,7 +20,7 @@ namespace WFClassic.Web.Logic.Bonus.Daily
             _userManager = userManager;
         }
 
-        public   GetDailyMissionBonusResult Handle(GetDailyMissionBonus GetDailyMissionBonus)
+        public GetDailyMissionBonusResult Handle(GetDailyMissionBonus GetDailyMissionBonus)
         {
             GetDailyMissionBonusResult result = new GetDailyMissionBonusResult();
             var validationResults = new GetDailyMissionBonusValidator().Validate(GetDailyMissionBonus);
@@ -32,7 +34,7 @@ namespace WFClassic.Web.Logic.Bonus.Daily
 
 
 
- 
+
             DateTimeOffset? lastMissionCompletionDate = null;
 
             try
@@ -42,10 +44,10 @@ namespace WFClassic.Web.Logic.Bonus.Daily
                 lastMissionCompletionDate = _applicationDbContext.MetricItems.Where(w => w.ApplicationUserId == GetDailyMissionBonus.AccountId
                                                          && w.EventName == "MISSION_COMPLETE"
                                                          && w.ItemName == "GS_SUCCESS")
-                                                                            .Select(s=> s.CreationTimestamp)
+                                                                            .Select(s => s.CreationTimestamp)
                                                                             .ToList()
-                                                                            .OrderByDescending(obd=> obd)
-                                                                            .FirstOrDefault() ;
+                                                                            .OrderByDescending(obd => obd)
+                                                                            .FirstOrDefault();
                 _logger.LogInformation("GetDailyMissionBonusHandler => accountId {AccountID} nonce {Nonce} => Query Complete for metric item ", GetDailyMissionBonus.AccountId, GetDailyMissionBonus.Nonce);
             }
             catch (Exception ex)
@@ -58,7 +60,7 @@ namespace WFClassic.Web.Logic.Bonus.Daily
             result.GetDailyMissionBonusResultReturnJson = new GetDailyMissionBonusResultReturnJson()
             {
                 DailyMissionBonus = lastMissionCompletionDate.HasValue && lastMissionCompletionDate.Value.Date == DateTime.Today ? 0 : 1
-            } ;
+            };
             result.GetDailyMissionBonusResultStatus = GetDailyMissionBonusResultStatus.Success;
             return result;
         }

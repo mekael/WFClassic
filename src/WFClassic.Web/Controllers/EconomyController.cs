@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
+
 using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Economics.Purchase;
 using WFClassic.Web.Logic.Economics.Revives;
@@ -13,10 +15,10 @@ namespace WFClassic.Web.Controllers
     [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class EconomyController : ControllerBase
     {
-        private GetCreditsHandler _getCreditsHandler;
-        private SellItemHandler _sellItemHandler;
-        private PurchaseItemHandler _purchaseItemHandler;
-        private PurchaseRevivesHandler _purchaseRevivesHandler;
+        private readonly GetCreditsHandler _getCreditsHandler;
+        private readonly SellItemHandler _sellItemHandler;
+        private readonly PurchaseItemHandler _purchaseItemHandler;
+        private readonly PurchaseRevivesHandler _purchaseRevivesHandler;
 
         public EconomyController(GetCreditsHandler getCreditsHandler, SellItemHandler sellItemHandler,
             PurchaseItemHandler purchaseItemHandler, PurchaseRevivesHandler purchaseRevivesHandler)
@@ -39,7 +41,7 @@ namespace WFClassic.Web.Controllers
             };
 
             var result = _purchaseRevivesHandler.Handle(purchaseRevives);
-            if (result.PurchaseRevivesResultStatus == PurchaseRevivesResultStatus.DatabaseErrors  )
+            if (result.PurchaseRevivesResultStatus == PurchaseRevivesResultStatus.DatabaseErrors)
             {
                 return StatusCode(500);
             }
@@ -55,7 +57,7 @@ namespace WFClassic.Web.Controllers
             return StatusCode(500);
 
 
-         }
+        }
 
 
         [Route("api/credits.php")]

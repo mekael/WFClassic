@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -7,8 +8,8 @@ namespace WFClassic.Web.Logic.Inventory.Starting
 {
     public class GiveStartingGearHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GiveStartingGearHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GiveStartingGearHandler> _logger;
 
         public GiveStartingGearHandler(ApplicationDbContext applicationDbContext, ILogger<GiveStartingGearHandler> logger
             )
@@ -35,7 +36,7 @@ namespace WFClassic.Web.Logic.Inventory.Starting
             {
                 _logger.LogInformation("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", giveStartingGear.AccountId, giveStartingGear.Nonce);
                 player = _applicationDbContext.Players.Include(i => i.InventoryItems)
-                                                      .Include(i=> i.InventoryBins)
+                                                      .Include(i => i.InventoryBins)
                                                       .FirstOrDefault(w => w.ApplicationUserId == giveStartingGear.AccountId);
                 _logger.LogInformation("GiveStartingGearHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", giveStartingGear.AccountId, giveStartingGear.Nonce);
             }
@@ -59,10 +60,10 @@ namespace WFClassic.Web.Logic.Inventory.Starting
                 InternalInventoryItemType = Data.Enums.InternalInventoryItemType.Suits,
                 ItemType = giveStartingGear.WarframeName,
                 ItemName = warframeName,
-                UpgradeVer =101,
-                ExtraCapacity= 4,
-                ExtraRemaining =4
-                
+                UpgradeVer = 101,
+                ExtraCapacity = 4,
+                ExtraRemaining = 4
+
             });
 
             player.InventoryItems.AddRange(StartingGearDefinitions.GetStartingCards(warframeName));

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
 using WFClassic.Web.Data.Models;
 
 namespace WFClassic.Web.Areas.Identity.Pages.Account.Manage
@@ -37,8 +39,8 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
-            
-            [Display(Name="Personal Motto")]
+
+            [Display(Name = "Personal Motto")]
             public string Motto { get; set; }
         }
 

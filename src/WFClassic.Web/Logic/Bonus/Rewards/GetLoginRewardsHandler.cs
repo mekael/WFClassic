@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+
 using Microsoft.AspNetCore.Identity;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -7,9 +9,9 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
 {
     public class GetLoginRewardsHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<GetLoginRewardsHandler> _logger;
-        private UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<GetLoginRewardsHandler> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public GetLoginRewardsHandler(ApplicationDbContext applicationDbContext, ILogger<GetLoginRewardsHandler> logger, UserManager<ApplicationUser> userManager)
         {

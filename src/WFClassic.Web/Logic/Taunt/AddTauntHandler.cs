@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -6,8 +7,8 @@ namespace WFClassic.Web.Logic.Taunt
 {
     public class AddTauntHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<AddTauntHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<AddTauntHandler> _logger;
 
         public AddTauntHandler(ApplicationDbContext applicationDbContext, ILogger<AddTauntHandler> logger)
         {

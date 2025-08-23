@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -10,10 +11,10 @@ namespace WFClassic.Web.Logic.Economics.Purchase
 {
     public class PurchaseItemHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<PurchaseItemHandler> _logger;
-        private AddAccountTransactionHandler _addAccountTransactionHandler;
-        private GetCreditsHandler _getCreditsHandler;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<PurchaseItemHandler> _logger;
+        private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
+        private readonly GetCreditsHandler _getCreditsHandler;
         private readonly AddWarframeItemHandler _addWarframeItemHandler;
 
         public PurchaseItemHandler(ApplicationDbContext applicationDbContext, ILogger<PurchaseItemHandler> logger,

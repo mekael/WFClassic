@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -9,8 +10,8 @@ namespace WFClassic.Web.Logic.Foundry.Claim
 {
     public class ClaimCompletedRecipeHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<ClaimCompletedRecipeHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<ClaimCompletedRecipeHandler> _logger;
         private readonly AddWarframeItemHandler _addWarframeItemHandler;
 
         public ClaimCompletedRecipeHandler(ApplicationDbContext applicationDbContext, ILogger<ClaimCompletedRecipeHandler> logger, AddWarframeItemHandler addWarframeItemHandler)
@@ -41,7 +42,7 @@ namespace WFClassic.Web.Logic.Foundry.Claim
             {
                 _logger.LogInformation("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce}  recipeName {RecipeName} => querying for recipe and player   ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                 playerId = _applicationDbContext.Players.FirstOrDefault(fod => fod.ApplicationUserId == claimCompletedRecipe.AccountId).Id;
- 
+
                 recipeItem = _applicationDbContext.InventoryItems.FirstOrDefault(fod => fod.ItemType == claimCompletedRecipe.RecipeName);
 
                 recipe = _applicationDbContext.Recipes.AsNoTracking()
@@ -63,13 +64,13 @@ namespace WFClassic.Web.Logic.Foundry.Claim
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;
                 return claimCompletedRecipeResult;
             }
-            else if (pendingRecipe== null)
+            else if (pendingRecipe == null)
             {
                 _logger.LogError("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => No pending recipe found ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;
                 return claimCompletedRecipeResult;
             }
-            else if (recipeItem == null || recipeItem.ItemCount==0)
+            else if (recipeItem == null || recipeItem.ItemCount == 0)
             {
                 _logger.LogError("ClaimCompletedRecipeHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => No matching blueprint found ", claimCompletedRecipe.AccountId, claimCompletedRecipe.Nonce, claimCompletedRecipe.RecipeName);
                 claimCompletedRecipeResult.ClaimCompletedRecipeResultStatus = ClaimCompletedRecipeResultStatus.ValidationErrors;

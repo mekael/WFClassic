@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
@@ -6,8 +7,8 @@ namespace WFClassic.Web.Logic.Stats.Upload
 {
     public class UploadStatsHandler
     {
-        private ApplicationDbContext _applicationDbContext;
-        private ILogger<UploadStatsHandler> _logger;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ILogger<UploadStatsHandler> _logger;
 
         public UploadStatsHandler(ApplicationDbContext applicationDbContext,
                                     ILogger<UploadStatsHandler> logger)
@@ -45,8 +46,8 @@ namespace WFClassic.Web.Logic.Stats.Upload
                         Set = counterStat.Set,
                         ApplicationUserId = uploadStats.AccountId,
                         AssociatedNonce = uploadStats.Nonce,
-                        DisplayName = uploadStats.StatsObject.DisplayName, 
-                        TraceId= traceId
+                        DisplayName = uploadStats.StatsObject.DisplayName,
+                        TraceId = traceId
                     });
                 }
             }
@@ -70,7 +71,7 @@ namespace WFClassic.Web.Logic.Stats.Upload
                 }
             }
 
-            if(uploadStats.StatsObject.Events !=null && uploadStats.StatsObject.Events.Any())
+            if (uploadStats.StatsObject.Events != null && uploadStats.StatsObject.Events.Any())
             {
                 var eventString = JsonSerializer.Serialize(uploadStats.StatsObject.Events);
                 _logger.LogInformation("UploadStatsHandler => accountId {AccountID} nonce {Nonce} => Found events to parse {eventString}", uploadStats.AccountId, uploadStats.Nonce, eventString);

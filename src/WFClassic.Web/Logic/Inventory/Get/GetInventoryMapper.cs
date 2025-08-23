@@ -1,5 +1,6 @@
 ﻿using System.Net.Mail;
 using System.Numerics;
+
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared.Models;
@@ -8,7 +9,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 {
     public static class GetInventoryMapper
     {
-        private static List<InternalInventoryItemType> xpItems = new List<InternalInventoryItemType>() { InternalInventoryItemType.Sentinels,
+        private static readonly List<InternalInventoryItemType> xpItems = new List<InternalInventoryItemType>() { InternalInventoryItemType.Sentinels,
                                                                                            InternalInventoryItemType.SentinelWeapons,
                                                                                            InternalInventoryItemType.Suits,
                                                                                            InternalInventoryItemType.LongGuns,
@@ -59,7 +60,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 Consumables = GetJsonTypeCountCharge(InternalInventoryItemType.Consumables, player.InventoryItems),
                 MiscItems = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
                 Recipes = GetJsonTypeCount(InternalInventoryItemType.Recipes, player.InventoryItems),
-                 Boosters = GetBoosters(player.InventoryItems),
+                Boosters = GetBoosters(player.InventoryItems),
                 WeaponSkins = player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.WeaponSkins).Select(s => new GetInventoryResultJsonFlavourItem() { ItemType = s.ItemType }).ToList(),
                 //Components = GetJsonTypeCount(InternalInventoryItemType.MiscItems, player.InventoryItems),
                 FlavourItems = player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.FlavourItems).Select(s => new GetInventoryResultJsonFlavourItem() { ItemType = s.ItemType }).ToList(),
@@ -95,7 +96,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         private static List<GetInventoryResultJsonTypeCountCharge> GetJsonTypeCountCharge(InternalInventoryItemType internalInventoryItemType, List<InventoryItem> inventoryItems)
         {
-            return inventoryItems.Where(w => w.InternalInventoryItemType == internalInventoryItemType).Select(s => new GetInventoryResultJsonTypeCountCharge() { ItemType = s.ItemType, ItemCount = s.ItemCount , Charge = s.Charge}).ToList();
+            return inventoryItems.Where(w => w.InternalInventoryItemType == internalInventoryItemType).Select(s => new GetInventoryResultJsonTypeCountCharge() { ItemType = s.ItemType, ItemCount = s.ItemCount, Charge = s.Charge }).ToList();
         }
 
 
@@ -135,10 +136,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
             return JsonUpgradeItems;
         }
 
-        private static List<GetInventoryResultJsonBoosterItem> GetBoosters(List<InventoryItem> inventoryItems) 
+        private static List<GetInventoryResultJsonBoosterItem> GetBoosters(List<InventoryItem> inventoryItems)
         {
             return inventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Boosters && w.ExpiryDate >= DateTime.Now)
-                                 .Select(s => new GetInventoryResultJsonBoosterItem() { ItemType = s.ItemType, ExpiryDate = (long)((s.ExpiryDate - DateTime.UnixEpoch).TotalSeconds)  }).ToList();
+                                 .Select(s => new GetInventoryResultJsonBoosterItem() { ItemType = s.ItemType, ExpiryDate = (long)((s.ExpiryDate - DateTime.UnixEpoch).TotalSeconds) }).ToList();
         }
 
     }
