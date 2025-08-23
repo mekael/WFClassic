@@ -27,7 +27,7 @@ namespace WFClassic.Web.Controllers
 
             var result = await _warframeLoginHandler.Handle(request);
             if (result.WarframeLoginResultStatus == WarframeLoginResultStatus.BadRequest
-                && result.WarframeLoginResultStatus == WarframeLoginResultStatus.InvalidCredentials)
+                || result.WarframeLoginResultStatus == WarframeLoginResultStatus.InvalidCredentials)
             {
                 return BadRequest();
             }
