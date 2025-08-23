@@ -31,7 +31,7 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/refillRevives.php")]
-        public ActionResult RefillRevives([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public IActionResult RefillRevives([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
             PurchaseRevives purchaseRevives = new PurchaseRevives()
             {
@@ -43,20 +43,18 @@ namespace WFClassic.Web.Controllers
             var result = _purchaseRevivesHandler.Handle(purchaseRevives);
             if (result.PurchaseRevivesResultStatus == PurchaseRevivesResultStatus.DatabaseErrors)
             {
-                return StatusCode(500);
+                 return StatusCode(500);
             }
             else if (result.PurchaseRevivesResultStatus == PurchaseRevivesResultStatus.ValidationErrors)
             {
-                return BadRequest();
+               return BadRequest();
             }
             else if (result.PurchaseRevivesResultStatus == PurchaseRevivesResultStatus.Success)
             {
-                return Ok();
+                return new JsonResult(result.NewPlatinumAmount);
             }
 
             return StatusCode(500);
-
-
         }
 
 

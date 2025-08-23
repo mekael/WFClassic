@@ -103,7 +103,8 @@ namespace WFClassic.Web.Logic.Economics.Revives
             }
 
             // add plat transaction. 
-            // honestly we don't care if this succeed 
+            // honestly we don't care if this succeeds cause cats.
+            // 
             _addAccountTransactionHandler.Handle(new AddAccountTransaction()
             {
                 AccountId = purchaseRevives.AccountId,
@@ -112,6 +113,12 @@ namespace WFClassic.Web.Logic.Economics.Revives
                 BankAccountType = CurrencyType.Platinum,
                 MemoCode = "Purchase revives"
             });
+
+
+            var getPostPurchaseCreditsResult = _getCreditsHandler.Handle(new GetCredits() { AccountId = purchaseRevives.AccountId, Nonce = purchaseRevives.Nonce });
+            result.NewPlatinumAmount = getPostPurchaseCreditsResult.GetCreditsResultDetails.PremiumCredits;
+
+
             return result;
         }
 
