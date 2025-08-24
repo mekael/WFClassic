@@ -56,6 +56,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
 
                 player.AdditionalPlayerXP += updateInventory.UpdateInventoryFromMissionObject.AdditionalPlayerXP;
                 player.PlayerXP += updateInventory.UpdateInventoryFromMissionObject.PlayerXP;
+                player.DeathMarks = string.Join("|",updateInventory.UpdateInventoryFromMissionObject.DeathMarks);
 
                 // update equipment
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating equipment", updateInventory.AccountId, updateInventory.Nonce);

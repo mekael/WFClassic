@@ -43,7 +43,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
             {
                 AdditionalPlayerXP = player.AdditionalPlayerXP,
                 CompletedAlerts = new List<string>(),
-                DeathMarks = new List<string>() { },
+                DeathMarks = !string.IsNullOrWhiteSpace(player.DeathMarks)?  player.DeathMarks.Split("|").ToList(): new List<string>(),  
                 Founder = 2,
                 InvalidBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
                 MiscBin = GetBin(InventoryBinType.Misc, player.InventoryBins),

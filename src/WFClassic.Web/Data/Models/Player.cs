@@ -32,6 +32,8 @@ namespace WFClassic.Web.Data.Models
 
         public bool SubscribedToEmails { get; set; }
 
+        public string DeathMarks { get; set; }
+
         [JsonIgnore]
         public string CurrentLoadout { get; set; }
     }

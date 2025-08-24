@@ -60,7 +60,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
         public JsonIncomingMission Missions { get; set; }
         public object[] AssignedMissions { get; set; }
         public object[] CompletedAlerts { get; set; }
-        public object[] DeathMarks { get; set; }
+        public string[] DeathMarks { get; set; }
         public IncomingMissionreport MissionReport { get; set; }
     }
 
