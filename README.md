@@ -87,7 +87,7 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | purchase more revives | Economy || Fully ||
 | update taunt state | Gameplay ||Fully|  |
 | Get updated credits/plat| Economy || Fully ||
-| Purchase Item | Economy ||Some work started||
+| Purchase Item | Economy ||Fully|All items as of 7.10.0|
 | Craft item in Foundry | Foundry ||Fully|all known recipes as of 7.10.0 are included|
 | Claim Foundry Item|Foundry || Fully ||
 | Instantly complete item in foundry| Foundry || Fully ||
@@ -100,6 +100,7 @@ This is not a comprehensive list of features, just the ones that really seem to 
 | Attach mods| Gear || Fully ||
 | Upgrade Mods| Gear || Fully ||
 | Save loadout| Gear || Fully ||
+| Recharge health item| Gear || Nothing | used to recharge a single item that is not available in the base game. |
 | Attach reactors / catalysts to frames/weapons| Gear|| Fully ||
 | Purchase new inventory slots (frames and weapons)| Gear ||Fully||
 | Send friend request| Friends || Fully ||

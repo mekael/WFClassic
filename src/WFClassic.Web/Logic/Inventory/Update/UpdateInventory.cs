@@ -41,7 +41,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
         public List<ItemCountPair> Consumables { get; set; }
         public object[] FlavourItems { get; set; }
         public List<ItemCountPair> MiscItems { get; set; }
-        public object[] Cards { get; set; }
+        public List<CardType> Cards { get; set; }
         public List<ItemCountPair> Recipes { get; set; }
         public object[] XPInfo { get; set; }
 
@@ -149,4 +149,15 @@ namespace WFClassic.Web.Logic.Inventory.Update
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? Charge { get; set; }
     }
+
+
+    public class CardType
+    {
+        public string ItemType { get; set; }
+        public int Rank { get; set; }
+        public int AmountRemaining { get; set; }
+    }
+
+
+
 }
