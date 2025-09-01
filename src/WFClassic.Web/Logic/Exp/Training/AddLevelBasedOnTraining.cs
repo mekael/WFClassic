@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace WFClassic.Web.Logic.Exp.Training
 {
     public class AddLevelBasedOnTraining
     {
-        [JsonProperty("accountId")]
+        [JsonPropertyName("accountId")]
         public Guid AccountId { get; set; }
 
-        [JsonProperty("nonce")]
+        [JsonPropertyName("nonce")]
         public long Nonce { get; set; }
 
-        [JsonProperty("numLevelsGained")]
+        [JsonPropertyName("numLevelsGained")]
         public int NumLevelsGained { get; set; }
     }
 }

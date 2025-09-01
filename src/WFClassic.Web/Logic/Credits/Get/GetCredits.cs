@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace WFClassic.Web.Logic.Credits.Get
 {
     public class GetCredits
     {
-        [JsonProperty("accountId")]
+        [JsonPropertyName("accountId")]
         public Guid AccountId { get; set; }
 
-        [JsonProperty("nonce")]
+        [JsonPropertyName("nonce")]
         public long Nonce { get; set; }
     }
 }

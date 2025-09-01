@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace WFClassic.Web.Logic.WFAuth.WFLogin
 {
@@ -19,22 +19,22 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
 
     public class WarframeLoginResultDetails
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string id { get; set; }
 
-        [JsonProperty("DisplayName")]
+        [JsonPropertyName("DisplayName")]
         public string DisplayName { get; set; }
 
-        [JsonProperty("Nonce")]
+        [JsonPropertyName("Nonce")]
         public long Nonce { get; set; }
 
-        [JsonProperty("BuildLabel")]
+        [JsonPropertyName("BuildLabel")]
         public string BuildLabel { get; set; }
 
-        [JsonProperty("NatHash")]
+        [JsonPropertyName("NatHash")]
         public string NatHash { get; set; }
 
-        [JsonProperty("SteamId")]
+        [JsonPropertyName("SteamId")]
         public string SteamId { get; set; }
     }
 }

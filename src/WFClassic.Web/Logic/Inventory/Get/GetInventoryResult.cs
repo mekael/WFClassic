@@ -1,7 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 
-using Newtonsoft.Json;
-
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Get
@@ -131,17 +129,17 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
     public class GetInventoryResultJsonFlavourItem
     {
-        [JsonProperty("ItemType")]
+        [JsonPropertyName("ItemType")]
         public string ItemType { get; set; }
     }
 
 
     public class GetInventoryResultJsonXpInfoItem
     {
-        [JsonProperty("ItemType")]
+        [JsonPropertyName("ItemType")]
         public string ItemType { get; set; }
 
-        [JsonProperty("XP")]
+        [JsonPropertyName("XP")]
         public long XP { get; set; }
     }
 
@@ -158,7 +156,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public MongoId ParentId { get; set; }
 
         [JsonPropertyName("Slot")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? Slot { get; set; }
 
@@ -174,22 +171,22 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
     public class GetInventoryResultJsonTypeCount
     {
-        [JsonProperty("ItemType")]
+        [JsonPropertyName("ItemType")]
         public string ItemType { get; set; }
 
-        [JsonProperty("ItemCount")]
+        [JsonPropertyName("ItemCount")]
         public int ItemCount { get; set; }
     }
 
     public class GetInventoryResultJsonTypeCountCharge
     {
-        [JsonProperty("ItemType")]
+        [JsonPropertyName("ItemType")]
         public string ItemType { get; set; }
 
-        [JsonProperty("ItemCount")]
+        [JsonPropertyName("ItemCount")]
         public int ItemCount { get; set; }
 
-        [JsonProperty("Charge")]
+        [JsonPropertyName("Charge")]
         public int Charge { get; set; }
     }
 
@@ -213,10 +210,10 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
     public class GetInventoryResultJsonInventoryBin
     {
-        [JsonProperty("Slots")]
+        [JsonPropertyName("Slots")]
         public int Slots { get; set; }
 
-        [JsonProperty("Extra")]
+        [JsonPropertyName("Extra")]
         public int Extra { get; set; }
     }
 

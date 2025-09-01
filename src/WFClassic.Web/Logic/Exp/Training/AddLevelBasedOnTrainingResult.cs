@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 using WFClassic.Web.Logic.Shared.Models;
 
@@ -6,10 +6,10 @@ namespace WFClassic.Web.Logic.Exp.Training
 {
     public class AddLevelBasedOnTrainingResult
     {
-        [JsonProperty("NewLevel")]
+        [JsonPropertyName("NewLevel")]
         public int NewLevel { get; set; }
 
-        [JsonProperty("NewTrainingDate")]
+        [JsonPropertyName("NewTrainingDate")]
         public MongoDate NewTrainingDate { get; set; }
 
         [JsonIgnore]

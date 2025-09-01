@@ -1,18 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace WFClassic.Web.Logic.Inventory.Starting
 {
     public class GiveStartingGear
     {
-        [JsonProperty("accountId")]
+        [JsonPropertyName("accountId")]
         [JsonRequired]
         public Guid AccountId { get; set; }
 
-        [JsonProperty("nonce")]
+        [JsonPropertyName("nonce")]
         [JsonRequired]
         public long Nonce { get; set; }
 
-        [JsonProperty("warframeName")]
+        [JsonPropertyName("warframeName")]
         [JsonRequired]
         public string WarframeName { get; set; }
     }
