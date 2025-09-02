@@ -119,16 +119,11 @@ namespace WFClassic.Web.Logic.Economics.Sell
                         _logger.LogError("SellItemHandler => accountId {AccountID} nonce {Nonce} => unable to find item {itemId} ", sellItem.AccountId, sellItem.Nonce, uniqueItemToSell.String);
                         canBeUpdated = false;
                     }
-                    else if (inventoryItem.ItemCount - uniqueItemToSell.Count < 0)
-                    {
-                        _logger.LogError("SellItemHandler => accountId {AccountID} nonce {Nonce} => User does not have enough of item on hand {itemId} ", sellItem.AccountId, sellItem.Nonce, uniqueItemToSell.String);
-                        canBeUpdated = false;
-                    }
+                   
                     else
                     {
                         _logger.LogInformation("SellItemHandler => accountId {AccountID} nonce {Nonce} => Updating item count for {itemId} ", sellItem.AccountId, sellItem.Nonce, uniqueItemToSell.String);
-                        inventoryItem.ItemCount -= uniqueItemToSell.Count;
-                        inventoryItemsToUpdate.Add(inventoryItem);
+                        _applicationDbContext.Entry(inventoryItem).State = EntityState.Deleted;
                     }
 
                     if(inventoryItem.InternalInventoryItemType == InternalInventoryItemType.Suits)

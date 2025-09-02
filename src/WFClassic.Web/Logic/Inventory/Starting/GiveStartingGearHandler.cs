@@ -71,7 +71,7 @@ namespace WFClassic.Web.Logic.Inventory.Starting
             player.InventoryItems.AddRange(StartingGearDefinitions.GetStartingAvatarImages());
 
             player.InventoryBins.Add(new InventoryBin() { InventoryBinType = InventoryBinType.Suit, Slots = 1 });
-            player.InventoryBins.Add(new InventoryBin() { InventoryBinType = InventoryBinType.Weapon, Slots = 3 });
+            player.InventoryBins.Add(new InventoryBin() { InventoryBinType = InventoryBinType.Weapon, Slots = 5 });
             player.InventoryBins.Add(new InventoryBin() { InventoryBinType = InventoryBinType.Sentinel, Slots = 4 });
 
             player.ReceivedStartingGear = true;
