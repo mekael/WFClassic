@@ -39,6 +39,7 @@ namespace WFClassic.Web.Logic.Economics.Sell
                 _logger.LogInformation("SellItemHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", sellItem.AccountId, sellItem.Nonce);
                 player = _applicationDbContext.Players.AsSplitQuery()
                                                     .Include(i => i.InventoryItems)
+                                                    .Include(i=> i.InventoryBins)
                                                     .Include(i => i.PendingRecipes)
                                                     .ThenInclude(i => i.Recipe)
                                                     .FirstOrDefault(w => w.ApplicationUserId == sellItem.AccountId);
@@ -128,6 +129,21 @@ namespace WFClassic.Web.Logic.Economics.Sell
                         _logger.LogInformation("SellItemHandler => accountId {AccountID} nonce {Nonce} => Updating item count for {itemId} ", sellItem.AccountId, sellItem.Nonce, uniqueItemToSell.String);
                         inventoryItem.ItemCount -= uniqueItemToSell.Count;
                         inventoryItemsToUpdate.Add(inventoryItem);
+                    }
+
+                    if(inventoryItem.InternalInventoryItemType == InternalInventoryItemType.Suits)
+                    {
+                        player.InventoryBins.Where(w => w.InventoryBinType == InventoryBinType.Suit).FirstOrDefault().Slots++;
+                    }
+                    else if (inventoryItem.InternalInventoryItemType == InternalInventoryItemType.Melee 
+                        || inventoryItem.InternalInventoryItemType == InternalInventoryItemType.LongGuns
+                        || inventoryItem.InternalInventoryItemType == InternalInventoryItemType.Pistols)
+                    {
+                        player.InventoryBins.Where(w => w.InventoryBinType == InventoryBinType.Weapon).FirstOrDefault().Slots++;
+                    }
+                    else if (inventoryItem.InternalInventoryItemType == InternalInventoryItemType.Sentinels)
+                    {
+                        player.InventoryBins.Where(w => w.InventoryBinType == InventoryBinType.Sentinel).FirstOrDefault().Slots++;
                     }
                 }
             }

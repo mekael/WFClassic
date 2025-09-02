@@ -111,9 +111,12 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
                     _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  => Adding bin for    {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
                     InventoryBin binToModify = inventoryBins.FirstOrDefault(fod => fod.InventoryBinType == warframeItemComponent.InventoryBinTypeToAdd);
                     if (binToModify != null)
-                    {
+                    {                        
+                        if(warframeItemComponent.NumberOfBinsToAdd > 0)
+                        {
+                            binToModify.Extra += warframeItemComponent.NumberOfBinsToAdd;
+                        }
                         binToModify.Slots += warframeItemComponent.NumberOfBinsToAdd;
-                        binToModify.Extra += warframeItemComponent.NumberOfBinsToAdd;
                     }
                 }
             }
