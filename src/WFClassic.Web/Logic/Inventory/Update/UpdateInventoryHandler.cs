@@ -95,15 +95,19 @@ namespace WFClassic.Web.Logic.Inventory.Update
                         InternalInventoryItemType = InternalInventoryItemType.Upgrades
                     });
                 }
-                foreach (var card in updateInventory.UpdateInventoryFromMissionObject.Cards)
+                if(updateInventory.UpdateInventoryFromMissionObject.Cards != null)
                 {
-                    _applicationDbContext.InventoryItems.Add(new InventoryItem()
+                    foreach (var card in updateInventory.UpdateInventoryFromMissionObject.Cards)
                     {
-                        ItemType = card.ItemType,
-                        PlayerId = player.Id,
-                        InternalInventoryItemType = InternalInventoryItemType.Cards
-                    });
+                        _applicationDbContext.InventoryItems.Add(new InventoryItem()
+                        {
+                            ItemType = card.ItemType,
+                            PlayerId = player.Id,
+                            InternalInventoryItemType = InternalInventoryItemType.Cards
+                        });
+                    }
                 }
+
 
 
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating misc/consumables/recipes", updateInventory.AccountId, updateInventory.Nonce);
