@@ -42,7 +42,9 @@ There is also an online server available which supports the 7.9 build that is li
 
 | Version | Build Id |  Manifest Id| Items not working? | Notes |
 |-|-|-| -| -|
-| 7.10 | 2013.05.03.18.06/ | 588705282697359018 | | This version has some issues loading certain textures, specifically those around grenades and melee attacks. The issue is within the binary, rather than the assets |
+|7.10.2|2013.05.08.10.59/|1214562332840994196|This version has some issues loading certain textures, specifically those around grenades and melee attacks. ||
+|7.10.1|2013.05.06.10.38/|4151868779723562813|This version has some issues loading certain textures, specifically those around grenades and melee attacks. ||
+| 7.10 | 2013.05.03.18.06/ | 588705282697359018 | This version has some issues loading certain textures, specifically those around grenades and melee attacks.  Additionally artifact cards cannot be received as rewards as there is a bug which was later fixed in 7.10.1  | do not not use this version to play 7.10.x as the card thing is impossible to bypass| 
 | 7.9 | 2013.04.26.17.24/ | 6399786153404128119 | | |
 | 7.8.1 | 2013.04.24.11.45/ | 6629234302933135021 | | |
 | 7.7.4 | 2013.04.15.14.48/ | 8278491043607750104 | | |
@@ -51,15 +53,16 @@ There is also an online server available which supports the 7.9 build that is li
 | 7.4 | 2013.03.27.09.43/ | 1958670258248515033 | | |
 | 7.3 | 2013.03.25.11.45/ | 9176710083987114410 | | Oddities with the starchart, least performant of the tested builds. |
 
-## How to play versions after 7.10
+## How to play versions 7.11
 
-Builds after 7.10 do not work as is, and may never work as is. There seem to either be missing assets or a missing endpoint which causes issues in the client itself. But you can pull in those assets with a hackish workaround.
+Builds after 7.10.2 do not work as they seem to either be missing assets or a missing endpoint which causes issues in the client itself. In order to play 7.11:
 
 
-1. download version 2013.05.03.18.06
-2. Download any version after that but before 8.0 (2013.05.23.16.06)
-3. Delete Warframe64.exe and Warframe.exe from the newer version
-4. Copy Warframe64.exe and Warframe.exe from 2013.05.03.18.06 to your newer versions
+1. download version 2013.05.08.10.59 and copy warframe.exe and Warframe.x64.exe to somewhere safe
+2. delete all 7.10.2 files
+3. Download 7.11 ( manifest id 7689210280991293768)
+4. Delete Warframe64.exe and Warframe.exe from 7.11
+4. Copy Warframe64.exe and Warframe.exe from 2013.05.08.10.59 to  to 7.11
 
 
 # Features
