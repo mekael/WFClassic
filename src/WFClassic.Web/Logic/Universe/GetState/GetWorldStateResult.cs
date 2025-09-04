@@ -64,8 +64,10 @@ namespace WFClassic.Web.Logic.Universe.GetState
         public string vipAgent { get; set; }
         public int minEnemyLevel { get; set; }
         public int maxEnemyLevel { get; set; }
+        public string completeTag { get; set; }
         public string CompleteTag { get; set; } //?
         public GetWorldStateResultJsonMissionReward missionReward { get; set; }
+        public MongoId alertId { get; set; }
     }
     public class GetWorldStateResultJsonMissionReward
     {

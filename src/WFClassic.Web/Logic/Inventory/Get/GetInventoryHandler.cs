@@ -35,6 +35,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
             Player player = null;
             List<InventoryItemAttachment> attachments = null;
+            List<string> completedAlerts = null;
 
             try
             {
@@ -48,8 +49,15 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     .Include(i => i.TauntHistoryItems)
                     .FirstOrDefault(w => w.ApplicationUserId == getInventory.AccountId);
 
-                attachments = _applicationDbContext.InventoryItemAttachments.Include(i => i.AttachedInventoryItem).Where(w => w.AttachedInventoryItem.PlayerId == player.Id).ToList();
-
+                attachments = _applicationDbContext.InventoryItemAttachments.AsSplitQuery().Include(i => i.AttachedInventoryItem).Where(w => w.AttachedInventoryItem.PlayerId == player.Id).ToList();
+                completedAlerts = this._applicationDbContext.Database.SqlQuery<string>(@$"
+                                                                                            select ac.CompleteTag
+                                                                                            from Missions m ,
+                                                                                            AlertConfigurations ac 
+                                                                                            where 
+                                                                                            m.Tag = ac.CompleteTag
+                                                                                            and m.PlayerId  = {player.Id}
+                                                                                            ").ToList();
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", getInventory.AccountId, getInventory.Nonce);
             }
             catch (Exception ex)
@@ -62,7 +70,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
             try
             {
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Start of mapping onto result ", getInventory.AccountId, getInventory.Nonce);
-                result.GetInventoryResultDetails = GetInventoryMapper.Map(player, attachments);
+                result.GetInventoryResultDetails = GetInventoryMapper.Map(player, attachments, completedAlerts);
                 result.GetInventoryResultStatus = GetInventoryResultStatus.Success;
                 _logger.LogInformation("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => inventory query finished ", getInventory.AccountId, getInventory.Nonce);
             }

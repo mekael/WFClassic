@@ -41,6 +41,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
                     Expiry = new Shared.Models.WorldStateDate(alertConfiguration.EndDate),
                     MissionInfo = new GetWorldStateResultJsonAlertMissionInfo()
                     {
+                        completeTag = alertConfiguration.CompleteTag,
                         CompleteTag = alertConfiguration.CompleteTag,
                         completions = alertConfiguration.Completions,
                         completionText = alertConfiguration.CompletionText,
@@ -66,7 +67,8 @@ namespace WFClassic.Web.Logic.Universe.GetState
                         seed = alertConfiguration.Seed,
                         uniqueName = alertConfiguration.UniqueName,
                         unlocked = alertConfiguration.Unlocked,
-                        vipAgent = alertConfiguration.VIPAgent
+                        vipAgent = alertConfiguration.VIPAgent,
+                        alertId = new Shared.Models.MongoId(alertConfiguration.Id)
                     }
                 });
 

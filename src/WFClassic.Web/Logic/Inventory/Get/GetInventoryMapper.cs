@@ -17,23 +17,8 @@ namespace WFClassic.Web.Logic.Inventory.Get
                                                                                            InternalInventoryItemType.Melee
          };
 
-        public static GetInventoryResultDetails Map(Player player, List<InventoryItemAttachment> attachments)
+        public static GetInventoryResultDetails Map(Player player, List<InventoryItemAttachment> attachments, List<string> completedAlerts)
         {
-            List<GetInventoryResultJsonUpgradeItem> JsonUpgradeItems = new List<GetInventoryResultJsonUpgradeItem>();
-
-            foreach (var upgrade in player.InventoryItems.Where(w => w.InternalInventoryItemType == InternalInventoryItemType.Upgrades))
-            {
-                InventoryItemAttachment attachment = attachments.FirstOrDefault(w => w.AttachedInventoryItemId == upgrade.Id);
-
-                JsonUpgradeItems.Add(new GetInventoryResultJsonUpgradeItem()
-                {
-                    ItemId = new MongoId(upgrade.Id),
-                    ItemType = upgrade.ItemType,
-                    UpgradeFingerPrint = upgrade.UpgradeFingerprint,
-                    ParentId = attachment != null ? new MongoId(attachment.ParentInventoryItemId) : null,
-                    Slot = attachment != null ? attachment.Slot : null
-                });
-            }
 
             var premiumCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.Platinum).Select(s => s.CurrentBalance).Sum();
             var regularCredits = player.BankAccounts.Where(w => w.BankAccountType == CurrencyType.StandardCredits).Select(s => s.CurrentBalance).Sum();
@@ -42,7 +27,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
             {
                 AdditionalPlayerXP = player.AdditionalPlayerXP,
-                CompletedAlerts = new List<string>(),
+                CompletedAlerts = completedAlerts,
                 DeathMarks = !string.IsNullOrWhiteSpace(player.DeathMarks)?  player.DeathMarks.Split("|").ToList(): new List<string>(),  
                 Founder = 2,
                 InvalidBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
