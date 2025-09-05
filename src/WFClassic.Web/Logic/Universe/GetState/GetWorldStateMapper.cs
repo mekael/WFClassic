@@ -27,7 +27,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
             };
 
 
-            foreach (var alertConfiguration in worldStateAlerts.Where(w => w.EndDate.Date >= DateTime.Today && w.StartDate.Date <= DateTime.Today))
+            foreach (var alertConfiguration in worldStateAlerts.Where(w => w.EndDate.Date >= DateTime.Today && w.StartDate.Date <= DateTime.Today && w.IsActive))
             {
                 // get the specific reward 
                 var clientSideReward = alertConfiguration.AlertRewardConfigurations.FirstOrDefault(a => a.RewardProvidedAtLocation == Data.Enums.RewardProvidedAtLocation.Client);
