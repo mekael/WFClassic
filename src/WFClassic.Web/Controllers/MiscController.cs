@@ -46,6 +46,9 @@ namespace WFClassic.Web.Controllers
         [Route("/api/refillCard.php")]
         public ActionResult RefillCard([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
+            // this is most likely an unused endpoint that was originally meant to 
+            // add more charges/usages to the artifact cards. There is no way to really verify this though.
+
             return new JsonResult("{}");
         }
 
@@ -54,6 +57,31 @@ namespace WFClassic.Web.Controllers
         [Route("/api/recharge.php")]
         public ActionResult Recharge([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
+            Utils.GetRequestObjectAsString(this.HttpContext);
+            // the only item that uses the endpoint is "/Lotus/Types/Restoratives/ChargeableSelfHeal"
+            // but it is not marked as being available in the marketplace nor does it look to be an easily accessible item. 
+            // this might be an item / piece of functionality that was cut in the later versions of the game (no way to tell if it was available previously) . 
+            // the description is 
+            /*
+             Permanent item (non-disposable) that uses charge when it heals. Can be recharged between missions for a small fee
+             
+             */
+
+            // this is the body passed by the client. 
+            // ChargeRecovery corresponds with the "Charges" field. 
+            // Cost is based on the usage percentage of the self heal. 
+            // it's 2 plat per every hundred charges (which ends up being hit points anyways)
+            // 
+
+            /*
+             {
+    "ItemType" : "/Lotus/Types/Restoratives/ChargeableSelfHeal",
+    "ChargeRecovery" : 500,
+    "Cost" : 10
+}
+             
+             
+             */
             return new JsonResult("{}");
         }
 
