@@ -32,3 +32,16 @@
 /Lotus/Types/Game/MissionBuffs/PlayerXPBuff
 /Lotus/Types/Game/MissionBuffs/RobotPoorAimBuff
 ```
+
+
+
+We could theoretically add in the alerts which constituted the "artifact defense event" 
+
+
+
+- shield disruption => not released until 8.0 (Artifact_Defense_Event)
+- emp aura => accidently released
+- corrosive projection => not released until 8.0 (Artifact_Defense_Event)
+- infested impedence => not released until 8.0 (Artifact_Defense_Event)
+
+https://warframe.fandom.com/wiki/Artifact_Defense_Event
