@@ -83,7 +83,7 @@ namespace WFClassic.Web.Logic.Bonus.Rewards
                         ProductCategory = assignedReward.ProductCategory,
                         Rarity = assignedReward.Rarity,
                         RewardType = assignedReward.RewardType,
-                        Tier     = assignedReward.Tier
+                        Tier     = assignedReward.Tier-1
                     }
                 }
                 };
