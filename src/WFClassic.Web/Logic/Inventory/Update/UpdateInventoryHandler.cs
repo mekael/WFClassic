@@ -54,9 +54,22 @@ namespace WFClassic.Web.Logic.Inventory.Update
             {
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating playerXp", updateInventory.AccountId, updateInventory.Nonce);
 
-                player.AdditionalPlayerXP += updateInventory.UpdateInventoryFromMissionObject.AdditionalPlayerXP;
-                player.PlayerXP += updateInventory.UpdateInventoryFromMissionObject.PlayerXP;
-                player.DeathMarks = string.Join("|",updateInventory.UpdateInventoryFromMissionObject.DeathMarks);
+
+                // in 7.10 and later, additional and player xp seem to come from the mission info
+                
+                //make sure that you are getting the report information for the user.  use/check Pid, if hostId is null then we're solo
+                // and just use the first slot. 
+
+
+                int additionalXp = updateInventory.UpdateInventoryFromMissionObject.AdditionalPlayerXP;
+                int xp = updateInventory.UpdateInventoryFromMissionObject.PlayerXP;
+
+                int? playerMissionXp = updateInventory.UpdateInventoryFromMissionObject.MissionReport?.PlayerReport?.PlayerMishInfos?.FirstOrDefault(w => w.Pid == "" || w.Pid.Equals(player.ApplicationUserId.ToString(), StringComparison.InvariantCultureIgnoreCase))?.Xp;
+                int? playerMissionAdditionalXp = updateInventory.UpdateInventoryFromMissionObject.MissionReport?.PlayerReport?.PlayerMishInfos?.FirstOrDefault(w => w.Pid == "" || w.Pid.Equals(player.ApplicationUserId.ToString(), StringComparison.InvariantCultureIgnoreCase))?.XpBonus;
+
+                player.AdditionalPlayerXP += Math.Max(updateInventory.UpdateInventoryFromMissionObject.AdditionalPlayerXP, playerMissionAdditionalXp.HasValue? playerMissionAdditionalXp.Value:0);
+                player.PlayerXP += Math.Max(updateInventory.UpdateInventoryFromMissionObject.PlayerXP, playerMissionXp.HasValue ? playerMissionXp.Value : 0);
+                player.DeathMarks = string.Join("|", updateInventory.UpdateInventoryFromMissionObject.DeathMarks);
 
                 // update equipment
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating equipment", updateInventory.AccountId, updateInventory.Nonce);
@@ -95,7 +108,10 @@ namespace WFClassic.Web.Logic.Inventory.Update
                         InternalInventoryItemType = InternalInventoryItemType.Upgrades
                     });
                 }
-                if(updateInventory.UpdateInventoryFromMissionObject.Cards != null)
+                // This deals with a bug in 7.10.0 where cards are not sent in the request . 
+                // this was a known bug in said version. 
+
+                if (updateInventory.UpdateInventoryFromMissionObject.Cards != null)
                 {
                     foreach (var card in updateInventory.UpdateInventoryFromMissionObject.Cards)
                     {
