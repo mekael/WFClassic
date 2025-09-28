@@ -18,6 +18,7 @@ namespace WFClassic.Web.Logic.UI.Inventory.AddList
 
     public class GetAllWarframeItemsResultDetailItem
     {
+        public Guid Id { get; set; }
         public string ItemName { get; set; }
         public WarframeItemLocation WarframeItemLocation { get; set; }
 

@@ -39,6 +39,7 @@ namespace WFClassic.Web.Logic.UI.Inventory.AddList
                     this._logger.LogInformation("{ClassName} => Mapping item {ItemId}", this.GetType().Name, warframeItem.Id);
                     getAllWaframeItemsResult.GetAllWarframeItemsResultDetailItems.Add(new GetAllWarframeItemsResultDetailItem()
                     {
+                        Id = warframeItem.Id,
                         ItemName = warframeItem.ItemType,
                         WarframeItemLocation = warframeItem.WarframeItemLocation,
                         GetAllWarframeItemsResultDetailItemComponents = warframeItem.WarframeItemComponents.Select(s => new GetAllWarframeItemsResultDetailItemComponent()
@@ -53,6 +54,7 @@ namespace WFClassic.Web.Logic.UI.Inventory.AddList
                         }).ToList()
                     });
                 }
+                getAllWaframeItemsResult.GetAllWaframeItemsResultStatus = GetAllWarframeItemsResultStatus.Success;
 
             }
             catch (Exception ex)

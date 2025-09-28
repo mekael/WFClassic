@@ -1,0 +1,67 @@
+@page
+@model WFClassic.Web.Pages.WarframeItemsModel
+
+@{
+    ViewData["Title"] = "Warframe Items";
+}
+
+<div class="container">
+    <h2>Warframe Items</h2>
+
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="selectedItemId" class="form-label">Filter by Item Name:</label>
+                <select name="selectedItemId" id="selectedItemId" class="form-select" onchange="this.form.submit()">
+                    @foreach (var option in Model.ItemNameOptions)
+                    {
+                        <option value="@option.Value" selected="@(option.Value == Model.SelectedItemId.ToString())">@option.Text
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+    </form>
+
+    @if (Model.SelectedItem != null)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h4>@Model.SelectedItem.ItemName</h4>
+            </div>
+            <div class="card-body">
+
+                <h3> Components </h3>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ItemType</th>
+                            <th>Pretty Name</th>
+                            <th>Inventory Type</th>
+                            <th>Has Reactor/Catalyst Attached</th>
+                            <th>Inventory Bin Info</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Web.Logic.UI.Inventory.AddList.GetAllWarframeItemsResultDetailItemComponent item in Model.SelectedItem.GetAllWarframeItemsResultDetailItemComponents)
+                        {
+                            <tr>
+                                <td>@item.ItemType </td>
+                                <td>@item.ItemName </td>
+                                <td>@item.InternalInventoryItemType </td>
+                                 @if(item.UnlockLevel != 0){ <td> Yes</td> }
+                                else{ <td></td>}
+                                @if(item.AddInventoryBin){ <td> Adds @item.NumberOfBinsToAdd of type @item.InventoryBinTypeToAdd </td> }
+                                else{ <td>No bins added</td>}
+  
+                            </tr>
+                        }
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+</div>
