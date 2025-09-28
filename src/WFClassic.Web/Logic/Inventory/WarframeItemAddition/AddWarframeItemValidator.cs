@@ -7,7 +7,7 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
         public AddWarframeItemValidator()
         {
             RuleFor(r => r.AccountId).NotEmpty();
-            RuleFor(r => r.ItemType).NotEmpty();
+            RuleFor(r => r.ItemType).NotEmpty().Unless(u => u.WarframeItemId != Guid.Empty);
         }
     }
 }

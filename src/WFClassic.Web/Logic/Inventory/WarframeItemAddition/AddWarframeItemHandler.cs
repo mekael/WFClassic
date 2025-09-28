@@ -37,7 +37,7 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
             {
                 _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>  ", addWarframeItem.AccountId, addWarframeItem.ItemType);
                 playerId = _applicationDbContext.Players.First(f => f.ApplicationUserId == addWarframeItem.AccountId).Id;
-                warframeItem = _applicationDbContext.WarframeItems.Include(i => i.WarframeItemComponents).FirstOrDefault(fod => fod.ItemType == addWarframeItem.ItemType && fod.WarframeItemLocation == addWarframeItem.WarframeItemLocation);
+                warframeItem = _applicationDbContext.WarframeItems.Include(i => i.WarframeItemComponents).FirstOrDefault(fod => fod.Id == addWarframeItem.WarframeItemId  ||    (fod.ItemType == addWarframeItem.ItemType && fod.WarframeItemLocation == addWarframeItem.WarframeItemLocation));
                 inventoryItems = _applicationDbContext.InventoryItems.Where(w => w.Player.Id == playerId).ToList();
                 inventoryBins = _applicationDbContext.InventoryBins.Where(w => w.InventoryId == playerId).ToList();
                 _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>  ", addWarframeItem.AccountId, addWarframeItem.ItemType);
