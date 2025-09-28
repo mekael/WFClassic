@@ -82,7 +82,7 @@ namespace WFClassic.Web.Areas.Identity.Pages.Account.Manage
             }
 
 
-            Response.Headers.Add($"Content-Disposition", $"attachment; filename={result.FileName}");
+            Response.Headers.Append($"Content-Disposition", $"attachment; filename={result.FileName}");
             return new FileContentResult(result.JsonFile, "application/json");
         }
 

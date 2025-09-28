@@ -43,7 +43,9 @@ namespace WFClassic.Web.Logic.UI.ListPlayers
                                                         LastLoginDate = s.ApplicationUser.LastLoginTimestamp.Date,
                                                         UserName = s.ApplicationUser.DisplayName
                                                     })
-                                                    .ToList();
+
+                                                    .ToList()
+                                                    .OrderBy(obd=> obd.JoinedOnDate);
                 _logger.LogInformation("GetPlayerListHandler => Player query complete");
             }
             catch (Exception ex)
@@ -53,9 +55,9 @@ namespace WFClassic.Web.Logic.UI.ListPlayers
                 return result;
             }
 
-            _logger.LogInformation("GetPlayerListHandler => Found {resultCount} items", result.GetPlayerListResultDetailItems.Count);
+            _logger.LogInformation("GetPlayerListHandler => Found {resultCount} items", result.GetPlayerListResultDetailItems.Count());
 
-            if (result.GetPlayerListResultDetailItems.Count == 0 && getPlayerList.PageNumber > 1)
+            if (result.GetPlayerListResultDetailItems.Count() == 0 && getPlayerList.PageNumber > 1)
             {
                 _logger.LogInformation("GetPlayerListHandler => Since no items were returned, decrementing page count and running query again. ");
                 getPlayerList.PageNumber--;

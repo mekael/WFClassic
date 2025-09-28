@@ -6,7 +6,7 @@
         public int NumberOfItemsPerPage { get; set; }
         public GetPlayerListResultStatus GetPlayerListResultStatus { get; set; }
 
-        public List<GetPlayerListResultDetailItem> GetPlayerListResultDetailItems { get; set; }
+        public IEnumerable<GetPlayerListResultDetailItem> GetPlayerListResultDetailItems { get; set; }
     }
 
     public enum GetPlayerListResultStatus

@@ -45,6 +45,7 @@ using WFClassic.Web.Logic.Sys.Scheduled;
 using WFClassic.Web.Logic.Sys.SystemLogout;
 using WFClassic.Web.Logic.Taunt;
 using WFClassic.Web.Logic.UI.ListPlayers;
+using WFClassic.Web.Logic.UI.Inventory.AddList;
 using WFClassic.Web.Logic.Universe.GetState;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
@@ -114,6 +115,7 @@ builder.Services.AddTransient<GetPlayerListHandler>();
 builder.Services.AddTransient<DownloadPlayerDataHandler>();
 builder.Services.AddTransient<RemoveScheduledPlayerBansHandler>();
 builder.Services.AddTransient<AddWarframeItemHandler>();
+builder.Services.AddTransient<GetAllWaframeItemsHandler>();
 
 builder.Services.AddHttpLogging();
 
@@ -121,9 +123,9 @@ builder.Services.AddHttpLogging();
 builder.Services.AddScheduler();
 
 #if DEBUG
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddControllers();
 #else
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 #endif
 
 
@@ -146,7 +148,7 @@ Log.Logger = loggerConfig.CreateLogger();
 builder.Services.AddSerilog();
 
 builder.Services.AddProblemDetails();
-
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -172,10 +174,6 @@ app.UseRequestDecompression();
 
 //logout all users during server restart. 
 
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 using (var serviceScope = app.Services.CreateScope())
