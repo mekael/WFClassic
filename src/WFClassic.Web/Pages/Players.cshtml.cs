@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -5,6 +6,8 @@ using WFClassic.Web.Logic.UI.ListPlayers;
 
 namespace WFClassic.Web.Pages
 {
+    [Authorize]
+
     public class PlayersModel : PageModel
     {
         private readonly GetPlayerListHandler _getPlayerListHandler;

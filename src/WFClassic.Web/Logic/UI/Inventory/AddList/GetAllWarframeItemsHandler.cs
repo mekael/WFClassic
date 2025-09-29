@@ -4,12 +4,12 @@ using WFClassic.Web.Data.Models;
 
 namespace WFClassic.Web.Logic.UI.Inventory.AddList
 {
-    public class GetAllWaframeItemsHandler
+    public class GetAllWarframeItemsHandler
     {
         private readonly ApplicationDbContext _applicationDbContext;
-        private readonly ILogger<GetAllWaframeItemsHandler> _logger;
+        private readonly ILogger<GetAllWarframeItemsHandler> _logger;
 
-        public GetAllWaframeItemsHandler(ApplicationDbContext applicationDbContext, ILogger<GetAllWaframeItemsHandler> logger)
+        public GetAllWarframeItemsHandler(ApplicationDbContext applicationDbContext, ILogger<GetAllWarframeItemsHandler> logger)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;

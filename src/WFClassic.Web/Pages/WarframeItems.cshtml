@@ -15,7 +15,8 @@
                 <select name="selectedItemId" id="selectedItemId" class="form-select" onchange="this.form.submit()">
                     @foreach (var option in Model.ItemNameOptions)
                     {
-                        <option value="@option.Value" selected="@(option.Value == Model.SelectedItemId.ToString())">@option.Text
+                        <option value="@option.Value" selected="@(option.Value == Model.SelectedItemId.ToString())">
+                            @option.Text
                         </option>
                     }
                 </select>
@@ -27,7 +28,18 @@
     {
         <div class="card">
             <div class="card-header">
-                <h4>@Model.SelectedItem.ItemName</h4>
+                <div class="row">
+                    <div class="col-md-10">
+                        <h4>@Model.SelectedItem.ItemName</h4>
+                    </div>
+                <div class="col-md-2">
+                    <form asp-action="post">
+                            <input asp-for="@Model.SelectedItem.Id" name="itemToAddId" id="itemToAddId" hidden/>
+                        <input type="submit" class="btn btn-primary" value="Add Item To Inventory" />
+                    </form>
+                </div>
+                </div>
+
             </div>
             <div class="card-body">
 
@@ -50,14 +62,26 @@
                                 <td>@item.ItemType </td>
                                 <td>@item.ItemName </td>
                                 <td>@item.InternalInventoryItemType </td>
-                                 @if(item.UnlockLevel != 0){ <td> Yes</td> }
-                                else{ <td></td>}
-                                @if(item.AddInventoryBin){ <td> Adds @item.NumberOfBinsToAdd of type @item.InventoryBinTypeToAdd </td> }
-                                else{ <td>No bins added</td>}
-  
+                                @if (item.UnlockLevel != 0)
+                                {
+                                    <td> Yes</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                @if (item.AddInventoryBin)
+                                {
+                                    <td> Adds @item.NumberOfBinsToAdd of type @item.InventoryBinTypeToAdd </td>
+                                }
+                                else
+                                {
+                                    <td>No bins added</td>
+                                }
+
                             </tr>
                         }
-                       
+
                     </tbody>
                 </table>
             </div>
