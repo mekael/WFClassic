@@ -69,4 +69,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<PlayerBan> PlayerBans { get; set; }
 
+    public DbSet<OperationConfiguration> OperationConfigurations { get; set; }
+
 }

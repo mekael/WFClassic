@@ -116,7 +116,7 @@ namespace WFClassic.Web.Controllers
             },
             ""AllowReplay"": 1,
 
-      ""Desc"": ""CATSAASDASD"",
+      ""Desc"": ""Fusion Moa Army"",
       ""Type"": ""MT_ASSASSINATION"",
       ""Transmission"": ""/Lotus/Sounds/Lotus/Operations/FusionMoaOperationTransmission"",
       ""Count"": 250,

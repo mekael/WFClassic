@@ -9,7 +9,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
 
 
 
-        public static GetWorldStateResultJson Map(List<WorldStateEventMessage> worldStateEventMessages, List<AlertConfiguration> worldStateAlerts, string buildLabel)
+        public static GetWorldStateResultJson Map(List<WorldStateEventMessage> worldStateEventMessages, List<AlertConfiguration> worldStateAlerts, List<OperationConfiguration> operationConfigurations, string buildLabel)
         {
 
 
@@ -72,8 +72,27 @@ namespace WFClassic.Web.Logic.Universe.GetState
                     }
                 });
 
-            }
 
+
+            }
+            foreach (var goal in operationConfigurations)
+            {
+                returnJson.Goals.Add(new GetWorldStateResultJsonGoal()
+                {
+                    Activation = new Shared.Models.WorldStateDate(goal.StartDate),
+                    AllowReplay = Convert.ToInt16(goal.AllowReplay),
+                    Count = goal.CurrentCompletionCount,
+                    Desc = goal.Description,
+                    Expiry = new Shared.Models.WorldStateDate(goal.EndDate),
+                    Goal = goal.GoalCompletionCount,
+                    Reward = goal.RewardItemType,
+                    RewardCredits = goal.RewardCreditsAmount,
+                    RewardItemCount = goal.RewardItemCount,
+                    Success = Convert.ToInt16(goal.SuccessIndicator),
+                    Transmission = goal.TransmissionPath,
+                    Type = goal.OperationType
+                });
+            }
 
             return returnJson;
 

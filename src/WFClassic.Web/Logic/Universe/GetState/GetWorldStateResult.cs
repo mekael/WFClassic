@@ -23,6 +23,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
         [JsonPropertyName("Events")]
         public List<GetWorldStateResultJsonEvent> Events { get; set; } = new List<GetWorldStateResultJsonEvent>();
         public List<GetWorldStateResultJsonAlert> Alerts { get; set; } = new List<GetWorldStateResultJsonAlert>();
+        public List<GetWorldStateResultJsonGoal> Goals { get; set; } = new List<GetWorldStateResultJsonGoal>();
 
         public long Time { get; set; }
         public string BuildLabel { get; set; }
@@ -36,6 +37,27 @@ namespace WFClassic.Web.Logic.Universe.GetState
         public string Prop { get; set; }
         public int Type { get; set; }
     }
+    
+    public class GetWorldStateResultJsonGoal
+    {
+        public WorldStateDate Activation { get; set; }
+        public WorldStateDate Expiry { get; set; }
+
+        public int AllowReplay { get; set; }
+        public string Desc { get; set; }
+        public string Type { get; set; }
+        public string Transmission { get; set; }
+        public int Count { get; set; }
+        public int Goal { get; set; }
+        public int Success { get; set; }
+        public string Reward { get; set; }
+        public int RewardItemCount { get; set; }
+        public int RewardCredits { get; set; }
+
+
+    }
+
+
 
     public class GetWorldStateResultJsonAlert
     {

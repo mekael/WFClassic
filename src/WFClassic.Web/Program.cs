@@ -120,8 +120,13 @@ builder.Services.AddTransient<GetAllWarframeItemsHandler>();
 
 builder.Services.AddHttpLogging();
 builder.Services.AddScheduler();
+
+
+#if DEBUG
 builder.Services.AddControllers().AddRazorRuntimeCompilation();
- 
+#else
+builder.Services.AddControllers();
+#endif
 
 
 var loggerConfig = new LoggerConfiguration();

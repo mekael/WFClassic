@@ -84,24 +84,6 @@ namespace WFClassic.Web.Controllers
     ""$id"": ""522656733f9a5b1718f1b5ab""
 },
 ""Members"": [
-                    {
-                    ""_id"": {
-                        ""$id"": ""4FAD6BF1-5BB5-4C8F-9078-92A2827E221D""
-                    },
-                    ""DisplayName"" :""beer"",
-                    ""Status"": 0,
-                    ""ActiveAvatarImageType"" :"""",
-                    ""Rank"" : 2
-                                        },
-                     {
-                    ""_id"": {
-                        ""$id"": ""C64C1E01-34D6-4311-AE40-7BAA5EBA3016""
-                    },
-                    ""DisplayName"" :""mekael"",
-                    ""Status"": 0,
-                    ""ActiveAvatarImageType"" :"""",
-                    ""Rank"" : 1
-                                        },
                     
             ]
 

@@ -39,6 +39,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
 
             List<WorldStateEventMessage> worldStateEventMessages = null;
             List<AlertConfiguration> worldStateAlerts = null;
+            List<OperationConfiguration> operationConfigurations = null;
             try
             {
                 _logger.LogInformation("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} =>   ", getWorldState.AccountId, getWorldState.Nonce);
@@ -46,26 +47,26 @@ namespace WFClassic.Web.Logic.Universe.GetState
                 //Get all events
                 // get the alerts
                 worldStateEventMessages = _applicationDbContext.WorldStateEventMessages.Where(w => w.IsActive).ToList();
-                worldStateAlerts = _applicationDbContext.AlertConfigurations
+                worldStateAlerts = _applicationDbContext.AlertConfigurations.AsSplitQuery()
                                                                          .Include(i => i.AlertEnemyConfigurations)
                                                                          .Include(i => i.AlertRewardConfigurations)
                                                                          .Where(w => w.IsActive)
                                                                          .ToList();
 
-                result.GetWorldStateResultStatus = GetWorldStateResultStatus.Success;
+                operationConfigurations = this._applicationDbContext.OperationConfigurations.Where(w => w.IsActive).ToList();
 
                 _logger.LogInformation("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} => Query Complete", getWorldState.AccountId, getWorldState.Nonce);
             }
             catch (Exception ex)
             {
-                _logger.LogError("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} =>  {Ex}", getWorldState.AccountId, getWorldState.Nonce, ex);
+                _logger.LogError("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} => Exception while attempting to get worldstate definitions  {Ex}", getWorldState.AccountId, getWorldState.Nonce, ex);
                 result.GetWorldStateResultStatus = GetWorldStateResultStatus.DatabaseErrors;
             }
 
             try
             {
                 _logger.LogInformation("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} =>   ", getWorldState.AccountId, getWorldState.Nonce);
-                result.GetWorldStateResultJson = GetWorldStateMapper.Map(worldStateEventMessages, worldStateAlerts, _configuration.GetValue<string>("BuildLabel"));
+                result.GetWorldStateResultJson = GetWorldStateMapper.Map(worldStateEventMessages, worldStateAlerts,operationConfigurations, _configuration.GetValue<string>("BuildLabel"));
                 _logger.LogInformation("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} =>   ", getWorldState.AccountId, getWorldState.Nonce);
                 result.GetWorldStateResultStatus = GetWorldStateResultStatus.Success;
             }

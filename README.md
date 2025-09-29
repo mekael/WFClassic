@@ -38,18 +38,52 @@ There is also an online server available which supports the 7.9 build that is li
 ```
 
 
+  /*
+      "2013.05.15.13.37/", // 7.10.7
+      "2013.05.14.10.33/", // 7.10.6
+      "2013.05.13.15.20/", // 7.10.5
+      "2013.05.10.14.33/", // 7.10.4
+      "2013.05.09.14.56/", // 7.10.3.5
+      "2013.05.08.10.59/", // 7.10.2
+      "2013.05.06.10.38/", // 7.10.1
+      "2013.05.03.18.06/", // 7.10
+      "2013.04.26.17.24/", // 7.9
+      "2013.04.24.11.45/", // 7.8.1
+      "2013.04.15.14.48/", // 7.7.4
+      "2013.04.12.12.05/", // 7.7.3
+      "2013.04.05.12.20/", // 7.7.2
+      "2013.04.04.10.09/", // 7.7.1
+      "2013.04.03.14.47/", // 7.7
+      "2013.04.01.16.24/", // 7.6
+      "2013.03.28.17.01/", // 7.5 
+      "2013.03.27.09.43/", // 7.4  
+      "2013.03.25.11.45/", // 7.3
+
+  */
+  
+
 # Currently Tested Versions
 
 | Version | Build Id |  Manifest Id| Items not working? | Notes |
 |-|-|-| -| -|
-|7.10.2|2013.05.08.10.59/|1214562332840994196|This version has some issues loading certain textures, specifically those around grenades and melee attacks. ||
-|7.10.1|2013.05.06.10.38/|4151868779723562813|This version has some issues loading certain textures, specifically those around grenades and melee attacks. ||
-| 7.10 | 2013.05.03.18.06/ | 588705282697359018 | This version has some issues loading certain textures, specifically those around grenades and melee attacks.  Additionally artifact cards cannot be received as rewards as there is a bug which was later fixed in 7.10.1  | do not not use this version to play 7.10.x as the card thing is impossible to bypass| 
+|7.10.7|2013.05.15.13.37/|367921302756169619|Build allows for login, but UI does not allow for gameplay. has a set of errors referring to rootNodeEntity in starchart.lua||
+|7.10.6|2013.05.14.10.33/|5140912318581454574|Build allows for login, but UI does not allow for gameplay. has a set of errors referring to rootNodeEntity in starchart.lua||
+|7.10.5|2013.05.13.15.20/|1873918047633104541|Build allows for login, but UI does not allow for gameplay. has a set of errors referring to rootNodeEntity in starchart.lua||
+|7.10.4|2013.05.10.14.33/|609302931784914878|Build allows for login, but UI does not allow for gameplay. has a set of errors referring to rootNodeEntity in starchart.lua||
+|7.10.3.5|2013.05.09.14.56/|1333808825789667682|Build allows for login, but UI does not allow for gameplay. has a set of errors referring to rootNodeEntity in starchart.lua||
+|7.10.2|2013.05.08.10.59/|1214562332840994196|This version has some issues loading certain textures, specifically those around grenades and melee attacks. Can only play a single level before needing to restart as the ui freezes ||
+|7.10.1|2013.05.06.10.38/|4151868779723562813|This version has some issues loading certain textures, specifically those around grenades and melee attacks. Can only play a single level before needing to restart as the ui freezes||
+| 7.10 | 2013.05.03.18.06/ | 588705282697359018 | This version has some issues loading certain textures, specifically those around grenades and melee attacks.  Additionally artifact cards cannot be received as rewards as there is a bug which was later fixed in 7.10.1. Can only play a single level before needing to restart as the ui freezes| do not not use this version to play 7.10.x as the card thing is impossible to bypass| 
 | 7.9 | 2013.04.26.17.24/ | 6399786153404128119 | | |
 | 7.8.1 | 2013.04.24.11.45/ | 6629234302933135021 | | |
 | 7.7.4 | 2013.04.15.14.48/ | 8278491043607750104 | | |
+| 7.7.3 | 2013.04.12.12.05/ | 6961091191944066345 | | |
+| 7.7.2 | 2013.04.05.12.20/ |8357063435845098593| | |
+| 7.7.1 | 2013.04.04.10.09/ |3065430017475545834| | |
+| 7.7 | 2013.04.03.14.47/ |6180757407260335433| | |
 | 7.6 | 2013.04.01.16.24/ | 1412521350878833822 | | |
-| 7.5 | 2013.03.28.17.01/ | 5572824118589588358 | |Grineer corpses disappear after being killed. sometimes. (this looks to be a hotfix as there is another release on the 28th)?  |  
+| 7.5.1 | 2013.03.28.17.01/ | 5572824118589588358 | |Grineer corpses disappear after being killed. sometimes. this looks to be a hotfix |  
+| 7.4.1 | 2013.03.27.17.06/ |8927238311553521114| |   |  
 | 7.4 | 2013.03.27.09.43/ | 1958670258248515033 | | |
 | 7.3 | 2013.03.25.11.45/ | 9176710083987114410 | | Oddities with the starchart, least performant of the tested builds. |
 

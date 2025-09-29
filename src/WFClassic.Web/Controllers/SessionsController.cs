@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
 
 using WFClassic.Web.Logic.Middleware;
+using WFClassic.Web.Logic.Sessions.Aggregate;
+using WFClassic.Web.Logic.Shared;
+using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Controllers
 {
@@ -40,33 +45,22 @@ namespace WFClassic.Web.Controllers
         [Route("/api/hostSession.php")]
         public ActionResult HostSession([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            return new JsonResult("{}");
+            return new JsonResult(new { id = new MongoId(Guid.NewGuid()), sessionId = new MongoId(Guid.NewGuid()) });
         }
 
         [HttpPost]
         [Route("/api/aggregateSessions.php")]
-        public string AggregateSessions([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult AggregateSessionsEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            /*
-             {
-    "buildId" : 1324716850,
-    "regionId" : 0
-}
-             */
+            AggregateSessions aggregateSessions = new AggregateSessions()
+            {
+                AccountId = accountId,
+                Nonce = nonce,
+                AggregateSessionsJson = Utils.GetRequestObject<AggregateSessionsJson>(this.HttpContext)
+            };
 
-            string resp = @"
-{
-  ""Results"": [
-    {
-      ""gameModeId"": 0,
-      ""map"": ""caa"",
-      ""count"" :111111
-    }
-  ]
-}
-
-";
-            return resp;
+            var result = new AggregateSessionsResult();
+            return new JsonResult(result, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
 
         [HttpPost]

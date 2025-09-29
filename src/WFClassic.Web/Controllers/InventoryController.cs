@@ -104,7 +104,7 @@ namespace WFClassic.Web.Controllers
 
             var result = _updateInventoryHandler.Handle(updateInventory);
 
-            return new JsonResult("{cats}");
+            return Ok();
         }
 
         [HttpGet]

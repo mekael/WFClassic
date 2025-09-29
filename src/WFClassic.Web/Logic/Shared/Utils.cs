@@ -29,6 +29,7 @@ namespace WFClassic.Web.Logic.Shared
             {
                 bodyBytes = streamReader.ReadToEndAsync().Result;
             }
+            Console.WriteLine(bodyBytes);
             return bodyBytes;
         }
 

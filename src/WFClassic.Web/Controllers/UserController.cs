@@ -8,7 +8,7 @@ namespace WFClassic.Web.Controllers
     [TypeFilter(typeof(LoginVerificationActionFilter))]
     public class UserController : ControllerBase
     {
-        [HttpPost]
+        [HttpGet]
         [Route("/api/getIgnoredUsers.php")]
         public ActionResult GetIgnoredUsers([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
