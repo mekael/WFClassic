@@ -115,18 +115,13 @@ builder.Services.AddTransient<GetPlayerListHandler>();
 builder.Services.AddTransient<DownloadPlayerDataHandler>();
 builder.Services.AddTransient<RemoveScheduledPlayerBansHandler>();
 builder.Services.AddTransient<AddWarframeItemHandler>();
-builder.Services.AddTransient<GetAllWaframeItemsHandler>();
+builder.Services.AddTransient<GetAllWarframeItemsHandler>();
+
 
 builder.Services.AddHttpLogging();
-
-
 builder.Services.AddScheduler();
-
-#if DEBUG
-builder.Services.AddControllers();
-#else
-builder.Services.AddControllers();
-#endif
+builder.Services.AddControllers().AddRazorRuntimeCompilation();
+ 
 
 
 var loggerConfig = new LoggerConfiguration();
@@ -146,7 +141,6 @@ if (builder.Configuration.GetValue<bool>("LogToDisk"))
 Log.Logger = loggerConfig.CreateLogger();
 
 builder.Services.AddSerilog();
-
 builder.Services.AddProblemDetails();
 builder.Services.AddRazorPages();
 
