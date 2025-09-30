@@ -174,6 +174,7 @@ app.UseRequestDecompression();
 //logout all users during server restart. 
 
 app.MapRazorPages();
+app.MapControllers();
 
 using (var serviceScope = app.Services.CreateScope())
 {
