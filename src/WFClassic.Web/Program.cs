@@ -50,6 +50,7 @@ using WFClassic.Web.Logic.Universe.GetState;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
+using WFClassic.Web.Logic.Sys.BoosterUpdates;
 
 
 
@@ -116,6 +117,7 @@ builder.Services.AddTransient<DownloadPlayerDataHandler>();
 builder.Services.AddTransient<RemoveScheduledPlayerBansHandler>();
 builder.Services.AddTransient<AddWarframeItemHandler>();
 builder.Services.AddTransient<GetAllWarframeItemsHandler>();
+builder.Services.AddTransient<CleanupExpiredBoostersHandler>();
 
 
 builder.Services.AddHttpLogging();
@@ -184,10 +186,13 @@ using (var serviceScope = app.Services.CreateScope())
     {
         dbContext.Database.Migrate();
     }
+    
 
     serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
     serviceScope.ServiceProvider.GetRequiredService<ResetWarframeRevivesHandler>().Handle(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false });
     serviceScope.ServiceProvider.GetRequiredService<RemoveScheduledPlayerBansHandler>().Handle();
+    serviceScope.ServiceProvider.GetRequiredService<CleanupExpiredBoostersHandler>().Handle();
+
 }
 
 app.Services.UseScheduler(

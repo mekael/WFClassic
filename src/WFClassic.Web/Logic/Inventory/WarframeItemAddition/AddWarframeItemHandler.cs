@@ -53,6 +53,7 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
 
             foreach (var warframeItemComponent in warframeItem.WarframeItemComponents)
             {
+                // if we have an active booster we  treat it liks an 
                 if (warframeItemComponent.IsUniqueItem)
                 {
                     _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>   adding unique item {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
@@ -103,6 +104,10 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
                         _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>  Cannot find resource for    {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
                         existingItem.ItemCount += warframeItemComponent.Count;
                         existingItem.Charge += warframeItemComponent.Charge;
+                        if(warframeItemComponent.InternalInventoryItemType == Data.Enums.InternalInventoryItemType.Boosters)
+                        {
+                            existingItem.ExpiryDate = existingItem.ExpiryDate < DateTime.Now ? DateTime.Now.AddDays(addWarframeItem.NumberOfDaysForBooster) : existingItem.ExpiryDate.AddDays(addWarframeItem.NumberOfDaysForBooster);
+                        }
                         _applicationDbContext.Entry(existingItem).State = EntityState.Modified;
                     }
                 }
