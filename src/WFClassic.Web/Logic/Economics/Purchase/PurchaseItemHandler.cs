@@ -70,21 +70,6 @@ namespace WFClassic.Web.Logic.Economics.Purchase
             }
 
 
-            var addWarframeItem = new AddWarframeItem()
-            {
-                AccountId = purchaseItem.AccountId,
-                ItemType = purchaseItem.ProductName,
-                WarframeItemLocation = purchaseItem.UsePremium == 1 ? WarframeItemLocation.Market : WarframeItemLocation.Foundry,
-                NumberOfDaysForBooster = purchaseItem.ProductName.Contains("/Boosters/") && purchaseItem.Durability.HasValue && purchaseItem.Durability.Value == 1 ? 7 : 3
-            };
-
-
-
-            var addWarframeItemResult = _addWarframeItemHandler.Handle(addWarframeItem);
-
-
-
-
 
             var getCreditsResult = _getCreditsHandler.Handle(new GetCredits() { AccountId = purchaseItem.AccountId, Nonce = purchaseItem.Nonce });
             if (getCreditsResult.GetCreditsResultStatus != GetCreditsResultStatus.Success)
@@ -106,6 +91,19 @@ namespace WFClassic.Web.Logic.Economics.Purchase
                 result.PurchaseItemResultStatus = PurchaseItemResultStatus.ValidationErrors;
                 return result;
             }
+
+
+            var addWarframeItem = new AddWarframeItem()
+            {
+                AccountId = purchaseItem.AccountId,
+                ItemType = purchaseItem.ProductName,
+                WarframeItemLocation = purchaseItem.UsePremium == 1 ? WarframeItemLocation.Market : WarframeItemLocation.Foundry,
+                NumberOfDaysForBooster = purchaseItem.ProductName.Contains("/Boosters/") && purchaseItem.Durability.HasValue && purchaseItem.Durability.Value == 1 ? 7 : 3
+            };
+
+
+
+            var addWarframeItemResult = _addWarframeItemHandler.Handle(addWarframeItem);
 
 
 
