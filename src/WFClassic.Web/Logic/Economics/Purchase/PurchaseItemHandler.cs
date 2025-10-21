@@ -74,7 +74,7 @@ namespace WFClassic.Web.Logic.Economics.Purchase
             {
                 AccountId = purchaseItem.AccountId,
                 ItemType = purchaseItem.ProductName,
-                WarframeItemLocation = WarframeItemLocation.Market,
+                WarframeItemLocation = purchaseItem.UsePremium == 1 ? WarframeItemLocation.Market : WarframeItemLocation.Foundry,
                 NumberOfDaysForBooster = purchaseItem.ProductName.Contains("/Boosters/") && purchaseItem.Durability.HasValue && purchaseItem.Durability.Value == 1 ? 7 : 3
             };
 
