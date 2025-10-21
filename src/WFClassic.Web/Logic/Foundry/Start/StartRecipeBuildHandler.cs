@@ -3,6 +3,7 @@
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Credits.Add;
+using WFClassic.Web.Logic.Credits.Get;
 
 namespace WFClassic.Web.Logic.Foundry.Start
 {
@@ -12,12 +13,15 @@ namespace WFClassic.Web.Logic.Foundry.Start
         private readonly ILogger<StartRecipeBuildHandler> _logger;
         private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
 
+        private readonly GetCreditsHandler _getCreditsHandler;
+
         public StartRecipeBuildHandler(ApplicationDbContext applicationDbContext, ILogger<StartRecipeBuildHandler> logger,
-            AddAccountTransactionHandler addAccountTransactionHandler)
+            AddAccountTransactionHandler addAccountTransactionHandler, GetCreditsHandler getCreditsHandler)
         {
             _applicationDbContext = applicationDbContext;
             _logger = logger;
             _addAccountTransactionHandler = addAccountTransactionHandler;
+            this._getCreditsHandler = getCreditsHandler;
         }
 
         public StartRecipeBuildResult Handle(StartRecipeBuild startRecipeBuild)
@@ -62,11 +66,30 @@ namespace WFClassic.Web.Logic.Foundry.Start
             }
             else if (player.PendingRecipes.Any(a => a.RecipeId == recipe.Id))
             {
-                // we can only have 4 pending recipes it looks like
                 _logger.LogError("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => Already have a pending build for recipe  ", startRecipeBuild.AccountId, startRecipeBuild.Nonce, startRecipeBuild.RecipeName);
                 StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.ValidationErrors;
                 return StartRecipeBuildResult;
             }
+
+
+
+            GetCredits getCredits = new GetCredits() {  AccountId = startRecipeBuild.AccountId, Nonce = startRecipeBuild.Nonce };
+
+            var getCreditsResult = this._getCreditsHandler.Handle(getCredits);
+
+            if(getCreditsResult.GetCreditsResultStatus != GetCreditsResultStatus.Success || getCreditsResult.GetCreditsResultDetails.RegularCredits < recipe.PriceInStandardCredits)
+            {
+                _logger.LogError("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => Unable to start build as the user does not have the requisite credits available.  ", startRecipeBuild.AccountId, startRecipeBuild.Nonce, startRecipeBuild.RecipeName);
+                StartRecipeBuildResult.StartRecipeBuildResultStatus = StartRecipeBuildResultStatus.ValidationErrors;
+                return StartRecipeBuildResult;
+            }
+
+
+
+
+
+
+
 
             _logger.LogInformation("StartRecipeBuildHandler => accountId {AccountID} nonce {Nonce} recipe {RecipeName}  => Recipe found, checking component list ", startRecipeBuild.AccountId, startRecipeBuild.Nonce, startRecipeBuild.RecipeName);
             List<InventoryItem> inventoryItemsToUpdate = new List<InventoryItem>();
