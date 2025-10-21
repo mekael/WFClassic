@@ -116,12 +116,17 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
                     _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  => Adding bin for    {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
                     InventoryBin binToModify = inventoryBins.FirstOrDefault(fod => fod.InventoryBinType == warframeItemComponent.InventoryBinTypeToAdd);
                     if (binToModify != null)
-                    {                        
-                        if(warframeItemComponent.NumberOfBinsToAdd > 0)
+                    {
+                        // deal with the fact that market items add an extra slot, 
+                        // and foundry items (or market items purchased with credits) do not . 
+                        if (warframeItem.WarframeItemLocation == Data.Enums.WarframeItemLocation.Market)
                         {
-                            binToModify.Extra += warframeItemComponent.NumberOfBinsToAdd;
+                            binToModify.Extra += Math.Abs(warframeItemComponent.NumberOfBinsToAdd);
                         }
-                        binToModify.Slots += warframeItemComponent.NumberOfBinsToAdd;
+                        else
+                        {
+                            binToModify.Slots += -1 * Math.Abs(warframeItemComponent.NumberOfBinsToAdd);
+                        }
                     }
                 }
             }
