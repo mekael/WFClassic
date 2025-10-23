@@ -53,8 +53,11 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
 
             foreach (var warframeItemComponent in warframeItem.WarframeItemComponents)
             {
+
+                var existingItem = inventoryItems.FirstOrDefault(fod => fod.ItemType == warframeItem.ItemType);
+
                 // if we have an active booster we  treat it liks an 
-                if (warframeItemComponent.IsUniqueItem)
+                if (warframeItemComponent.IsUniqueItem || existingItem == null)
                 {
                     _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>   adding unique item {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
 
@@ -77,31 +80,7 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
                 }
                 else
                 {
-                    var existingItem = inventoryItems.FirstOrDefault(fod => fod.ItemType == warframeItem.ItemType);
-
-                    if (existingItem == null)
-                    {
-                        _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  => updating resource  {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
-
-                        _applicationDbContext.InventoryItems.Add(new InventoryItem()
-                        {
-                            ItemCount = warframeItemComponent.Count,
-                            ItemType = warframeItemComponent.ItemType,
-                            ItemName = warframeItemComponent.ItemName,
-                            PlayerId = playerId,
-                            InternalInventoryItemType = warframeItemComponent.InternalInventoryItemType,
-                            UpgradeVer = warframeItemComponent.UpgradeVer,
-                            UpgradeFingerprint = warframeItemComponent.UpgradeFingerprint,
-                            Charge = warframeItemComponent.Charge,
-                            ExtraCapacity = warframeItemComponent.ExtraCapacity,
-                            ExtraRemaining = warframeItemComponent.ExtraRemaining,
-                            UnlockLevel = warframeItemComponent.UnlockLevel,
-                            XP = warframeItemComponent.XP
-                        });
-                    }
-                    else
-                    {
-                        _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>  Cannot find resource for    {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
+                         _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  =>  Cannot find resource for    {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
                         existingItem.ItemCount += warframeItemComponent.Count;
                         existingItem.Charge += warframeItemComponent.Charge;
                         if(warframeItemComponent.InternalInventoryItemType == Data.Enums.InternalInventoryItemType.Boosters)
@@ -109,8 +88,9 @@ namespace WFClassic.Web.Logic.Inventory.WarframeItemAddition
                             existingItem.ExpiryDate = existingItem.ExpiryDate < DateTime.Now ? DateTime.Now.AddDays(addWarframeItem.NumberOfDaysForBooster) : existingItem.ExpiryDate.AddDays(addWarframeItem.NumberOfDaysForBooster);
                         }
                         _applicationDbContext.Entry(existingItem).State = EntityState.Modified;
-                    }
                 }
+
+
                 if (warframeItemComponent.AddInventoryBin)
                 {
                     _logger.LogInformation("AddWarframeItemHandler => accountId {AccountID} itemType {ItemType}  => Adding bin for    {UniqueWarframeItemComponent} ", addWarframeItem.AccountId, addWarframeItem.ItemType, warframeItemComponent.ItemType);
