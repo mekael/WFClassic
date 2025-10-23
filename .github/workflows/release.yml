@@ -35,17 +35,22 @@ jobs:
         run: |
           tag=$(git describe --tags --abbrev=0)
 
-          release_name="WFClassic-$tag-${{ matrix.target }}"
+          release_suffix="$tag-${{ matrix.target }}"
+          release_name="WFClassic-$release_suffix"
+          self_contained_release_name="WFClassic-SingleFile-$release_suffix"
 
           # Build everything
           dotnet publish src/WFClassic.Web/WFClassic.Web.csproj --self-contained --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+          dotnet publish src/WFClassic.Web/WFClassic.Web.csproj --self-contained --framework net9.0 --runtime "${{ matrix.target }}" -c Release -o "$self_contained_release_name" -p:PublishSingleFile=true
 
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
             # Pack to zip for Windows
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
+            7z a -tzip "${self_contained_release_name}.zip" "./${self_contained_release_name}/*"
           else
             tar czvf "${release_name}.tar.gz" "$release_name"
+            tar czvf "${self_contained_release_name}.tar.gz" "$self_contained_release_name"
           fi
 
           # Delete output directory
