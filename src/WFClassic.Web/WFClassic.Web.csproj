@@ -35,8 +35,18 @@
 
 
   <ItemGroup>
+    <Folder Include="configs\" />
     <Folder Include="Logic\Guild\Create\" />
     <Folder Include="Logic\UI\SinglePlayer\" />
+    <Folder Include="logs\" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Content Update="appsettings.WFClassicAdditionalData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

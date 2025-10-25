@@ -37,7 +37,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
                 returnJson.Alerts.Add(new GetWorldStateResultJsonAlert()
                 {
                     Activation = new Shared.Models.WorldStateDate(alertConfiguration.StartDate),
-                    AllowReplay = alertConfiguration.AllowReplay,
+                    AllowReplay =  alertConfiguration.AllowReplay?1:0,
                     Expiry = new Shared.Models.WorldStateDate(alertConfiguration.EndDate),
                     MissionInfo = new GetWorldStateResultJsonAlertMissionInfo()
                     {

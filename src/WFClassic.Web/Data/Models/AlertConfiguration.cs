@@ -6,7 +6,8 @@
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
 
-        public int AllowReplay { get; set; }
+        public bool AllowReplay { get; set; }
+
         // Mission information
         public string MissionType { get; set; }
         public string Faction { get; set; }
@@ -33,11 +34,6 @@
         public List<AlertRewardConfiguration> AlertRewardConfigurations { get; set; }
         public List<AlertEnemyConfiguration> AlertEnemyConfigurations { get; set; }
 
-
-
-
-
-
-
+    
     }
 }

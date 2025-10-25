@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
 
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 using Org.BouncyCastle.Crypto.Digests;
 
 namespace WFClassic.Web.Logic.Shared
@@ -31,6 +33,12 @@ namespace WFClassic.Web.Logic.Shared
             }
             Console.WriteLine(bodyBytes);
             return bodyBytes;
+        }
+
+
+        public static IEnumerable<SelectListItem> GetFlattenedListDictionary(Dictionary<string, List<string>> dict)
+        {
+           return dict.Select(s => s.Value.Select(s2 => new SelectListItem() { Text = $"{s.Key} - {s2}", Value = s.Key })).SelectMany(s => s);
         }
 
 

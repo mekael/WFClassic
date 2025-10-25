@@ -3,6 +3,7 @@ using Coravel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 using Serilog;
 using Serilog.Filters;
@@ -36,25 +37,30 @@ using WFClassic.Web.Logic.Inventory.Starting;
 using WFClassic.Web.Logic.Inventory.Update;
 using WFClassic.Web.Logic.Inventory.WarframeItemAddition;
 using WFClassic.Web.Logic.Middleware;
+using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.Stats.Leaderboard;
 using WFClassic.Web.Logic.Stats.ProfileStats;
 using WFClassic.Web.Logic.Stats.Upload;
+using WFClassic.Web.Logic.Sys.BoosterUpdates;
 using WFClassic.Web.Logic.Sys.PlayerBans;
 using WFClassic.Web.Logic.Sys.PlayerData;
 using WFClassic.Web.Logic.Sys.Scheduled;
 using WFClassic.Web.Logic.Sys.SystemLogout;
 using WFClassic.Web.Logic.Taunt;
-using WFClassic.Web.Logic.UI.ListPlayers;
 using WFClassic.Web.Logic.UI.Inventory.AddList;
+using WFClassic.Web.Logic.UI.ListPlayers;
 using WFClassic.Web.Logic.Universe.GetState;
 using WFClassic.Web.Logic.WFAuth.Initialize;
 using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
-using WFClassic.Web.Logic.Sys.BoosterUpdates;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("./appsettings.WFClassicAdditionalData.json");
+
+
+
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -118,7 +124,7 @@ builder.Services.AddTransient<RemoveScheduledPlayerBansHandler>();
 builder.Services.AddTransient<AddWarframeItemHandler>();
 builder.Services.AddTransient<GetAllWarframeItemsHandler>();
 builder.Services.AddTransient<CleanupExpiredBoostersHandler>();
-
+builder.Services.AddSingleton<WFClassicAdditionalData>(builder.Configuration.GetSection("WFClassicAdditionalData").Get<WFClassicAdditionalData>());
 
 builder.Services.AddHttpLogging();
 builder.Services.AddScheduler();

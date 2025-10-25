@@ -1,0 +1,107 @@
+﻿@page
+@model WFClassic.Web.Pages.AddNewAlertModel
+@{
+}
+
+<div>
+    <form action="post">
+        <div class="row">
+            <div class="col-md-3">
+                <label>Mission Type</label>
+                <select asp-for="AddAlertConfiguration.MissionType" asp-items="Model.MissionTypeSelectList" class="form-control">
+                    <option value="">-- Select Mission Type --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label>Faction</label>
+                <select asp-for="AddAlertConfiguration.Faction" asp-items="Model.FactionSelectList" class="form-control">
+                    <option value="">-- Select Node --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label>Icon</label>
+                <select asp-for="AddAlertConfiguration.Icon" asp-items="Model.IconSelectList" class="form-control">
+                    <option value="">-- Select Icon --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label>Node</label>
+                <select asp-for="AddAlertConfiguration.Location" asp-items="Model.LocationSelectList" class="form-control">
+                    <option value="">-- Select Node --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label>Level override</label>
+                <select asp-for="AddAlertConfiguration.LevelOverride" asp-items="Model.LevelOverrideSelectList" class="form-control">
+                    <option value="">-- Select Node --</option>
+                </select>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-3">
+                <label>Enemy Spec</label>
+                <select asp-for="AddAlertConfiguration.EnemySpec" asp-items="Model.EnemySpecSelectList" class="form-control">
+                    <option value="">-- Select Node --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label>Vip</label>
+                <select asp-for="AddAlertConfiguration.VIPAgent" asp-items="Model.VipSelectList" class="form-control">
+                    <option value="">-- Select Node --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label>Randomized Item Definitions</label>
+                <select asp-for="AddAlertConfiguration.RandomizedItems" asp-items="Model.RandomizedItemsSelectList" class="form-control">
+                    <option value="">-- Select Node --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label>Item rewards</label>
+                <select asp-for="AddAlertConfiguration.RewardItems" asp-items="Model.ItemRewards" multiple class="form-control">
+                    <option value="">-- Select Item Rewards --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label>Credits</label>
+                <input asp-for="AddAlertConfiguration.Credits" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label>Additional Experience</label>
+                <input asp-for="AddAlertConfiguration.Xp" class="form-control" />
+            </div>
+        </div>
+
+        <button type="submit" class="btn-lg"></button>
+    </form>
+</div>
