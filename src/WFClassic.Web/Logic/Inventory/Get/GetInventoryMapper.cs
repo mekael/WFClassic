@@ -63,6 +63,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 RegularCredits = regularCredits > 0 ? regularCredits : 0,
                 TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node }).ToList(),
                 Upgrades = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Upgrades),
+                 Keys = GetJsonTypeCount(InternalInventoryItemType.LevelKeys, player.InventoryItems),
             };
         }
 

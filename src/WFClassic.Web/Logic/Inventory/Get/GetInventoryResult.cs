@@ -107,6 +107,9 @@ namespace WFClassic.Web.Logic.Inventory.Get
         [JsonPropertyName("XPInfo")]
         public List<GetInventoryResultJsonXpInfoItem> XPInfo { get; set; }
 
+        [JsonPropertyName("LevelKeys")]
+        public List<GetInventoryResultJsonTypeCount> Keys { get; set; }
+
         [JsonPropertyName("TauntHistory")]
         public List<GetInventoryResultJsonTauntHistoryItem> TauntHistory { get; set; }
 

@@ -18,6 +18,7 @@
         Recipes,
         CreditBundles,
         Sentinels,
-        SentinelWeapons
+        SentinelWeapons,
+        LevelKeys
     }
 }
