@@ -1,0 +1,67 @@
+﻿@page
+@using WFClassic.Web.Data.Enums
+@model WFClassic.Web.Pages.QualityOfLifeModificationsModel
+@{
+}
+
+<div class="row mb-3">
+    <form method="post" asp-page-handler="SubmitUnlockStarchart">
+        <button type="submit" class="btn btn-primary">
+            Unlock Starchart
+        </button>
+    </form>
+</div>
+
+<div class="row mb-3">
+    <form method="post" asp-page-handler="AddToBankAccount">
+        <input name="amountToAdd" type="number" class="form-control d-inline w-auto me-2" placeholder="Amount" />
+        <input name="bankAccountType" value="Platinum" hidden />
+        <button type="submit" class="btn btn-primary">
+            Add Plat
+        </button>
+    </form>
+</div>
+
+<div class="row mb-3">
+    <form method="post" asp-page-handler="AddToBankAccount">
+        <input name="amountToAdd" type="number" class="form-control d-inline w-auto me-2" placeholder="Amount" />
+        <input name="bankAccountType" value="StandardCredits" hidden />
+        <button type="submit" class="btn btn-primary">
+            Add Standard Credits
+        </button>
+    </form>
+</div>
+
+<div class="row mb-3">
+    <form method="post" asp-page-handler="SetBoostersTo2035Expiry">
+        <button type="submit" class="btn btn-primary">
+            Set All Boosters to Expire in 2035
+        </button>
+    </form>
+</div>
+
+<div class="row mb-3">
+    <form method="post" asp-page-handler="SetBoostersTo2035Expiry">
+        <button type="submit" class="btn btn-primary">
+            Set All Boosters to Expire in 2035
+        </button>
+    </form>
+</div>
+
+<div class="row mb-3">
+    <form method="post" asp-page-handler="SetToLevel30">
+        <select name="internalInventoryItemType" asp-items="Html.GetEnumSelectList<InternalInventoryItemType>()" class="form-select w-auto d-inline me-2"></select>
+        <button type="submit" class="btn btn-primary">
+            Set All Items of Type to Level 30
+        </button>
+    </form>
+</div>
+
+<div class="row mb-3">
+    <form method="post" asp-page-handler="AddPotatoes">
+        <select name="internalInventoryItemType" asp-items="Html.GetEnumSelectList<InternalInventoryItemType>()" class="form-select w-auto d-inline me-2"></select>
+        <button type="submit" class="btn btn-primary">
+            Add Potato To Items Of Type
+        </button>
+    </form>
+</div>

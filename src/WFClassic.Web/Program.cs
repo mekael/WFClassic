@@ -37,6 +37,8 @@ using WFClassic.Web.Logic.Inventory.Starting;
 using WFClassic.Web.Logic.Inventory.Update;
 using WFClassic.Web.Logic.Inventory.WarframeItemAddition;
 using WFClassic.Web.Logic.Middleware;
+using WFClassic.Web.Logic.QualityOfLife.InventoryChanges;
+using WFClassic.Web.Logic.QualityOfLife.StarChart;
 using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.Stats.Leaderboard;
 using WFClassic.Web.Logic.Stats.ProfileStats;
@@ -124,6 +126,8 @@ builder.Services.AddTransient<RemoveScheduledPlayerBansHandler>();
 builder.Services.AddTransient<AddWarframeItemHandler>();
 builder.Services.AddTransient<GetAllWarframeItemsHandler>();
 builder.Services.AddTransient<CleanupExpiredBoostersHandler>();
+builder.Services.AddTransient<UnlockStarChartHandler>();
+builder.Services.AddTransient<InventoryChangeHandler>();
 builder.Services.AddSingleton<WFClassicAdditionalData>(builder.Configuration.GetSection("WFClassicAdditionalData").Get<WFClassicAdditionalData>());
 
 builder.Services.AddHttpLogging();

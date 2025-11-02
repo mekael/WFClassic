@@ -37,7 +37,6 @@
   <ItemGroup>
     <Folder Include="configs\" />
     <Folder Include="Logic\Guild\Create\" />
-    <Folder Include="Logic\UI\SinglePlayer\" />
     <Folder Include="logs\" />
   </ItemGroup>
 
