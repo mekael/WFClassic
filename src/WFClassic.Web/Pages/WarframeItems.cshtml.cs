@@ -18,10 +18,17 @@ namespace WFClassic.Web.Pages
 
         private readonly AddWarframeItemHandler _addWarframeItemHandler;
 
-        public WarframeItemsModel(GetAllWarframeItemsHandler getAllWaframeItemsHandler, AddWarframeItemHandler addWarframeItemHandler)
+
+        public bool CanMakeModifications { get; set; }
+
+
+        public WarframeItemsModel(GetAllWarframeItemsHandler getAllWaframeItemsHandler, AddWarframeItemHandler addWarframeItemHandler, 
+                                        IConfiguration configuration)
         {
-            _getAllWaframeItemsHandler = getAllWaframeItemsHandler;
+            this._getAllWaframeItemsHandler = getAllWaframeItemsHandler;
             this._addWarframeItemHandler = addWarframeItemHandler;
+            this.CanMakeModifications = configuration.GetValue<bool>("AllowQualityOfLifeModifications");
+
         }
         [BindProperty]
         public List<SelectListItem> ItemNameOptions { get; set; } = new List<SelectListItem>();
@@ -57,6 +64,11 @@ namespace WFClassic.Web.Pages
 
         public IActionResult OnPost(Guid itemToAddId)
         {
+            if (!CanMakeModifications)
+            {
+                return this.Forbid();
+            }
+
             var userId = Guid.Parse(this.User.Claims.FirstOrDefault(fod => fod.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
 
             AddWarframeItem addWarframeItem = new AddWarframeItem()

@@ -32,12 +32,16 @@
                     <div class="col-md-10">
                         <h4>@Model.SelectedItem.ItemName</h4>
                     </div>
-                <div class="col-md-2">
-                    <form asp-action="post">
-                            <input asp-for="@Model.SelectedItem.Id" name="itemToAddId" id="itemToAddId" hidden/>
-                        <input type="submit" class="btn btn-primary" value="Add Item To Inventory" />
-                    </form>
-                </div>
+                    @if (Model.CanMakeModifications)
+                    {
+                        <div class="col-md-2">
+                            <form asp-action="post">
+                                <input asp-for="@Model.SelectedItem.Id" name="itemToAddId" id="itemToAddId" hidden />
+                                <input type="submit" class="btn btn-primary" value="Add Item To Inventory" />
+                            </form>
+                        </div>
+                    }
+                  
                 </div>
 
             </div>
