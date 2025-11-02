@@ -197,6 +197,9 @@ namespace WFClassic.Web.Logic.Inventory.Get
     {
         [JsonPropertyName("node")]
         public string node { get; set; }
+
+        [JsonPropertyName("state")]
+        public string state { get; set; }
     }
 
     public class GetInventoryResultJsonMission

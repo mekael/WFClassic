@@ -9,5 +9,7 @@ namespace WFClassic.Web.Data.Models
         [JsonIgnore]
         public Player Player { get; set; }
         public string Node { get; set; }
+
+        public string State { get; set; }
     }
 }

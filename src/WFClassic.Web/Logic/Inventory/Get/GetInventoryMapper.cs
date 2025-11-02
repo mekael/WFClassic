@@ -61,7 +61,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 TrainingDate = new MongoDate(player.TrainingDate),
                 PremiumCredits = premiumCredits > 0 ? premiumCredits : 0,
                 RegularCredits = regularCredits > 0 ? regularCredits : 0,
-                TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node }).ToList(),
+                TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node, state= s.State }).ToList(),
                 Upgrades = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Upgrades),
                  Keys = GetJsonTypeCount(InternalInventoryItemType.LevelKeys, player.InventoryItems),
             };

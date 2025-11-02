@@ -14,5 +14,9 @@ namespace WFClassic.Web.Logic.Taunt
     {
         [JsonPropertyName("node")]
         public string Node { get; set; }
+
+        [JsonPropertyName("state")]
+        
+        public string State { get; set; }
     }
 }

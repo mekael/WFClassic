@@ -45,9 +45,11 @@ namespace WFClassic.Web.Logic.Taunt
                 return result;
             }
 
-            if (player.TauntHistoryItems.Any(a => a.Node == addTaunt.IncomingAddTaunt.Node))
+            var existingTaunt = player.TauntHistoryItems.FirstOrDefault(fod => fod.Node == addTaunt.IncomingAddTaunt.Node);
+            if (existingTaunt != null)
             {
-                result.AddTauntResultStatus = AddTauntResultStatus.Success;
+                existingTaunt.State = addTaunt.IncomingAddTaunt.State;
+                this._applicationDbContext.Entry(existingTaunt).State = EntityState.Modified;
             }
             else
             {
@@ -55,23 +57,28 @@ namespace WFClassic.Web.Logic.Taunt
                 {
                     Node = addTaunt.IncomingAddTaunt.Node,
                     PlayerId = player.Id,
-                }
-                    ;
-
-                try
-                {
-                    _logger.LogInformation("AddTauntHandler => accountId {AccountID} nonce {Nonce} => adding taunt history item", addTaunt.AccountId, addTaunt.Nonce);
-                    _applicationDbContext.TauntHistoryItems.Add(tauntHistoryItem);
-                    _applicationDbContext.SaveChanges();
-                    _logger.LogInformation("AddTauntHandler => accountId {AccountID} nonce {Nonce} => taunt history item added ", addTaunt.AccountId, addTaunt.Nonce);
-                    result.AddTauntResultStatus = AddTauntResultStatus.Success;
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError("AddTauntHandler => accountId {AccountID} nonce {Nonce} => Exception while adding taunt history item : {Ex}", addTaunt.AccountId, addTaunt.Nonce, ex);
-                    result.AddTauntResultStatus = AddTauntResultStatus.DatabaseErrors;
-                }
+                    State = addTaunt.IncomingAddTaunt.State
+                };
+                _applicationDbContext.TauntHistoryItems.Add(tauntHistoryItem);
             }
+
+
+            try
+            {
+                _logger.LogInformation("AddTauntHandler => accountId {AccountID} nonce {Nonce} => adding taunt history item", addTaunt.AccountId, addTaunt.Nonce);
+                _applicationDbContext.SaveChanges();
+                _logger.LogInformation("AddTauntHandler => accountId {AccountID} nonce {Nonce} => taunt history item added ", addTaunt.AccountId, addTaunt.Nonce);
+                result.AddTauntResultStatus = AddTauntResultStatus.Success;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("AddTauntHandler => accountId {AccountID} nonce {Nonce} => Exception while adding taunt history item : {Ex}", addTaunt.AccountId, addTaunt.Nonce, ex);
+                result.AddTauntResultStatus = AddTauntResultStatus.DatabaseErrors;
+            }
+
+
+
+
             return result;
         }
     }
