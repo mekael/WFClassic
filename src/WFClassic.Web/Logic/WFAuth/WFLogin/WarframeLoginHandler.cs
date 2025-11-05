@@ -141,7 +141,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                 warframeLoginResult.WarframeLoginResultDetails = new WarframeLoginResultDetails()
                 {
                     id = user.Id.ToString(),
-                    BuildLabel = _configuration.GetValue<string>("BuildLabel"),
+                    BuildLabel = warframeLoginRequest.buildLabel ?? _configuration.GetValue<string>("BuildLabel"),
                     DisplayName = user.DisplayName,
                     NatHash = "127.0.0.1:88",
                     Nonce = user.CurrentNonce,
