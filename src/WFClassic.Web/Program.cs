@@ -198,7 +198,7 @@ using (var serviceScope = app.Services.CreateScope())
     }
     
 
-    serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
+    //serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
     serviceScope.ServiceProvider.GetRequiredService<ResetWarframeRevivesHandler>().Handle(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false });
     serviceScope.ServiceProvider.GetRequiredService<RemoveScheduledPlayerBansHandler>().Handle();
     serviceScope.ServiceProvider.GetRequiredService<CleanupExpiredBoostersHandler>().Handle();
@@ -208,7 +208,7 @@ using (var serviceScope = app.Services.CreateScope())
 app.Services.UseScheduler(
     scheduler =>
     {
-        scheduler.Schedule<MassLogoutUsersHandler>().DailyAtHour(0);
+        //scheduler.Schedule<MassLogoutUsersHandler>().DailyAtHour(0);
         scheduler.ScheduleWithParams<ResetWarframeRevivesHandler>(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false }).DailyAtHour(0);
     });
 
