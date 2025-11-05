@@ -66,7 +66,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
             try
             {
                 _logger.LogInformation("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} =>   ", getWorldState.AccountId, getWorldState.Nonce);
-                result.GetWorldStateResultJson = GetWorldStateMapper.Map(worldStateEventMessages, worldStateAlerts,operationConfigurations, _configuration.GetValue<string>("BuildLabel"));
+                result.GetWorldStateResultJson = GetWorldStateMapper.Map(worldStateEventMessages, worldStateAlerts,operationConfigurations, getWorldState.buildLabel ?? _configuration.GetValue<string>("BuildLabel"));
                 _logger.LogInformation("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} =>   ", getWorldState.AccountId, getWorldState.Nonce);
                 result.GetWorldStateResultStatus = GetWorldStateResultStatus.Success;
             }
