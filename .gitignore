@@ -55,6 +55,6 @@ nunit-*.xml
 
 .vs/
 
-src/WFClassic.Web/app.db
+src/WFClassic.Web/app.db*
 /docs/internal_data/2013_7.10
 .DS_Store
