@@ -12,5 +12,8 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
 
         [JsonIgnore]
         public string UserIpAddress { get; set; }
+
+        [JsonIgnore]
+        public string buildLabel { get; set; }
     }
 }

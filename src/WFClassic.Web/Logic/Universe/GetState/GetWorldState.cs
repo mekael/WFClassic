@@ -9,5 +9,8 @@ namespace WFClassic.Web.Logic.Universe.GetState
 
         [JsonPropertyName("nonce")]
         public long Nonce { get; set; }
+
+        [JsonIgnore]
+        public string buildLabel { get; set; }
     }
 }

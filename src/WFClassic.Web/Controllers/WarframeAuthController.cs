@@ -25,6 +25,10 @@ namespace WFClassic.Web.Controllers
         public async Task<IActionResult> PostAsync()
         {
             var request = Utils.GetRequestObject<WarframeLoginRequest>(this.HttpContext);
+            if (this.HttpContext.Request.Query.ContainsKey("buildLabel"))
+            {
+                request.buildLabel = this.HttpContext.Request.Query["buildLabel"];
+            }
             request.UserIpAddress = this.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var result = await _warframeLoginHandler.Handle(request);
