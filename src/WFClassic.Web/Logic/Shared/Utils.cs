@@ -31,6 +31,10 @@ namespace WFClassic.Web.Logic.Shared
             {
                 bodyBytes = streamReader.ReadToEndAsync().Result;
             }
+
+            int indexOfLastCloseCurlyBrace = bodyBytes.LastIndexOf('}');
+            bodyBytes = indexOfLastCloseCurlyBrace > 0 ? bodyBytes.Substring(0, indexOfLastCloseCurlyBrace + 1) : bodyBytes;
+
             Console.WriteLine(bodyBytes);
             return bodyBytes;
         }
@@ -38,7 +42,7 @@ namespace WFClassic.Web.Logic.Shared
 
         public static IEnumerable<SelectListItem> GetFlattenedListDictionary(Dictionary<string, List<string>> dict)
         {
-           return dict.Select(s => s.Value.Select(s2 => new SelectListItem() { Text = $"{s.Key} - {s2}", Value = s.Key })).SelectMany(s => s);
+            return dict.Select(s => s.Value.Select(s2 => new SelectListItem() { Text = $"{s.Key} - {s2}", Value = s.Key })).SelectMany(s => s);
         }
 
 
