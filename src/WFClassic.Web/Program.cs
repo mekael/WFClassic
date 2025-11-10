@@ -198,10 +198,12 @@ using (var serviceScope = app.Services.CreateScope())
     {
         dbContext.Database.Migrate();
     }
-    
 
 
-    serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
+    if (app.Configuration.GetValue<bool>("KillAllSessionsAtUTCDayChange"))
+    {
+        serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
+    }
     serviceScope.ServiceProvider.GetRequiredService<ResetWarframeRevivesHandler>().Handle(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false });
     serviceScope.ServiceProvider.GetRequiredService<RemoveScheduledPlayerBansHandler>().Handle();
     serviceScope.ServiceProvider.GetRequiredService<CleanupExpiredBoostersHandler>().Handle();
