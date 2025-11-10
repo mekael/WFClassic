@@ -1,13 +1,13 @@
 # WFClassic
 
-A server emulator which allows you to play older versions of warframe, 7.3 => 7.10.
+A server emulator which allows you to play older versions of warframe, currently 7.x versions are playbable directly. The two 8.x versions require the use of the OpenWF bootstrapper which can be found here [OpenWF Homepage](https://openwf.io/).
 
-This work a combination of information from the [SpaceNinjaServer](https://onlyg.it/OpenWF/SpaceNinjaServer) project, additional reverse engineering of earlier builds, trial and error, and a decent amount of coffee.
+This work a combination of information from the [OpenWF SpaceNinjaServer](https://onlyg.it/OpenWF/SpaceNinjaServer) project, additional reverse engineering of earlier builds, trial and error, and a decent amount of coffee.
 Currently using .net9 and sqlite for persistence, linux and windows are both supported and builds are self contained, so no runtime install is necessary. 
 
 # Getting started
 
-Download the version of the 7x branch you'd like to play using the steam console, here is the command to download the 7.9 version
+Download the version of the game that you'd like to play using the steam console, here is the command to download the 7.9 version
 
 ```
 download_depot 230410 230411 6399786153404128119
@@ -41,6 +41,8 @@ There is also an online server available which supports the 7.9 build that is li
 
 | Version | Build Id |  Manifest Id| Items not working? | Notes |
 |-|-|-| -| -|
+|8.3.0|2013.07.04.20.17/|767517711548082020||Requires the use of the OpenWF bootstrapper|
+|8.0.0|2013.05.23.16.06/|5108594067645371108||Requires the use of OpenWF bootstrapper|
 |7.10.7|2013.05.15.13.37/|367921302756169619|Build allows for login, but UI does not allow for gameplay. has a set of errors referring to rootNodeEntity in starchart.lua||
 |7.10.6|2013.05.14.10.33/|5140912318581454574|Build allows for login, but UI does not allow for gameplay. has a set of errors referring to rootNodeEntity in starchart.lua||
 |7.10.5|2013.05.13.15.20/|1873918047633104541|Build allows for login, but UI does not allow for gameplay. has a set of errors referring to rootNodeEntity in starchart.lua||
@@ -64,7 +66,7 @@ There is also an online server available which supports the 7.9 build that is li
 
 ## How to play versions 7.11
 
-Builds after 7.10.2 do not work as they seem to either be missing assets or a missing endpoint which causes issues in the client itself. In order to play 7.11:
+7.x builds after 7.10.2 do not work as they seem to either be missing assets or a missing endpoint which causes issues in the client itself. In order to play 7.11:
 
 
 1. download version 2013.05.08.10.59 and copy warframe.exe and Warframe.x64.exe to somewhere safe
