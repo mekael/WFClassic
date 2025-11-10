@@ -23,5 +23,8 @@ namespace WFClassic.Web.Data.Models
         public string UpgradeFingerprint { get; set; }
         public int Charge { get; set; }
         public DateTime ExpiryDate { get; set; }
+
+        public int Polarized { get; set; }
+        public string PolarityDefinition { get; set; }
     }
 }
