@@ -53,14 +53,14 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 
 
 
-            if (inventoryItemIds.Count(cod => cod == attachMods.IncomingAttachRequest.Weapon.ItemId.Id) == 0)
+            if (inventoryItemIds.Count(cod => cod.Equals(attachMods.IncomingAttachRequest.Weapon.ItemId.Id, StringComparison.InvariantCultureIgnoreCase)) == 0)
             {
 
                 _logger.LogError("AttachModsHandler => accountId {AccountID} nonce {Nonce} => User does not own item {ItemId}", attachMods.AccountId, attachMods.Nonce, attachMods.IncomingAttachRequest.Weapon.ItemId.Id);
                 result.AttachModsResultStatus = AttachModsResultStatus.ValidationErrors;
                 return result;
             }
-            else if (!inventoryItemIds.All(w => attachMods.IncomingAttachRequest.UpgradesToAttach.Select(s => s.ItemId.Id).Contains(w)) )
+            else if (inventoryItemIds.Where(w => attachMods.IncomingAttachRequest.UpgradesToAttach.Select(s => s.ItemId.Id.ToUpper()).Contains(w.ToUpper())).Count() != attachMods.IncomingAttachRequest.UpgradesToAttach.Count() )
             {
 
                 _logger.LogError("AttachModsHandler => accountId {AccountID} nonce {Nonce} => User does not own one or more mods to be attached.", attachMods.AccountId, attachMods.Nonce);
