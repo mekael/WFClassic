@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using WFClassic.Web.Logic.Economics.Slots;
 using WFClassic.Web.Logic.Exp.Artifact;
 using WFClassic.Web.Logic.Inventory.Attach;
+using WFClassic.Web.Logic.Inventory.Attach.Forma;
 using WFClassic.Web.Logic.Inventory.Attach.Modifications;
 using WFClassic.Web.Logic.Inventory.Attach.Orokin;
 using WFClassic.Web.Logic.Inventory.Get;
@@ -28,18 +29,21 @@ namespace WFClassic.Web.Controllers
         private readonly UpdateLoadoutHandler _updateLoadoutHandler;
         private readonly AttachOrokinModHandler _attachOrokinModHandler;
         private readonly PurchaseSlotsHandler _purchaseSlotsHandler;
+        private readonly FuseFormaHandler _fuseFormaHandler;
         public InventoryController(GiveStartingGearHandler giveStartingGearHandler, GetInventoryHandler getInventoryHandler,
             UpdateInventoryHandler updateInventoryHandler, AttachModsHandler attachModsHandler, UpgradeArtifactHandler upgradeArtifactHandler,
-            UpdateLoadoutHandler updateLoadoutHandler, AttachOrokinModHandler attachOrokinModHandler, PurchaseSlotsHandler purchaseSlotsHandler)
+            UpdateLoadoutHandler updateLoadoutHandler, AttachOrokinModHandler attachOrokinModHandler, PurchaseSlotsHandler purchaseSlotsHandler,
+            FuseFormaHandler fuseFormaHandler)
         {
-            _giveStartingGearHandler = giveStartingGearHandler;
-            _getInventoryHandler = getInventoryHandler;
-            _updateInventoryHandler = updateInventoryHandler;
-            _attachModsHandler = attachModsHandler;
-            _upgradeArtifactHandler = upgradeArtifactHandler;
-            _updateLoadoutHandler = updateLoadoutHandler;
-            _attachOrokinModHandler = attachOrokinModHandler;
-            _purchaseSlotsHandler = purchaseSlotsHandler;
+            this._giveStartingGearHandler = giveStartingGearHandler;
+            this._getInventoryHandler = getInventoryHandler;
+            this._updateInventoryHandler = updateInventoryHandler;
+            this._attachModsHandler = attachModsHandler;
+            this._upgradeArtifactHandler = upgradeArtifactHandler;
+            this._updateLoadoutHandler = updateLoadoutHandler;
+            this._attachOrokinModHandler = attachOrokinModHandler;
+            this._purchaseSlotsHandler = purchaseSlotsHandler;
+            this._fuseFormaHandler = fuseFormaHandler;
         }
 
         [HttpPost]
@@ -180,12 +184,16 @@ namespace WFClassic.Web.Controllers
             if (incomingAttachRequest.UpgradesToAttach.Count() == 0
                 && incomingAttachRequest.UpgradesToDetach.Count() == 0)
             {
-                result = _attachOrokinModHandler.Handle(attachMods);
+                result =this. _attachOrokinModHandler.Handle(attachMods);
 
+            }
+            else if(!string.IsNullOrWhiteSpace(incomingAttachRequest.PolarizeReq))
+            {
+                result = this._fuseFormaHandler.Handle(attachMods);
             }
             else
             {
-                result = _attachModsHandler.Handle(attachMods);
+                result =this. _attachModsHandler.Handle(attachMods);
             }
 
 

@@ -130,6 +130,15 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
     }
 
+    public class GetInventoryResultJsonPolarity
+    {
+        [JsonPropertyName("Slot")]
+        public int Slot { get; set; }
+        
+        [JsonPropertyName("Value")]
+        public string Value { get; set; }
+    }
+
     public class GetInventoryResultJsonFlavourItem
     {
         [JsonPropertyName("ItemType")]
@@ -246,8 +255,11 @@ namespace WFClassic.Web.Logic.Inventory.Get
         [JsonPropertyName("ExtraRemaining")]
         public int ExtraRemaining { get; set; }
 
+        [JsonPropertyName("Polarized")]
+        public int Polarized { get; set; }
 
-
+        [JsonPropertyName("Polarity")]
+        public List<GetInventoryResultJsonPolarity> Polarity { get; set; }
     }
 
     public class GetInventoryResultJsonCardItem

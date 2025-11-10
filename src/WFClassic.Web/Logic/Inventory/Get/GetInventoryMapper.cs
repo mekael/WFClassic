@@ -1,5 +1,6 @@
 ﻿using System.Net.Mail;
 using System.Numerics;
+using System.Text.Json;
 
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
@@ -29,7 +30,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 AdditionalPlayerXP = player.AdditionalPlayerXP,
                 CompletedAlerts = completedAlerts,
                 DeathMarks = !string.IsNullOrWhiteSpace(player.DeathMarks)?  player.DeathMarks.Split("|").ToList(): new List<string>(),  
-                Founder = 2,
+                Founder =3,
                 InvalidBin = GetBin(InventoryBinType.Invalid, player.InventoryBins),
                 MiscBin = GetBin(InventoryBinType.Misc, player.InventoryBins),
                 SuitBin = GetBin(InventoryBinType.Suit, player.InventoryBins),
@@ -97,7 +98,9 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     ItemType = s.ItemType,
                     UnlockLevel = s.UnlockLevel,
                     UpgradeVer = s.UpgradeVer,
-                    XP = s.XP
+                    XP = s.XP,
+                    Polarized= s.Polarized,
+                    Polarity = string.IsNullOrWhiteSpace(s.PolarityDefinition) ?new List<GetInventoryResultJsonPolarity>():JsonSerializer.Deserialize<Dictionary<int, string>>(s.PolarityDefinition).Select(s=> new GetInventoryResultJsonPolarity() { Slot =s.Key, Value= s.Value}).ToList(),
                 }).ToList();
         }
 

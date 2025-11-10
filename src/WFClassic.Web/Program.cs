@@ -30,6 +30,7 @@ using WFClassic.Web.Logic.Friendship.AddPending;
 using WFClassic.Web.Logic.Friendship.Get;
 using WFClassic.Web.Logic.Friendship.Icon;
 using WFClassic.Web.Logic.Friendship.Remove;
+using WFClassic.Web.Logic.Inventory.Attach.Forma;
 using WFClassic.Web.Logic.Inventory.Attach.Modifications;
 using WFClassic.Web.Logic.Inventory.Attach.Orokin;
 using WFClassic.Web.Logic.Inventory.Get;
@@ -128,6 +129,7 @@ builder.Services.AddTransient<GetAllWarframeItemsHandler>();
 builder.Services.AddTransient<CleanupExpiredBoostersHandler>();
 builder.Services.AddTransient<UnlockStarChartHandler>();
 builder.Services.AddTransient<InventoryChangeHandler>();
+builder.Services.AddTransient<FuseFormaHandler>();
 builder.Services.AddSingleton<WFClassicAdditionalData>(builder.Configuration.GetSection("WFClassicAdditionalData").Get<WFClassicAdditionalData>());
 
 builder.Services.AddHttpLogging();
@@ -197,6 +199,7 @@ using (var serviceScope = app.Services.CreateScope())
         dbContext.Database.Migrate();
     }
     
+
 
     serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
     serviceScope.ServiceProvider.GetRequiredService<ResetWarframeRevivesHandler>().Handle(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false });

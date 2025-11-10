@@ -113,6 +113,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
         public int SentnlWepXpBonus { get; set; }
         public float Rating { get; set; }
         public string[] Upgrades { get; set; }
+
     }
 
     public class JsonIncomingEquipmentItem
@@ -124,6 +125,13 @@ namespace WFClassic.Web.Logic.Inventory.Update
         public int UnlockLevel { get; set; }
         public int ExtraCapacity { get; set; }
         public int ExtraRemaining { get; set; }
+        public List<JsonIncomingPolarity> Polarity { get; set; }
+    }
+
+    public class JsonIncomingPolarity
+    {
+        public int Slot { get; set; }
+        public string Value { get; set; }
     }
 
     public class Itemid
