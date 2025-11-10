@@ -114,7 +114,6 @@ builder.Services.AddTransient<PurchaseItemHandler>();
 builder.Services.AddTransient<AttachOrokinModHandler>();
 builder.Services.AddScoped<MassLogoutUsersHandler>();
 builder.Services.AddScoped<ResetWarframeRevivesHandler>();
-builder.Services.AddTransient<MassLogoutUsersHandler>();
 builder.Services.AddTransient<ResetWarframeRevivesHandler>();
 builder.Services.AddTransient<GetDailyMissionBonusHandler>();
 builder.Services.AddTransient<SetAvatarIconRequestHandler>();
@@ -213,7 +212,10 @@ using (var serviceScope = app.Services.CreateScope())
 app.Services.UseScheduler(
     scheduler =>
     {
-        scheduler.Schedule<MassLogoutUsersHandler>().DailyAtHour(0);
+        if (app.Configuration.GetValue<bool>("KillAllSessionsAtUTCDayChange"))
+        {
+            scheduler.Schedule<MassLogoutUsersHandler>().DailyAtHour(0);
+        }
         scheduler.ScheduleWithParams<ResetWarframeRevivesHandler>(new ResetWarframeRevives() { ResetReason = "System Startup", ResetRegardless = false }).DailyAtHour(0);
     });
 
