@@ -1,4 +1,6 @@
-﻿using WFClassic.Web.Data;
+﻿using Microsoft.EntityFrameworkCore;
+
+using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
@@ -21,29 +23,60 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 
             if (!validationResults.IsValid)
             {
-                _logger.LogError("GetInventoryHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", attachMods.AccountId, attachMods.Nonce, string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
+                _logger.LogError("AttachModsHandler => accountId {AccountID} nonce {Nonce} => Validation failure {ValidationErrors}", attachMods.AccountId, attachMods.Nonce, string.Join(";", validationResults.Errors.Select(s => $"{s.ErrorCode} {s.ErrorMessage}")));
                 result.AttachModsResultStatus = AttachModsResultStatus.ValidationErrors;
                 return result;
             }
 
 
+
+            List<string> inventoryItemIds = null;
             List<InventoryItemAttachment> modAttachments = null;
+
+
 
             try
             {
+                inventoryItemIds = this._applicationDbContext.Database.SqlQuery<string>($@"select ii.Id
+                                                                                from InventoryItems ii 
+                                                                                inner join players p on ii.PlayerId = p.Id
+                                                                                where p.ApplicationUserId  = {attachMods.AccountId}").ToList();
+
                 modAttachments = _applicationDbContext.InventoryItemAttachments.Where(w => w.ParentInventoryItemId == Guid.Parse(attachMods.IncomingAttachRequest.Weapon.ItemId.Id)).ToList();
             }
             catch (Exception ex)
             {
-                _logger.LogError("GetInventoryHandler => accountId {AccountID} nonce {Nonce} =>  {Ex}", attachMods.AccountId, attachMods.Nonce, ex);
+                _logger.LogError("AttachModsHandler => accountId {AccountID} nonce {Nonce} =>  {Ex}", attachMods.AccountId, attachMods.Nonce, ex);
                 result.AttachModsResultStatus = AttachModsResultStatus.DatabaseErrors;
                 return result;
             }
 
+
+
+            if (inventoryItemIds.Count(cod => cod == attachMods.IncomingAttachRequest.Weapon.ItemId.Id) == 0)
+            {
+
+                _logger.LogError("AttachModsHandler => accountId {AccountID} nonce {Nonce} => User does not own item {ItemId}", attachMods.AccountId, attachMods.Nonce, attachMods.IncomingAttachRequest.Weapon.ItemId.Id);
+                result.AttachModsResultStatus = AttachModsResultStatus.ValidationErrors;
+                return result;
+            }
+            else if (!inventoryItemIds.All(w => attachMods.IncomingAttachRequest.UpgradesToAttach.Select(s => s.ItemId.Id).Contains(w)) )
+            {
+
+                _logger.LogError("AttachModsHandler => accountId {AccountID} nonce {Nonce} => User does not own one or more mods to be attached.", attachMods.AccountId, attachMods.Nonce);
+                result.AttachModsResultStatus = AttachModsResultStatus.ValidationErrors;
+                return result;
+            }
+
+
+
             foreach (var upgradeToDetach in attachMods.IncomingAttachRequest.UpgradesToDetach)
             {
-                InventoryItemAttachment attachment = modAttachments.Find(w => w.AttachedInventoryItemId == Guid.Parse(upgradeToDetach.ItemId.Id));
-                _applicationDbContext.Entry(attachment).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+                InventoryItemAttachment attachment = modAttachments.FirstOrDefault(w => w.AttachedInventoryItemId == Guid.Parse(upgradeToDetach.ItemId.Id));
+                if (attachment != null)
+                {
+                    _applicationDbContext.Entry(attachment).State = EntityState.Deleted;
+                }
             }
 
             foreach (var upgradeToAttach in attachMods.IncomingAttachRequest.UpgradesToAttach)
@@ -54,7 +87,7 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 
                 if (existingAttachment != null)
                 {
-                    _applicationDbContext.Entry(existingAttachment).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+                    _applicationDbContext.Entry(existingAttachment).State = EntityState.Deleted;
                 }
 
                 InventoryItemAttachment attachment = new InventoryItemAttachment()
@@ -73,7 +106,7 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
             }
             catch (Exception ex)
             {
-                _logger.LogError("GetInventoryHandler => accountId {AccountID} nonce {Nonce} =>  {Ex}", attachMods.AccountId, attachMods.Nonce, ex);
+                _logger.LogError("AttachModsHandler => accountId {AccountID} nonce {Nonce} =>  {Ex}", attachMods.AccountId, attachMods.Nonce, ex);
                 result.AttachModsResultStatus = AttachModsResultStatus.DatabaseErrors;
             }
 
