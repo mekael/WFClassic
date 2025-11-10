@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json;
+
+using Microsoft.EntityFrameworkCore;
 
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
@@ -35,7 +37,6 @@ namespace WFClassic.Web.Logic.Inventory.Get
             {
                 _logger.LogInformation("UpdateLoadoutHandler => accountId {AccountID} nonce {Nonce} => Starting Query for player", updateLoadout.AccountId, updateLoadout.Nonce);
                 player = _applicationDbContext.Players.First(w => w.ApplicationUserId == updateLoadout.AccountId);
-                result.UpdateLoadoutResultStatus = UpdateLoadoutResultStatus.Success;
 
                 _logger.LogInformation("UpdateLoadoutHandler => accountId {AccountID} nonce {Nonce} => Query Complete for player ", updateLoadout.AccountId, updateLoadout.Nonce);
             }
@@ -48,7 +49,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
             try
             {
-                player.CurrentLoadout = updateLoadout.LoadoutState;
+                player.CurrentLoadout = JsonSerializer.Serialize(updateLoadout.PlayerLoadout);
                 _applicationDbContext.Entry(player).State = EntityState.Modified;
                 _applicationDbContext.SaveChanges();
                 result.UpdateLoadoutResultStatus = UpdateLoadoutResultStatus.Success;

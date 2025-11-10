@@ -4,6 +4,7 @@ using System.Text.Json;
 
 using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Data.Models;
+using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Get
@@ -65,6 +66,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                 TauntHistory = player.TauntHistoryItems.Select(s => new GetInventoryResultJsonTauntHistoryItem() { node = s.Node, state= s.State }).ToList(),
                 Upgrades = GetUpgrade(player.InventoryItems, attachments, InternalInventoryItemType.Upgrades),
                  Keys = GetJsonTypeCount(InternalInventoryItemType.LevelKeys, player.InventoryItems),
+                 CurrentLoadout  = !string.IsNullOrWhiteSpace(player.CurrentLoadout) ? JsonSerializer.Deserialize<PlayerLoadout>(player.CurrentLoadout) : null, 
             };
         }
 

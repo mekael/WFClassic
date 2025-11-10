@@ -78,7 +78,7 @@ namespace WFClassic.Web.Controllers
         [Route("/api/saveLoadout.php")]
         public ActionResult SaveCurrentLoadout([FromQuery] UpdateLoadout updateLoadout)
         {
-            updateLoadout.LoadoutState = Utils.GetRequestObjectAsString(this.HttpContext);
+            updateLoadout.PlayerLoadout = Utils.GetRequestObject<PlayerLoadout>(this.HttpContext);
             var result = _updateLoadoutHandler.Handle(updateLoadout);
             if (result.UpdateLoadoutResultStatus == UpdateLoadoutResultStatus.Success)
             {

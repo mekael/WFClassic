@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
+using WFClassic.Web.Logic.Shared;
+
 namespace WFClassic.Web.Logic.Inventory.Loadout
 {
     public class UpdateLoadout
@@ -10,7 +12,9 @@ namespace WFClassic.Web.Logic.Inventory.Loadout
         [JsonPropertyName("nonce")]
         public long Nonce { get; set; }
 
+ 
+
         [JsonIgnore]
-        public string LoadoutState { get; set; }
+        public PlayerLoadout PlayerLoadout { get; set; }
     }
 }

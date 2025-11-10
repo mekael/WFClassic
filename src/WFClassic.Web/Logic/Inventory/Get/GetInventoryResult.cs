@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
+using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Logic.Inventory.Get
@@ -126,6 +127,9 @@ namespace WFClassic.Web.Logic.Inventory.Get
 
         [JsonPropertyName("Boosters")]
         public List<GetInventoryResultJsonBoosterItem> Boosters { get; set; }
+
+        [JsonPropertyName("CurrentLoadout")]
+        public PlayerLoadout CurrentLoadout { get; set; }
 
 
     }
