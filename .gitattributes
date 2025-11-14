@@ -1,0 +1,7 @@
+src/WFClassic.Web/wwwroot/css/alt/** linguist-vendored
+src/WFClassic.Web/wwwroot/css/adminlte.css linguist-vendored
+src/WFClassic.Web/wwwroot/css/adminlte.min.css linguist-vendored
+src/WFClassic.Web/wwwroot/js/adminlte.js linguist-vendored
+src/WFClassic.Web/wwwroot/js/adminlte.min.js linguist-vendored
+src/WFClassic.Web/wwwroot/js/demo.js linguist-vendored
+src/WFClassic.Web/wwwroot/lib/** linguist-vendored
