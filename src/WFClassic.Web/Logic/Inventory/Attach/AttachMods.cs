@@ -17,6 +17,7 @@ namespace WFClassic.Web.Logic.Inventory.Attach
         public Upgrade[] UpgradesToDetach { get; set; }
         public int Cost { get; set; }
         public string UpgradeReq { get; set; }
+      
         public string PolarizeReq { get; set; }
         public int PolarizeSlot { get; set; }
         public string PolarizeValue { get; set; }

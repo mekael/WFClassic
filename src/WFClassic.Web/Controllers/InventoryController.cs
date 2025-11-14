@@ -173,6 +173,7 @@ namespace WFClassic.Web.Controllers
         {
             IncomingAttachRequest incomingAttachRequest = Utils.GetRequestObject<IncomingAttachRequest>(this.HttpContext);
 
+            Console.WriteLine("casas");
             AttachMods attachMods = new AttachMods()
             {
                 AccountId = accountId,
@@ -181,21 +182,20 @@ namespace WFClassic.Web.Controllers
             }
             ;
             AttachModsResult result = null;
-            if (incomingAttachRequest.UpgradesToAttach.Count() == 0
-                && incomingAttachRequest.UpgradesToDetach.Count() == 0)
-            {
-                result =this. _attachOrokinModHandler.Handle(attachMods);
 
-            }
-            else if(!string.IsNullOrWhiteSpace(incomingAttachRequest.PolarizeReq))
+            if (!string.IsNullOrWhiteSpace(incomingAttachRequest.PolarizeReq))
             {
                 result = this._fuseFormaHandler.Handle(attachMods);
             }
+            else if (!string.IsNullOrWhiteSpace(incomingAttachRequest.UpgradeReq) )
+            {
+
+                result = this._attachOrokinModHandler.Handle(attachMods);
+            }
             else
             {
-                result =this. _attachModsHandler.Handle(attachMods);
+                result = this._attachModsHandler.Handle(attachMods);
             }
-
 
 
             if (result.AttachModsResultStatus == AttachModsResultStatus.ValidationErrors)
