@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Logic.WFAuth.WFLogout
 {
     public class WarframeLogoutHandler
     {
-        private readonly ApplicationDbContext _applicationDbContext;
         private readonly ILogger<WarframeLogoutHandler> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly InMemoryLoginTracking _inMemoryLoginTracking;
 
-        public WarframeLogoutHandler(ApplicationDbContext applicationDbContext, ILogger<WarframeLogoutHandler> logger, UserManager<ApplicationUser> userManager)
+        public WarframeLogoutHandler(ILogger<WarframeLogoutHandler> logger, UserManager<ApplicationUser> userManager, InMemoryLoginTracking inMemoryLoginTracking)
         {
-            _applicationDbContext = applicationDbContext;
-            _logger = logger;
-            _userManager = userManager;
+            this._logger = logger;
+            this._userManager = userManager;
+            this._inMemoryLoginTracking = inMemoryLoginTracking;
         }
 
         public async Task<WarframeLogoutResult> Handle(WarframeLogoutRequest request)
@@ -86,6 +86,8 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogout
                 _logger.LogError("WarframeLogoutRequestHandler =>  accountId {AccountId} => Errors while updating user  {Errors}", request.accountId, string.Join("\n", identityResult.Errors.Select(s => $"{s.Code} : {s.Description}")));
                 warframeLogoutResult.WarframeLogoutResultStatus = WarframeLogoutResultStatus.Failure;
             }
+            // flush the user from the in memory cache. 
+            this._inMemoryLoginTracking.LoggedInUserListing.Remove(applicationUser.Id);
 
             return warframeLogoutResult;
         }

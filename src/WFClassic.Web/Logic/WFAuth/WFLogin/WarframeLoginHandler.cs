@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared;
@@ -18,11 +16,12 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
         private readonly CreatePlayerHandler _createPlayerHandler;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
+        private readonly InMemoryLoginTracking _inMemoryLoginTracking;
 
 
         public WarframeLoginHandler(ILogger<WarframeLoginHandler> logger, ApplicationDbContext applicationDbContext,
             SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration,
-            CreatePlayerHandler createPlayerHandler, IUserStore<ApplicationUser> userStore)
+            CreatePlayerHandler createPlayerHandler, IUserStore<ApplicationUser> userStore, InMemoryLoginTracking inMemoryLoginTracking)
         {
             this._logger = logger;
             this._applicationDbContext = applicationDbContext;
@@ -32,6 +31,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             this._createPlayerHandler = createPlayerHandler;
             this._userStore = userStore;
             this._emailStore = (IUserEmailStore<ApplicationUser>)_userStore;
+            this._inMemoryLoginTracking = inMemoryLoginTracking;
         }
 
         public async Task<WarframeLoginResult> Handle(WarframeLoginRequest warframeLoginRequest)
@@ -146,6 +146,14 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                     NatHash = "127.0.0.1:88",
                     Nonce = user.CurrentNonce,
                     SteamId = "0"
+                };
+                // update the in memory tracking. 
+                this._inMemoryLoginTracking.LoggedInUserListing[user.Id] = new InMemoryLoginTrackingItem()
+                {
+                    AccountId = user.Id,
+                    DisplayName = user.DisplayName,
+                    Nonce = user.CurrentNonce,
+                    UserIpAddress = warframeLoginRequest.UserIpAddress
                 };
             }
 

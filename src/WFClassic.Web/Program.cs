@@ -1,16 +1,11 @@
 using Coravel;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-
 using Serilog;
 using Serilog.Filters;
-
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
-using WFClassic.Web.Logic.Admin.CheckOnline;
 using WFClassic.Web.Logic.Bonus.Daily;
 using WFClassic.Web.Logic.Bonus.Rewards;
 using WFClassic.Web.Logic.Credits.Add;
@@ -85,7 +80,6 @@ builder.Services.AddRequestDecompression();
 builder.Services.AddTransient<WarframeLoginHandler>();
 builder.Services.AddTransient<WarframeLogoutHandler>();
 builder.Services.AddTransient<GiveStartingGearHandler>();
-builder.Services.AddTransient<IsUserOnlineQueryHandler>();
 builder.Services.AddTransient<GetCreditsHandler>();
 builder.Services.AddTransient<CreatePlayerHandler>();
 builder.Services.AddTransient<AddLevelBasedOnTrainingHandler>();
@@ -130,6 +124,7 @@ builder.Services.AddTransient<UnlockStarChartHandler>();
 builder.Services.AddTransient<InventoryChangeHandler>();
 builder.Services.AddTransient<FuseFormaHandler>();
 builder.Services.AddSingleton<WFClassicAdditionalData>(builder.Configuration.GetSection("WFClassicAdditionalData").Get<WFClassicAdditionalData>());
+builder.Services.AddSingleton<InMemoryLoginTracking>(new InMemoryLoginTracking());
 
 builder.Services.AddHttpLogging();
 builder.Services.AddScheduler();

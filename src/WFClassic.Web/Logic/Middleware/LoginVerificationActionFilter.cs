@@ -1,46 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-using WFClassic.Web.Logic.Admin.CheckOnline;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Logic.Middleware
 {
     public class LoginVerificationActionFilter : ActionFilterAttribute
     {
         private readonly ILogger<LoginVerificationActionFilter> _logger;
-        private readonly IsUserOnlineQueryHandler _isUserOnlineQueryHandler;
+        private readonly InMemoryLoginTracking _inMemoryLoginTracking;
 
-        public LoginVerificationActionFilter(ILogger<LoginVerificationActionFilter> logger, IsUserOnlineQueryHandler isUserOnlineQueryHandler)
+        public LoginVerificationActionFilter(ILogger<LoginVerificationActionFilter> logger, InMemoryLoginTracking inMemoryLoginTracking)
         {
-            _isUserOnlineQueryHandler = isUserOnlineQueryHandler;
-            _logger = logger;
+            this._inMemoryLoginTracking = inMemoryLoginTracking;
+            this._logger = logger;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _logger.LogInformation("Verifying call => {RouteValues}", context.HttpContext.Request.RouteValues);
-            var accountId = Guid.Parse(context.HttpContext.Request.Query["accountId"].First());
-            var nonce = long.Parse(context.HttpContext.Request.Query["nonce"].First());
+            this._logger.LogInformation("Verifying call => {RouteValues}", context.HttpContext.Request.RouteValues);
 
-            IsUserOnlineQuery isUserOnlineQuery = new IsUserOnlineQuery(accountId, nonce);
+            Guid accountId = Guid.Parse(context.HttpContext.Request.Query["accountId"].First());
+            long nonce = long.Parse(context.HttpContext.Request.Query["nonce"].First());
+            string ipAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
-            var isUserOnlineResult = _isUserOnlineQueryHandler.Handle(isUserOnlineQuery);
+            this._logger.LogInformation("LoginVerificationActionFilter=> accountId {accountId} nonce {nonce} ipAddress {ipAddress} ", accountId, nonce, ipAddress);
 
-            if (isUserOnlineResult.IsUserOnlineQueryResultStatus == IsUserOnlineQueryResultStatus.DatabaseIssues)
-            {
-                context.Result = new StatusCodeResult(500);
-                return;
-            }
-            else if (isUserOnlineResult.IsUserOnlineQueryResultStatus == IsUserOnlineQueryResultStatus.UserNotFound)
+            bool userFound = this._inMemoryLoginTracking.LoggedInUserListing.TryGetValue(accountId, out InMemoryLoginTrackingItem foundUser);
+            if (!userFound)
             {
                 context.Result = new StatusCodeResult(404);
                 return;
             }
-            else if (isUserOnlineResult.IsUserOnlineQueryResultStatus == IsUserOnlineQueryResultStatus.UserNotLoggedIn)
+            else if (foundUser.Nonce != nonce || foundUser.UserIpAddress != ipAddress)
             {
                 context.Result = new StatusCodeResult(403);
                 return;
             }
+
         }
     }
 }
