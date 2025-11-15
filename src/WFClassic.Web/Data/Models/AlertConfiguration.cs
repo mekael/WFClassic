@@ -29,6 +29,8 @@
         public int MinEnemyLevel { get; set; }
         public int MaxEnemyLevel { get; set; }
         public string CompleteTag { get; set; }
+        public string LevelKeyName { get;set; } //8.x
+        public int MaxWaveCount { get; set; }//8.x
         // end mission information
 
         public List<AlertRewardConfiguration> AlertRewardConfigurations { get; set; }

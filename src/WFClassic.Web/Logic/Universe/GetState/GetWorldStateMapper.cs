@@ -37,7 +37,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
                 returnJson.Alerts.Add(new GetWorldStateResultJsonAlert()
                 {
                     Activation = new Shared.Models.WorldStateDate(alertConfiguration.StartDate),
-                    AllowReplay =  alertConfiguration.AllowReplay?1:0,
+                    AllowReplay = alertConfiguration.AllowReplay ? 1 : 0,
                     Expiry = new Shared.Models.WorldStateDate(alertConfiguration.EndDate),
                     MissionInfo = new GetWorldStateResultJsonAlertMissionInfo()
                     {
@@ -56,6 +56,8 @@ namespace WFClassic.Web.Logic.Universe.GetState
                         location = alertConfiguration.Location,
                         maxEnemyLevel = alertConfiguration.MaxEnemyLevel,
                         minEnemyLevel = alertConfiguration.MinEnemyLevel,
+                        levelKeyName = alertConfiguration.LevelKeyName,
+                        maxWaveNum = alertConfiguration.MaxWaveCount,
                         missionReward = new GetWorldStateResultJsonMissionReward()
                         {
                             credits = clientSideReward != null ? clientSideReward.Credits : 500,
@@ -71,9 +73,6 @@ namespace WFClassic.Web.Logic.Universe.GetState
                         alertId = new Shared.Models.MongoId(alertConfiguration.Id)
                     }
                 });
-
-
-
             }
             foreach (var goal in operationConfigurations)
             {

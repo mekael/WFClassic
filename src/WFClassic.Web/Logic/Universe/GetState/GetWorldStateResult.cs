@@ -88,6 +88,8 @@ namespace WFClassic.Web.Logic.Universe.GetState
         public int maxEnemyLevel { get; set; }
         public string completeTag { get; set; }
         public string CompleteTag { get; set; } //?
+        public string levelKeyName { get; set; }
+        public int maxWaveNum { get; set; } 
         public GetWorldStateResultJsonMissionReward missionReward { get; set; }
         public MongoId alertId { get; set; }
     }
