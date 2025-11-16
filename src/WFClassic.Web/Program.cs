@@ -1,9 +1,12 @@
 using Coravel;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+
 using Serilog;
 using Serilog.Filters;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Bonus.Daily;
@@ -35,10 +38,12 @@ using WFClassic.Web.Logic.Inventory.WarframeItemAddition;
 using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.QualityOfLife.InventoryChanges;
 using WFClassic.Web.Logic.QualityOfLife.StarChart;
+//using WFClassic.Web.Logic.SessionHandling;
 using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.Stats.Leaderboard;
 using WFClassic.Web.Logic.Stats.ProfileStats;
 using WFClassic.Web.Logic.Stats.Upload;
+using WFClassic.Web.Logic.Sys;
 using WFClassic.Web.Logic.Sys.BoosterUpdates;
 using WFClassic.Web.Logic.Sys.PlayerBans;
 using WFClassic.Web.Logic.Sys.PlayerData;
@@ -53,6 +58,9 @@ using WFClassic.Web.Logic.WFAuth.WFLogin;
 using WFClassic.Web.Logic.WFAuth.WFLogout;
 
 
+
+Console.Write(ConsoleStartupMessage.StartupBanner);
+Console.Write(ConsoleStartupMessage.StartupMessage);
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("./appsettings.WFClassicAdditionalData.json");
@@ -125,6 +133,7 @@ builder.Services.AddTransient<InventoryChangeHandler>();
 builder.Services.AddTransient<FuseFormaHandler>();
 builder.Services.AddSingleton<WFClassicAdditionalData>(builder.Configuration.GetSection("WFClassicAdditionalData").Get<WFClassicAdditionalData>());
 builder.Services.AddSingleton<InMemoryLoginTracking>(new InMemoryLoginTracking());
+//builder.Services.AddTransient<SessionHandler>();
 
 builder.Services.AddHttpLogging();
 builder.Services.AddScheduler();
