@@ -1,11 +1,8 @@
 ﻿using System.Text.Json;
-
 using Microsoft.AspNetCore.Mvc;
-
 using WFClassic.Web.Logic.Middleware;
 using WFClassic.Web.Logic.SessionHandling;
 using WFClassic.Web.Logic.Shared;
-using WFClassic.Web.Logic.Shared.Models;
 
 namespace WFClassic.Web.Controllers
 {
@@ -23,10 +20,47 @@ namespace WFClassic.Web.Controllers
 
 
         [HttpPost]
-        [Route("/api/deleteSession.php")]
-        public ActionResult DeleteSession([FromQuery] Guid accountId, [FromQuery] long nonce)
+        [Route("/api/hostSession.php")]
+        public string HostWarframeSession([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            Utils.GetRequestObjectAsString(this.HttpContext);
+            var request = Utils.GetRequestObject<HostSessionRequest>(this.HttpContext);
+            request.HostIpAddress = this.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            request.AccountId = accountId;
+
+            var response = this._sessionHandler.HandleHostSession(request);
+            return response.SessionId;
+        }
+
+        [HttpPost]
+        [Route("/api/aggregateSessions.php")]
+        public ActionResult AggregateSessionsEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+
+            AggregateSessionsRequest aggregateSessionsRequest = Utils.GetRequestObject<AggregateSessionsRequest>(this.HttpContext);
+            aggregateSessionsRequest.AccountId = accountId;
+
+            AggregateSessionsResult aggregateSessionsResult = this._sessionHandler.HandleAggregateSessions(aggregateSessionsRequest);
+
+            return new JsonResult(aggregateSessionsResult, new JsonSerializerOptions { PropertyNamingPolicy = null });
+        }
+        [HttpPost]
+        [Route("/api/findSessions.php")]
+        public ActionResult FindSessions([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+            FindSessionsRequest request = Utils.GetRequestObject<FindSessionsRequest>(this.HttpContext);
+            request.AccountId = accountId;
+            var response = this._sessionHandler.HandleFindSessions(request);
+
+            return new JsonResult(response, new JsonSerializerOptions { PropertyNamingPolicy = null });
+        }
+
+
+        // why did they decide it was a good idea to have this as a 
+        [HttpGet]
+        [Route("/api/deleteSession.php")]
+        public ActionResult DeleteSession([FromQuery] Guid accountId, [FromQuery] long nonce, [FromQuery] string sessionId)
+        {
+            this._sessionHandler.HandleDeleteSession(sessionId, accountId);
             return new JsonResult("{}");
         }
 
@@ -48,39 +82,11 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/updateSession.php")]
-        public ActionResult UpdateSession([FromQuery] Guid accountId, [FromQuery] long nonce, [FromQuery] string sessionID, [FromQuery] bool fullReset, [FromQuery] int gameModeId)
+        public ActionResult UpdateWarframeSession([FromQuery] UpdateSession updateSession)
         {
-            // http://127.0.0.1/api/updateSession.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=8434711716736183556&sessionId=&fullReset=1&regionId=4&gameModeId=40030 
-
+            // wtf does this even do ? 
             Utils.GetRequestObjectAsString(this.HttpContext);
             return new JsonResult("{}");
-        }
-
-        [HttpPost]
-        [Route("/api/hostSession.php")]
-        public ActionResult HostWarframeSession([FromQuery] Guid accountId, [FromQuery] long nonce)
-        {
-            var request = Utils.GetRequestObject<HostSessionRequest>(this.HttpContext);
-            request.HostIpAddress = this.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            request.AccountId = accountId;
-
-            var response = this._sessionHandler.HandleHostSession(request);
-
-            Utils.GetRequestObjectAsString(this.HttpContext);
-            return new JsonResult(new { Results = new{id =response.SessionId.ToString() } } );
-        }
-
-        [HttpPost]
-        [Route("/api/aggregateSessions.php")]
-        public ActionResult AggregateSessionsEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
-        {
-
-            AggregateSessionsRequest aggregateSessionsRequest = Utils.GetRequestObject<AggregateSessionsRequest>(this.HttpContext);
-
-            AggregateSessionsResult aggregateSessionsResult = this._sessionHandler.HandleFindSessions(aggregateSessionsRequest);
-
-
-            return new JsonResult(aggregateSessionsResult, new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
 
         [HttpPost]
@@ -91,14 +97,6 @@ namespace WFClassic.Web.Controllers
             return new JsonResult("{}");
         }
 
-        [HttpPost]
-        [Route("/api/findSessions.php")]
-        public ActionResult FindSessions([FromQuery] Guid accountId, [FromQuery] long nonce)
-        {
-            //http://127.0.0.1/api/findSessions.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=8434711716736183556
-            //{"buildId":859816754,"gameModeId":40030,"regionId":4}
-            Utils.GetRequestObjectAsString(this.HttpContext);
-            return new JsonResult("{}");
-        }
+
     }
 }

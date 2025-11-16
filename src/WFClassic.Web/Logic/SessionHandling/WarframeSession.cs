@@ -1,10 +1,12 @@
-﻿namespace WFClassic.Web.Logic.SessionHandling;
+﻿using System.Text.Json.Serialization;
+
+namespace WFClassic.Web.Logic.SessionHandling;
 
 public class WarframeSession
 {
     public string HostName { get; set; }
     public string HostIpAddress { get; set; }
-    public Guid SessionId { get; set; }
+    public string SessionId { get; set; }
     public Guid HostUserId { get; set; }
     public int BuildId { get; set; }
 
@@ -24,5 +26,6 @@ public class WarframeSession
     public string MatchType { get; set; }
     public List<string> Maps { get; set; }
     public string OriginalSessionId { get; set; }
+    public int StrictNAT { get; set; }
 
 }

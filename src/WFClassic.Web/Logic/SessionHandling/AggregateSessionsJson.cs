@@ -4,6 +4,8 @@ namespace WFClassic.Web.Logic.SessionHandling;
 
 public class AggregateSessionsRequest
 {
+    [JsonIgnore]
+    public Guid AccountId { get; set; } 
     [JsonPropertyName("buildId")]
     public long BuildId { get; set; }
     [JsonPropertyName("regionId")]

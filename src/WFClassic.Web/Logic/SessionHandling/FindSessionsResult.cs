@@ -13,7 +13,7 @@ public class FindSessionsResultItemJson
     public string HostUserName { get; set; } // host's username
 
     [JsonPropertyName("sessionId")]
-    public Guid SessionId { get; set; }
+    public string SessionId { get; set; }
 
     [JsonPropertyName("hostId")]
     public Guid HostUserId { get; set; } // host's userId
@@ -60,15 +60,17 @@ public class FindSessionsResultItemJson
     public int NumberOfFreePrivateSlots { get; set; }
 
     [JsonPropertyName("eloRating")]
-    public int EloRating { get; set; }
+    public float EloRating { get; set; }
 
     [JsonPropertyName("strictNAT")]
     public int StrictNAT { get; set; }
 
 }
 
-public class FindSessions
+public class FindSessionsRequest
 {
+    [JsonIgnore()]
+    public Guid AccountId { get; set; }
     [JsonPropertyName("buildId")]
     public int BuildId { get; set; }
 

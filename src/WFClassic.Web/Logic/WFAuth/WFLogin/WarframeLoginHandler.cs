@@ -147,14 +147,8 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                     Nonce = user.CurrentNonce,
                     SteamId = "0"
                 };
-                // update the in memory tracking. 
-                this._inMemoryLoginTracking.LoggedInUserListing[user.Id] = new InMemoryLoginTrackingItem()
-                {
-                    AccountId = user.Id,
-                    DisplayName = user.DisplayName,
-                    Nonce = user.CurrentNonce,
-                    UserIpAddress = warframeLoginRequest.UserIpAddress
-                };
+
+                this._inMemoryLoginTracking.AddLoggedInUser(user.Id, user.DisplayName, user.CurrentNonce, warframeLoginRequest.UserIpAddress);
             }
 
             return warframeLoginResult;

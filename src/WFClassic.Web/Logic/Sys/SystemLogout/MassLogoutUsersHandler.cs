@@ -42,7 +42,7 @@ namespace WFClassic.Web.Logic.Sys.SystemLogout
                 this._logger.LogError("MassLogoutUsersHandler => Exception while querying for orphan count. {Ex}", ex);
                 throw;
             }
-            this._inMemoryLoginTracking.LoggedInUserListing = new Dictionary<Guid, InMemoryLoginTrackingItem>();
+            this._inMemoryLoginTracking.ResetLoggedInUsers();
             if (orphanLoginCount == 0)
             {
                 this._logger.LogInformation("MassLogoutUsersHandler => No orphans found.");

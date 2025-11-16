@@ -87,7 +87,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogout
                 warframeLogoutResult.WarframeLogoutResultStatus = WarframeLogoutResultStatus.Failure;
             }
             // flush the user from the in memory cache. 
-            this._inMemoryLoginTracking.LoggedInUserListing.Remove(applicationUser.Id);
+            this._inMemoryLoginTracking.RemoveLoggedInUser(applicationUser.Id);
 
             return warframeLogoutResult;
         }

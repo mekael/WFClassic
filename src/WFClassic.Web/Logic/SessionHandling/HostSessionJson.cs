@@ -62,5 +62,5 @@ public class HostSessionRequest
 public class HostSessionResponse
 {
     [JsonPropertyName("sessionId")]
-    public Guid SessionId { get; set; }
+    public string SessionId { get; set; }
 }
