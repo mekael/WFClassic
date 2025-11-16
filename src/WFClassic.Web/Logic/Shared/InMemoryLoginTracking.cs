@@ -1,11 +1,14 @@
 ﻿using System.Text.Json.Serialization;
 
+using WFClassic.Web.Logic.SessionHandling;
+
 namespace WFClassic.Web.Logic.Shared;
 
 public class InMemoryLoginTracking
 {
 
-    public Dictionary<Guid, InMemoryLoginTrackingItem> LoggedInUserListing = new Dictionary<Guid, InMemoryLoginTrackingItem>(); 
+    public Dictionary<Guid, InMemoryLoginTrackingItem> LoggedInUserListing = new Dictionary<Guid, InMemoryLoginTrackingItem>();
+    public Dictionary<Guid, WarframeSession> SessionsListing = new Dictionary<Guid, WarframeSession>();
 }
 
 public class InMemoryLoginTrackingItem
@@ -16,5 +19,3 @@ public class InMemoryLoginTrackingItem
     public string DisplayName { get; set; }
 
 }
-
-
