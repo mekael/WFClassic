@@ -52,7 +52,7 @@ public class SessionHandler
                                                                   .Select(s => s.Value);
         return new FindSessionsResultJson()
         {
-            Results = sessions.Select(s => new FindSessionsResultItemJson()
+            Sessions = sessions.Select(s => new FindSessionsResultItemJson()
             {
                 Difficulty = s.Difficulty,
                 HostUserId = s.HostUserId,

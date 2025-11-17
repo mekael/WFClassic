@@ -36,7 +36,6 @@
 
   <ItemGroup>
     <Folder Include="configs\" />
-    <Folder Include="Logic\Guild\Create\" />
     <Folder Include="logs\" />
   </ItemGroup>
 

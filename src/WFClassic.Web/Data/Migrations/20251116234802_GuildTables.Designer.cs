@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WFClassic.Web.Data;
 
@@ -10,9 +11,11 @@ using WFClassic.Web.Data;
 namespace WFClassic.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251116234802_GuildTables")]
+    partial class GuildTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -320,9 +323,6 @@ namespace WFClassic.Web.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CurrentGuildId")
-                        .HasColumnType("TEXT");
-
                     b.Property<long>("CurrentNonce")
                         .HasColumnType("INTEGER");
 
@@ -388,8 +388,6 @@ namespace WFClassic.Web.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CurrentGuildId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -552,13 +550,7 @@ namespace WFClassic.Web.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CleansedName")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTimeOffset>("CreationTimestamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DisplayName")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("LastModificationTimestamp")
@@ -567,11 +559,11 @@ namespace WFClassic.Web.Data.Migrations
                     b.Property<string>("MessageOfTheDay")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Tag")
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Tier")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Tag")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -594,9 +586,6 @@ namespace WFClassic.Web.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("LastModificationTimestamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserDisplayName")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")
@@ -1575,15 +1564,6 @@ namespace WFClassic.Web.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("AlertConfiguration");
-                });
-
-            modelBuilder.Entity("WFClassic.Web.Data.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("WFClassic.Web.Data.Models.Guild", "CurrentGuild")
-                        .WithMany()
-                        .HasForeignKey("CurrentGuildId");
-
-                    b.Navigation("CurrentGuild");
                 });
 
             modelBuilder.Entity("WFClassic.Web.Data.Models.BankAccount", b =>

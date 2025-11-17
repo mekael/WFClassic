@@ -4,7 +4,7 @@ namespace WFClassic.Web.Logic.SessionHandling;
 
 public class FindSessionsResultJson
 {
-    public List<FindSessionsResultItemJson> Results { get; set; }
+    public List<FindSessionsResultItemJson> Sessions { get; set; }
 }
 
 public class FindSessionsResultItemJson

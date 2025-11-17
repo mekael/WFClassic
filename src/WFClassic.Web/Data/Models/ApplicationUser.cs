@@ -14,6 +14,9 @@ namespace WFClassic.Web.Data.Models
 
         public string Motto { get; set; }
 
+        public Guild CurrentGuild { get; set; }
+        public Guid? CurrentGuildId { get; set; }
+
         public ICollection<LoginTrackingItem> LoginTrackingItems { get; set; }
     }
 }

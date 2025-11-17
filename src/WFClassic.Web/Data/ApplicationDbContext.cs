@@ -71,4 +71,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<OperationConfiguration> OperationConfigurations { get; set; }
 
+    public DbSet<Guild> Guilds { get; set; }
+    public DbSet<GuildMembership> GuildMemberships { get; set; }
+
 }

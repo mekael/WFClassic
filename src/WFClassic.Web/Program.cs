@@ -11,6 +11,8 @@ using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Bonus.Daily;
 using WFClassic.Web.Logic.Bonus.Rewards;
+using WFClassic.Web.Logic.Clans.Create;
+using WFClassic.Web.Logic.Clans.Get;
 using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.Credits.Get;
 using WFClassic.Web.Logic.Economics.Purchase;
@@ -134,7 +136,8 @@ builder.Services.AddTransient<FuseFormaHandler>();
 builder.Services.AddSingleton<WFClassicAdditionalData>(builder.Configuration.GetSection("WFClassicAdditionalData").Get<WFClassicAdditionalData>());
 builder.Services.AddSingleton<InMemoryLoginTracking>(new InMemoryLoginTracking());
 builder.Services.AddTransient<SessionHandler>();
-
+builder.Services.AddTransient<AddGuildHandler>();
+builder.Services.AddTransient<GetGuildHandler>();
 builder.Services.AddHttpLogging();
 builder.Services.AddScheduler();
 

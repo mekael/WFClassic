@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WFClassic.Web.Data;
 
@@ -10,9 +11,11 @@ using WFClassic.Web.Data;
 namespace WFClassic.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251117011644_GuildIdToUserTable")]
+    partial class GuildIdToUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -594,9 +597,6 @@ namespace WFClassic.Web.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("LastModificationTimestamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserDisplayName")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")
