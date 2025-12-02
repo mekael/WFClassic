@@ -69,8 +69,7 @@ namespace WFClassic.Web.Logic.Inventory.Update
 
                 player.AdditionalPlayerXP += Math.Max(updateInventory.UpdateInventoryFromMissionObject.AdditionalPlayerXP, playerMissionAdditionalXp.HasValue? playerMissionAdditionalXp.Value:0);
                 player.PlayerXP += Math.Max(updateInventory.UpdateInventoryFromMissionObject.PlayerXP, playerMissionXp.HasValue ? playerMissionXp.Value : 0);
-                player.DeathMarks = updateInventory.UpdateInventoryFromMissionObject != null? string.Join("|", updateInventory.UpdateInventoryFromMissionObject.DeathMarks):"";
-
+                player.DeathMarks = updateInventory.UpdateInventoryFromMissionObject != null && updateInventory.UpdateInventoryFromMissionObject.DeathMarks != null ? string.Join("|", updateInventory.UpdateInventoryFromMissionObject.DeathMarks): player.DeathMarks;
                 // update equipment
                 _logger.LogInformation("UpdateInventoryHandler => accountId {AccountID} nonce {Nonce} => Updating equipment", updateInventory.AccountId, updateInventory.Nonce);
 
@@ -83,9 +82,6 @@ namespace WFClassic.Web.Logic.Inventory.Update
                                                                                                      .Union(updateInventory.UpdateInventoryFromMissionObject.Sentinels)
                                                                                                      .Union(updateInventory.UpdateInventoryFromMissionObject.SentinelWeapons)
                                                                                                      .ToList();
-
-
-
 
                 foreach (var equipmentItem in equipmentItems.Where(w => !string.IsNullOrWhiteSpace(w.ItemId.id)))
                 {
