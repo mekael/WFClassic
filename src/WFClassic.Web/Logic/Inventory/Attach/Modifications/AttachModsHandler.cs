@@ -32,6 +32,8 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 
             List<string> inventoryItemIds = null;
             List<InventoryItemAttachment> modAttachments = null;
+            InventoryItem associatedItem = null;
+            Guid itemId = Guid.Parse(attachMods.IncomingAttachRequest.Weapon.ItemId.Id);
 
 
 
@@ -42,7 +44,8 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
                                                                                 inner join players p on ii.PlayerId = p.Id
                                                                                 where p.ApplicationUserId  = {attachMods.AccountId}").ToList();
 
-                modAttachments = _applicationDbContext.InventoryItemAttachments.Where(w => w.ParentInventoryItemId == Guid.Parse(attachMods.IncomingAttachRequest.Weapon.ItemId.Id)).ToList();
+                modAttachments = _applicationDbContext.InventoryItemAttachments.Where(w => w.ParentInventoryItemId == itemId).ToList();
+                associatedItem = this._applicationDbContext.InventoryItems.FirstOrDefault(fod=> fod.Id == itemId);
             }
             catch (Exception ex)
             {
@@ -55,19 +58,17 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 
             if (inventoryItemIds.Count(cod => cod.Equals(attachMods.IncomingAttachRequest.Weapon.ItemId.Id, StringComparison.InvariantCultureIgnoreCase)) == 0)
             {
-
                 _logger.LogError("AttachModsHandler => accountId {AccountID} nonce {Nonce} => User does not own item {ItemId}", attachMods.AccountId, attachMods.Nonce, attachMods.IncomingAttachRequest.Weapon.ItemId.Id);
                 result.AttachModsResultStatus = AttachModsResultStatus.ValidationErrors;
                 return result;
             }
-            else if (inventoryItemIds.Where(w => attachMods.IncomingAttachRequest.UpgradesToAttach.Select(s => s.ItemId.Id.ToUpper()).Contains(w.ToUpper())).Count() != attachMods.IncomingAttachRequest.UpgradesToAttach.Count() )
+            else if (inventoryItemIds.Count(w => attachMods.IncomingAttachRequest.UpgradesToAttach.Select(s => s.ItemId.Id.ToUpper()).Contains(w.ToUpper())) != attachMods.IncomingAttachRequest.UpgradesToAttach.Count() )
             {
 
                 _logger.LogError("AttachModsHandler => accountId {AccountID} nonce {Nonce} => User does not own one or more mods to be attached.", attachMods.AccountId, attachMods.Nonce);
                 result.AttachModsResultStatus = AttachModsResultStatus.ValidationErrors;
                 return result;
             }
-
 
 
             foreach (var upgradeToDetach in attachMods.IncomingAttachRequest.UpgradesToDetach)
@@ -81,10 +82,7 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 
             foreach (var upgradeToAttach in attachMods.IncomingAttachRequest.UpgradesToAttach)
             {
-
-
                 InventoryItemAttachment existingAttachment = modAttachments.FirstOrDefault(w => w.AttachedInventoryItemId == Guid.Parse(upgradeToAttach.ItemId.Id));
-
                 if (existingAttachment != null)
                 {
                     _applicationDbContext.Entry(existingAttachment).State = EntityState.Deleted;
@@ -99,6 +97,7 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
                 _applicationDbContext.InventoryItemAttachments.Add(attachment);
             }
 
+            associatedItem.UpgradeNodes = attachMods.IncomingAttachRequest.Weapon.UpgradeNodes;
             try
             {
                 _applicationDbContext.SaveChanges();
@@ -112,8 +111,5 @@ namespace WFClassic.Web.Logic.Inventory.Attach.Modifications
 
             return result;
         }
-
-
-
     }
 }

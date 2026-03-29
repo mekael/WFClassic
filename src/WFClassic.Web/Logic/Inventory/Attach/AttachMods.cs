@@ -32,6 +32,9 @@ namespace WFClassic.Web.Logic.Inventory.Attach
         public int UnlockLevel { get; set; }
         public int ExtraCapacity { get; set; }
         public int ExtraRemaining { get; set; }
+
+        // used in 5.1
+        public int UpgradeNodes {get;set;}
     }
 
     public class Itemid

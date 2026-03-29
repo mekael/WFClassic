@@ -26,5 +26,9 @@ namespace WFClassic.Web.Data.Models
 
         public int Polarized { get; set; }
         public string PolarityDefinition { get; set; }
+
+        // used in 5.1
+        // it's a bit packed representation of the activated nodes. 
+        public int UpgradeNodes {get;set;}
     }
 }

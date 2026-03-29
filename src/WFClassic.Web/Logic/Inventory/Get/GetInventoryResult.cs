@@ -251,7 +251,12 @@ namespace WFClassic.Web.Logic.Inventory.Get
         public long UpgradeVer { get; set; }
 
         [JsonPropertyName("UnlockLevel")]
-        public int UnlockLevel { get; set; }
+        public int UnlockLevel { get; set; }=1;
+        // used in 5.1
+        // it's a bit packed representation of the activated nodes. 
+
+        [JsonPropertyName("UpgradeNodes")]
+        public int UpgradeNodes {get;set;} 
 
         [JsonPropertyName("ExtraCapacity")]
         public int ExtraCapacity { get; set; }

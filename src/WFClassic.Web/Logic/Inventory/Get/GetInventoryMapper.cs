@@ -102,6 +102,7 @@ namespace WFClassic.Web.Logic.Inventory.Get
                     UpgradeVer = s.UpgradeVer,
                     XP = s.XP,
                     Polarized= s.Polarized,
+                     UpgradeNodes = s.UpgradeNodes,
                     Polarity = string.IsNullOrWhiteSpace(s.PolarityDefinition) ?new List<GetInventoryResultJsonPolarity>():JsonSerializer.Deserialize<Dictionary<int, string>>(s.PolarityDefinition).Select(s=> new GetInventoryResultJsonPolarity() { Slot =s.Key, Value= s.Value}).ToList(),
                 }).ToList();
         }
