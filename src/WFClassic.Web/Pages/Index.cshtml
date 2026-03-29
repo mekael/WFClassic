@@ -5,11 +5,13 @@
 }
 @using Microsoft.AspNetCore.Http.Features
 @using Microsoft.Extensions.Configuration
-@inject IConfiguration configuration
+@using WFClassic.Web.Logic.Shared
+
+@inject ServerConfiguration   configuration
 @{
-    string clientVersion = configuration.GetValue<string>("BuildLabel");
-    string serverVersion = configuration.GetValue<string>("ServerVersion");
-    bool automaticCreationOfLoginViaClient = configuration.GetValue<bool>("AutomaticallyCreateAccountUponInitialLogin");
+    string clientVersion = configuration.BuildLabel;
+    string serverVersion = configuration.ServerVersion;
+    bool automaticCreationOfLoginViaClient = configuration.AutomaticallyCreateAccountUponInitialLogin;
     var serverIp = this.HttpContext.Features.Get<IHttpConnectionFeature>()?.LocalIpAddress.ToString();
 }
 

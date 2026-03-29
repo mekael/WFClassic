@@ -133,6 +133,7 @@ builder.Services.AddTransient<CleanupExpiredBoostersHandler>();
 builder.Services.AddTransient<UnlockStarChartHandler>();
 builder.Services.AddTransient<InventoryChangeHandler>();
 builder.Services.AddTransient<FuseFormaHandler>();
+builder.Services.AddSingleton<ServerConfiguration>(builder.Configuration.GetSection("ServerConfiguration").Get<ServerConfiguration>());
 builder.Services.AddSingleton<WFClassicAdditionalData>(builder.Configuration.GetSection("WFClassicAdditionalData").Get<WFClassicAdditionalData>());
 builder.Services.AddSingleton<InMemoryLoginTracking>(new InMemoryLoginTracking());
 builder.Services.AddTransient<SessionHandler>();
@@ -206,7 +207,7 @@ using (var serviceScope = app.Services.CreateScope())
     }
 
 
-    if (app.Configuration.GetValue<bool>("KillAllSessionsAtUTCDayChange"))
+    if (app.Configuration.GetValue<bool>("ServerConfiguration:KillAllSessionsAtUTCDayChange"))
     {
         serviceScope.ServiceProvider.GetRequiredService<MassLogoutUsersHandler>().Handle();
     }
@@ -219,7 +220,7 @@ using (var serviceScope = app.Services.CreateScope())
 app.Services.UseScheduler(
     scheduler =>
     {
-        if (app.Configuration.GetValue<bool>("KillAllSessionsAtUTCDayChange"))
+        if (app.Configuration.GetValue<bool>("ServerConfiguration:KillAllSessionsAtUTCDayChange"))
         {
             scheduler.Schedule<MassLogoutUsersHandler>().DailyAtHour(0);
         }

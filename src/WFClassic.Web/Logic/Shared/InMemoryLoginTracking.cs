@@ -12,17 +12,12 @@ public class InMemoryLoginTracking
         {
             return LoggedInUserListing[userId];
         }
-        throw new BadHttpRequestException("No userFound");
+        throw new BadHttpRequestException("No User Found");
     }
-
 
     public bool RemoveLoggedInUser(Guid userId)
     {
-        if(LoggedInUserListing.ContainsKey(userId))
-        {
-          return  this.LoggedInUserListing.Remove(userId);
-        }
-        return false;
+        return this.LoggedInUserListing.Remove(userId);
     }
 
     public bool UserIsLoggedIn(Guid userId)
@@ -33,14 +28,15 @@ public class InMemoryLoginTracking
     }
 
 
-    public void AddLoggedInUser(Guid userId, string displayName, long nonce, string userIpAddress)
+    public void AddLoggedInUser(Guid userId, string displayName, long nonce, string userIpAddress, string buildLabel)
     {
         InMemoryLoginTrackingItem inMemoryLoginTrackingItem = new InMemoryLoginTrackingItem()
         {
             AccountId = userId,
             DisplayName = displayName,
             Nonce = nonce,
-            UserIpAddress = userIpAddress
+            UserIpAddress = userIpAddress,
+            BuildLabel = buildLabel
         };
 
         if (this.LoggedInUserListing.ContainsKey(userId))
@@ -57,8 +53,6 @@ public class InMemoryLoginTracking
     {
         this.LoggedInUserListing.Clear();
     }
-
-
 }
 
 public class InMemoryLoginTrackingItem
@@ -67,5 +61,6 @@ public class InMemoryLoginTrackingItem
     public long Nonce { get; set; }
     public string UserIpAddress { get; set; }
     public string DisplayName { get; set; }
+    public string BuildLabel { get; set; }
 
 }

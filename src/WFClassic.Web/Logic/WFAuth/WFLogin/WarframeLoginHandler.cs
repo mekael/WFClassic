@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
 using WFClassic.Web.Logic.Shared;
@@ -12,32 +13,34 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _configuration;
         private readonly CreatePlayerHandler _createPlayerHandler;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly InMemoryLoginTracking _inMemoryLoginTracking;
+        private readonly ServerConfiguration _serverConfiguration;
+
 
 
         public WarframeLoginHandler(ILogger<WarframeLoginHandler> logger, ApplicationDbContext applicationDbContext,
-            SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration,
-            CreatePlayerHandler createPlayerHandler, IUserStore<ApplicationUser> userStore, InMemoryLoginTracking inMemoryLoginTracking)
+            SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, 
+            CreatePlayerHandler createPlayerHandler, IUserStore<ApplicationUser> userStore, InMemoryLoginTracking inMemoryLoginTracking,
+            ServerConfiguration serverConfiguration)
         {
             this._logger = logger;
             this._applicationDbContext = applicationDbContext;
             this._signInManager = signInManager;
             this._userManager = userManager;
-            this._configuration = configuration;
             this._createPlayerHandler = createPlayerHandler;
             this._userStore = userStore;
             this._emailStore = (IUserEmailStore<ApplicationUser>)_userStore;
             this._inMemoryLoginTracking = inMemoryLoginTracking;
+            this._serverConfiguration = serverConfiguration;
         }
 
         public async Task<WarframeLoginResult> Handle(WarframeLoginRequest warframeLoginRequest)
         {
             WarframeLoginResult warframeLoginResult = new WarframeLoginResult();
-            bool createUserIfDoesNotExist = _configuration.GetValue<bool>("AutomaticallyCreateAccountUponInitialLogin");
+            bool createUserIfDoesNotExist = _serverConfiguration.AutomaticallyCreateAccountUponInitialLogin;
 
             var validationResults = new WarframeLoginRequestValidator().Validate(warframeLoginRequest);
 
@@ -137,18 +140,21 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             else
             {
                 warframeLoginResult.WarframeLoginResultStatus = WarframeLoginResultStatus.Success;
+                
+                string buildLabel = warframeLoginRequest.buildLabel ?? _serverConfiguration.BuildLabel;
+
 
                 warframeLoginResult.WarframeLoginResultDetails = new WarframeLoginResultDetails()
                 {
                     id = user.Id.ToString(),
-                    BuildLabel = warframeLoginRequest.buildLabel ?? _configuration.GetValue<string>("BuildLabel"),
+                    BuildLabel = buildLabel,
                     DisplayName = user.DisplayName,
                     NatHash = "127.0.0.1:88",
                     Nonce = user.CurrentNonce,
                     SteamId = "0"
                 };
 
-                this._inMemoryLoginTracking.AddLoggedInUser(user.Id, user.DisplayName, user.CurrentNonce, warframeLoginRequest.UserIpAddress);
+                this._inMemoryLoginTracking.AddLoggedInUser(user.Id, user.DisplayName, user.CurrentNonce, warframeLoginRequest.UserIpAddress, buildLabel);
             }
 
             return warframeLoginResult;
@@ -168,7 +174,6 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
             {
                 currentStreak = 0;
             }
-
             return currentStreak;
         }
     }

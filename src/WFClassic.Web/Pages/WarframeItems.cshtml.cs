@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
 using WFClassic.Web.Logic.Inventory.WarframeItemAddition;
+using WFClassic.Web.Logic.Shared;
 using WFClassic.Web.Logic.UI.Inventory.AddList;
 
 namespace WFClassic.Web.Pages
@@ -17,17 +19,17 @@ namespace WFClassic.Web.Pages
         private readonly GetAllWarframeItemsHandler _getAllWaframeItemsHandler;
 
         private readonly AddWarframeItemHandler _addWarframeItemHandler;
+        private readonly ServerConfiguration _serverConfiguration;
 
+        [BindProperty]
+        public bool CanMakeModifications => this._serverConfiguration.AllowQualityOfLifeModifications;
 
-        public bool CanMakeModifications { get; set; }
-
-
-        public WarframeItemsModel(GetAllWarframeItemsHandler getAllWaframeItemsHandler, AddWarframeItemHandler addWarframeItemHandler, 
-                                        IConfiguration configuration)
+        public WarframeItemsModel(GetAllWarframeItemsHandler getAllWaframeItemsHandler, AddWarframeItemHandler addWarframeItemHandler,
+                                        ServerConfiguration serverConfiguration)
         {
             this._getAllWaframeItemsHandler = getAllWaframeItemsHandler;
             this._addWarframeItemHandler = addWarframeItemHandler;
-            this.CanMakeModifications = configuration.GetValue<bool>("AllowQualityOfLifeModifications");
+            this._serverConfiguration = serverConfiguration;
 
         }
         [BindProperty]
@@ -64,7 +66,7 @@ namespace WFClassic.Web.Pages
 
         public IActionResult OnPost(Guid itemToAddId)
         {
-            if (!CanMakeModifications)
+            if (!this._serverConfiguration.AllowQualityOfLifeModifications)
             {
                 return this.Forbid();
             }

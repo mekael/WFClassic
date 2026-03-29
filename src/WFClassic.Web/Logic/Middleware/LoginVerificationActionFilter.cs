@@ -9,11 +9,14 @@ namespace WFClassic.Web.Logic.Middleware
     {
         private readonly ILogger<LoginVerificationActionFilter> _logger;
         private readonly InMemoryLoginTracking _inMemoryLoginTracking;
+        private readonly ServerConfiguration _serverConfiguration;
 
-        public LoginVerificationActionFilter(ILogger<LoginVerificationActionFilter> logger, InMemoryLoginTracking inMemoryLoginTracking)
+        public LoginVerificationActionFilter(ILogger<LoginVerificationActionFilter> logger, InMemoryLoginTracking inMemoryLoginTracking,
+                                             ServerConfiguration serverConfiguration)
         {
             this._inMemoryLoginTracking = inMemoryLoginTracking;
             this._logger = logger;
+            this._serverConfiguration = serverConfiguration;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -27,17 +30,26 @@ namespace WFClassic.Web.Logic.Middleware
             this._logger.LogInformation("LoginVerificationActionFilter=> accountId {accountId} nonce {nonce} ipAddress {ipAddress} ", accountId, nonce, ipAddress);
 
             bool userFound = this._inMemoryLoginTracking.LoggedInUserListing.TryGetValue(accountId, out InMemoryLoginTrackingItem foundUser);
+
+
             if (!userFound)
             {
                 context.Result = new StatusCodeResult(404);
                 return;
+            }
+
+
+            string buildVersion = context.HttpContext.Request.Query["buildVersion"].FirstOrDefault() ?? foundUser.BuildLabel;
+
+            if (buildVersion != foundUser.BuildLabel || buildVersion != this._serverConfiguration.BuildLabel)
+            {
+                context.Result = new StatusCodeResult(400);
             }
             else if (foundUser.Nonce != nonce || foundUser.UserIpAddress != ipAddress)
             {
                 context.Result = new StatusCodeResult(403);
                 return;
             }
-
         }
     }
 }

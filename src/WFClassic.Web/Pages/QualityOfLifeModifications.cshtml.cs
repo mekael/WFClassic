@@ -10,6 +10,7 @@ using WFClassic.Web.Data.Enums;
 using WFClassic.Web.Logic.Credits.Add;
 using WFClassic.Web.Logic.QualityOfLife.InventoryChanges;
 using WFClassic.Web.Logic.QualityOfLife.StarChart;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Pages
 {
@@ -18,15 +19,13 @@ namespace WFClassic.Web.Pages
         private readonly UnlockStarChartHandler _unlockStarChartHandler;
         private readonly AddAccountTransactionHandler _addAccountTransactionHandler;
         private readonly InventoryChangeHandler _inventoryChangeHandler;
-
-        public bool CanMakeModifications { get; set; }
-
+        private readonly ServerConfiguration _serverConfiguration;
+ 
         public QualityOfLifeModificationsModel(UnlockStarChartHandler unlockStarChartHandler, AddAccountTransactionHandler addAccountTransactionHandler, 
-            IConfiguration configuration, InventoryChangeHandler inventoryChangeHandler)
+            ServerConfiguration  serverConfiguration, InventoryChangeHandler inventoryChangeHandler)
         {
             this._unlockStarChartHandler = unlockStarChartHandler;
             this._addAccountTransactionHandler= addAccountTransactionHandler;
-            this.CanMakeModifications = configuration.GetValue<bool>("AllowQualityOfLifeModifications");
             this._inventoryChangeHandler = inventoryChangeHandler;
         }
 
@@ -105,7 +104,7 @@ namespace WFClassic.Web.Pages
 
         public override void OnPageHandlerSelected(PageHandlerSelectedContext context)
         {
-            if (!this.CanMakeModifications)
+            if (!this._serverConfiguration.AllowQualityOfLifeModifications)
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
                 context.HttpContext.Response.Redirect("/Identity/Account/AccessDenied");

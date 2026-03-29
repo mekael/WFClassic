@@ -2,6 +2,7 @@
 
 using WFClassic.Web.Data;
 using WFClassic.Web.Data.Models;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Logic.Universe.GetState
 {
@@ -9,20 +10,16 @@ namespace WFClassic.Web.Logic.Universe.GetState
     {
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly ILogger<GetWorldStateHandler> _logger;
-        private readonly IConfiguration _configuration;
+         private readonly ServerConfiguration _serverConfiguration;
 
-        public GetWorldStateHandler(ApplicationDbContext applicationDbContext,
-                                    ILogger<GetWorldStateHandler> logger,
-                                    IConfiguration configuration)
+        public GetWorldStateHandler(ApplicationDbContext applicationDbContext,ILogger<GetWorldStateHandler> logger,
+                                    ServerConfiguration serverConfiguration)
         {
-            _applicationDbContext = applicationDbContext;
-            _logger = logger;
-            _configuration = configuration;
+            this._applicationDbContext = applicationDbContext;
+            this._logger = logger;
+            this._serverConfiguration=serverConfiguration;
         }
-
-        //GET http://localhost/stats/leaderboard.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=5239627016210914759&steamId=0&field=Kills&before=0&after=10 HTTP/1.1
-        // GET http://localhost/stats/leaderboard.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=5239627016210914759&steamId=0&field=Kills&before=4&after=6&pivotAccountId=c64c1e01-34d6-4311-ae40-7baa5eba3016 HTTP/1.1
-
+ 
         public GetWorldStateResult Handle(GetWorldState getWorldState)
         {
             GetWorldStateResult result = new GetWorldStateResult();
@@ -66,7 +63,7 @@ namespace WFClassic.Web.Logic.Universe.GetState
             try
             {
                 _logger.LogInformation("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} =>   ", getWorldState.AccountId, getWorldState.Nonce);
-                result.GetWorldStateResultJson = GetWorldStateMapper.Map(worldStateEventMessages, worldStateAlerts,operationConfigurations, getWorldState.buildLabel ?? _configuration.GetValue<string>("BuildLabel"));
+                result.GetWorldStateResultJson = GetWorldStateMapper.Map(worldStateEventMessages, worldStateAlerts,operationConfigurations, getWorldState.buildLabel ?? this._serverConfiguration.BuildLabel );
                 _logger.LogInformation("GetWorldStateHandler => accountId {AccountID} nonce {Nonce} =>   ", getWorldState.AccountId, getWorldState.Nonce);
                 result.GetWorldStateResultStatus = GetWorldStateResultStatus.Success;
             }

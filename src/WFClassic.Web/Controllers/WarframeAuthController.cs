@@ -45,8 +45,17 @@ namespace WFClassic.Web.Controllers
             {
                 return StatusCode(500);
             }
-            return new JsonResult(result.WarframeLoginResultDetails,
-        new JsonSerializerOptions { PropertyNamingPolicy = null });
+
+            object retVal = result.WarframeLoginResultDetails;
+
+            // U5.1 doesn't ignore bad data   in the response packet, 
+            // so the build and steamId cause  login to fail
+            if (result.WarframeLoginResultDetails.BuildLabel.StartsWith("2012"))
+            {
+                     retVal =  new {result.WarframeLoginResultDetails.id, result.WarframeLoginResultDetails.Nonce, 
+                                    result.WarframeLoginResultDetails.DisplayName, result.WarframeLoginResultDetails.NatHash};
+            }
+            return new JsonResult( retVal,  new JsonSerializerOptions { PropertyNamingPolicy = null });
         }
 
         [Route("api/logout.php")]
