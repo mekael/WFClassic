@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using WFClassic.Web.Logic.Clans.Create;
 using WFClassic.Web.Logic.Clans.Get;
 using WFClassic.Web.Logic.Middleware;
+using WFClassic.Web.Logic.Shared;
 
 namespace WFClassic.Web.Controllers
 {
@@ -38,6 +39,15 @@ namespace WFClassic.Web.Controllers
 
             return Ok();
         }
+        [HttpGet]
+        [Route("/api/getGuild.php")]
+        public ActionResult GetGuildEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
+        {
+            var result = this._getGuildHandler.Handle(new GetGuild() { AccountId = accountId, Nonce = nonce });
+            return new JsonResult(result.GetGuildResultJson);
+        }
+
+
 
         [HttpPost]
         [Route("/api/removeFromGuild.php")]
@@ -50,9 +60,11 @@ namespace WFClassic.Web.Controllers
 
         [HttpPost]
         [Route("/api/customizeGuildRanks.php")]
-        public ActionResult CustomizeGuildRanks([FromQuery] Guid accountId, [FromQuery] long nonce)
+        public ActionResult CustomizeGuildRanks([FromQuery] Guid accountId, [FromQuery] long nonce, [FromQuery] Guid guildId)
         {
             Console.WriteLine("In customizeGuildRanks");
+            //HTTP/1.1 POST http://127.0.0.1/api/customizeGuildRanks.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=4805214973093660194&guildId=3e370a24-b2c9-4840-821c-3af9611dd893 
+            Utils.GetRequestObjectAsString(this.HttpContext);
 
             return new JsonResult("{}");
         }
@@ -101,30 +113,16 @@ namespace WFClassic.Web.Controllers
             return "{}";
         }
 
-
-        [HttpGet]
-        [Route("/api/getGuild.php")]
-        public ActionResult GetGuildEndpoint([FromQuery] Guid accountId, [FromQuery] long nonce)
+        [HttpPost]
+        [Route("/api/setGuildMotd.php")]
+        public ActionResult SetGuildMessageOfTheDay([FromQuery] Guid accountId, [FromQuery] long nonce)
         {
-            var result = this._getGuildHandler.Handle(new GetGuild() { AccountId = accountId, Nonce = nonce });
-            // return new JsonResult(result.GetGuildResultJson, new JsonSerializerOptions { PropertyNamingPolicy = null });
+            //  POST /api/setGuildMotd.php?accountId=c64c1e01-34d6-4311-ae40-7baa5eba3016&nonce=4805214973093660194 HTTP/1.1
+            Utils.GetRequestObjectAsString(this.HttpContext);
 
-            var cat = @"
-                            {
-                            ""Name"" :""cats"",
-                            ""_id"": {
-                                ""$id"": ""522656733f9a5b1718f1b5ab""
-                                     },
-                            ""Members"": [
-                                          {""Rank"" :1, ""Name"" :""mekael""}      
-                                        ],
-                            ""Ranks"" : [{""Name"":""devil"", ""Permissions"" :1}, {""Name"":""mekael""}],
-                            ""MOTD"" :""cats and more cats""
-                            }
-                        ";
-
-            Console.WriteLine(JsonSerializer.Serialize(result.GetGuildResultJson));
-            return new JsonResult(result.GetGuildResultJson);
+            return new JsonResult("");
         }
+
+
     }
 }

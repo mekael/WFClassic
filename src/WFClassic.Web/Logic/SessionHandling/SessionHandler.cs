@@ -5,15 +5,14 @@ namespace WFClassic.Web.Logic.SessionHandling;
 public class SessionHandler
 {
 
-    private readonly ILogger<SessionHandler> _logger;
     private readonly InMemoryLoginTracking _inMemoryLoginTracking;
-    Dictionary<string, WarframeSession> _sessionsListing = new Dictionary<string, WarframeSession>();
+    private  Dictionary<string, WarframeSession> _sessionsListing;
 
 
-    public SessionHandler(ILogger<SessionHandler> logger, InMemoryLoginTracking inMemoryLoginTracking)
+    public SessionHandler( InMemoryLoginTracking inMemoryLoginTracking)
     {
-        this._logger = logger;
         this._inMemoryLoginTracking = inMemoryLoginTracking;
+        this._sessionsListing = new Dictionary<string, WarframeSession>();
     }
 
 
@@ -36,20 +35,32 @@ public class SessionHandler
     {
         if (this._sessionsListing.ContainsKey(sessionId) && this._sessionsListing[sessionId].HostUserId == accountId)
         {
-          return  this._sessionsListing.Remove(sessionId);
+            return this._sessionsListing.Remove(sessionId);
         }
         return false;
     }
 
     public FindSessionsResultJson HandleFindSessions(FindSessionsRequest findSessionsRequest)
     {
+
+
+        IEnumerable<WarframeSession> sessions = null;
         //TODO: add in checks for private sessions
         // and those that are being hosted by your friends / members of your clan. 
-        var sessions = this._sessionsListing.Where(w => w.Value.RegionId == findSessionsRequest.RegionId
-                                                                             && w.Value.BuildId == findSessionsRequest.BuildId
-                                                                             && w.Value.RegionId == findSessionsRequest.RegionId
-                                                                             && w.Value.HostUserId != findSessionsRequest.AccountId)
-                                                                  .Select(s => s.Value);
+
+        if (!string.IsNullOrWhiteSpace(findSessionsRequest.OriginalSessionId))
+        {
+            sessions = this._sessionsListing.Where(w => w.Key == findSessionsRequest.OriginalSessionId).Select(s => s.Value);
+        }
+        else
+        {
+            sessions = this._sessionsListing.Where(w =>  w.Value.RegionId == findSessionsRequest.RegionId
+                                                        && w.Value.BuildId == findSessionsRequest.BuildId
+                                                        && w.Value.RegionId == findSessionsRequest.RegionId )
+                                            .Select(s => s.Value);
+        }
+
+
         return new FindSessionsResultJson()
         {
             Sessions = sessions.Select(s => new FindSessionsResultItemJson()
@@ -73,9 +84,9 @@ public class SessionHandler
                 StrictNAT = s.StrictNAT,
                 TimeLimit = s.TimeLimit,
 
-
             }).ToList()
         };
+
     }
 
 

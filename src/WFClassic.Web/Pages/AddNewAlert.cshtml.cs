@@ -31,7 +31,7 @@ namespace WFClassic.Web.Pages
             this.FactionSelectList = new SelectList(wfClassicAdditionalData.Factions, "Value", "Key");
             this.MissionTypeSelectList = new SelectList(wfClassicAdditionalData.MissionTypes, "Value", "Key");
             this.IconSelectList = new SelectList(wfClassicAdditionalData.AlertIcons, "Value", "Key");
-            this.LevelOverrideSelectList = new SelectList(Utils.GetFlattenedListDictionary(wfClassicAdditionalData.FactionLevels), "Value", "Text");
+         
             this.RandomizedItemsSelectList = new SelectList(wfClassicAdditionalData.RandomizedRewards, "Value", "Key");;
             this.LocationSelectList = new SelectList(wfClassicAdditionalData.NodeDefinitions, "Node", "Description");
             this.VipSelectList = new SelectList(wfClassicAdditionalData.Vips, "Value", "Key");

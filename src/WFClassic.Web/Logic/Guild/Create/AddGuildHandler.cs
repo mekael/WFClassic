@@ -81,7 +81,7 @@ namespace WFClassic.Web.Logic.Clans.Create
                                                                                        {
                                                                                             new GuildMembership(){ Id= guildId, 
                                                                                                                    UserId = addGuild.AccountId, 
-                                                                                                                   CurrentGuildRank= GuildRank.RULER, 
+                                                                                                                   CurrentGuildRank= GuildRank.Warlord, 
                                                                                                                    UserDisplayName= user.DisplayName}
                                                                                         }
                                         };

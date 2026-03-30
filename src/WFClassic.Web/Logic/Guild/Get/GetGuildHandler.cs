@@ -13,14 +13,14 @@ namespace WFClassic.Web.Logic.Clans.Get
         private readonly ILogger<GetGuildHandler> _logger;
         //TODO: allow customization at some point. 
         private readonly List<GetGuildResultRanksJson> _guildRanks = new List<GetGuildResultRanksJson>() {
-                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .RULER.ToString(), Permissions =0 },
-                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .RECRUITER.ToString(), Permissions =1 },
-                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .REGULATOR.ToString(), Permissions =2 },
-                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .PROMOTION.ToString(), Permissions =3 },
-                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .ARCHITECT.ToString(), Permissions =4 },
-                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .TREASURER.ToString(), Permissions =5 },
-                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .TECH.ToString(), Permissions =6 },
-                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .HOST.ToString(), Permissions =7 }
+                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .Warlord.ToString(), Permissions = (int)GuildRank .Warlord },
+                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .Recruiter.ToString(), Permissions = (int)GuildRank .Recruiter },
+                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .Regulator.ToString(), Permissions =(int)GuildRank .Regulator },
+                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .Promotion.ToString(), Permissions =(int)GuildRank .Promotion },
+                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .Architect.ToString(), Permissions =(int)GuildRank .Architect },
+                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .Treasurer.ToString(), Permissions =(int)GuildRank .Treasurer },
+                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .Tech.ToString(), Permissions =(int)GuildRank .Tech },
+                                                                                                    new GetGuildResultRanksJson(){ Name = GuildRank .Host.ToString(), Permissions =(int)GuildRank .Host },
         };
 
         public GetGuildHandler(ApplicationDbContext applicationDbContext, ILogger<GetGuildHandler> logger)
@@ -40,7 +40,7 @@ namespace WFClassic.Web.Logic.Clans.Get
                 this._logger.LogInformation("GetGuildHandler => accountId {AccountID} nonce {Nonce} => Searching for existing guilds and guild associations ", getGuild.AccountId, getGuild.Nonce);
 
                 var guildId = this._applicationDbContext.Users.Find(getGuild.AccountId)?.CurrentGuildId;
-                guild = (guildId.HasValue) ? this._applicationDbContext.Guilds.Include(i => i.GuildMembers).FirstOrDefault(w => w.Id == guildId.Value) : null;
+                guild = guildId.HasValue ? this._applicationDbContext.Guilds.Include(i => i.GuildMembers).FirstOrDefault(w => w.Id == guildId.Value) : null;
                 this._logger.LogInformation("GetGuildHandler => accountId {AccountID} nonce {Nonce} =>  Search complete ", getGuild.AccountId, getGuild.Nonce);
             }
             catch (Exception ex)
@@ -52,27 +52,21 @@ namespace WFClassic.Web.Logic.Clans.Get
 
             if (guild != null)
             {
+                this._logger.LogInformation("GetGuildHandler => accountId {AccountID} nonce {Nonce} => Guild found {GuildId}", getGuild.AccountId, getGuild.Nonce, guild.Id);
+
                 result.GetGuildResultJson = new GetGuildResultJson()
                 {
-                      Members = guild.GuildMembers.Select(s=> new GetGuildResultMemberJson() {  Name=s.UserDisplayName, Rank= Convert.ToInt32( s.CurrentGuildRank)+1, _id= new MongoId(s.UserId), Status =0 }).ToList(),
-                       _id = new MongoId(guild.Id),
-                        Ranks = this._guildRanks
+                    Members = guild.GuildMembers.Select(s => new GetGuildResultMemberJson() { Name = s.UserDisplayName, Rank = Convert.ToInt32(s.CurrentGuildRank) , _id = new MongoId(s.UserId), Status = 0 }).ToList(),
+                    _id = new MongoId(guild.Id),
+                    Ranks = this._guildRanks
                 };
             }
             else
             {
-
+                this._logger.LogInformation("GetGuildHandler => accountId {AccountID} nonce {Nonce} => No guild found", getGuild.AccountId, getGuild.Nonce);
             }
-
             return result;
         }
     }
 }
-
-/*
- Ruler =0
- Recruiter =1
-Regulator =2
-Promotion =3,
  
- */

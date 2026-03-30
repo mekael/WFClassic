@@ -79,4 +79,7 @@ public class FindSessionsRequest
 
     [JsonPropertyName("regionId")] 
     public int RegionId { get; set; }
+
+    [JsonPropertyName("originalSessionId")]
+    public string OriginalSessionId {get;set;}
 }
