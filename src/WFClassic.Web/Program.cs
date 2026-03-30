@@ -135,8 +135,11 @@ builder.Services.AddTransient<InventoryChangeHandler>();
 builder.Services.AddTransient<FuseFormaHandler>();
 builder.Services.AddSingleton<ServerConfiguration>(builder.Configuration.GetSection("ServerConfiguration").Get<ServerConfiguration>());
 builder.Services.AddSingleton<WFClassicAdditionalData>(builder.Configuration.GetSection("WFClassicAdditionalData").Get<WFClassicAdditionalData>());
-builder.Services.AddSingleton<InMemoryLoginTracking>(new InMemoryLoginTracking());
-builder.Services.AddTransient<SessionHandler>();
+InMemoryLoginTracking inMemoryLoginTracking = new InMemoryLoginTracking();
+SessionHandler sessionHandler = new(inMemoryLoginTracking);
+builder.Services.AddSingleton<InMemoryLoginTracking>(inMemoryLoginTracking);
+builder.Services.AddSingleton<SessionHandler>(sessionHandler);
+
 builder.Services.AddTransient<AddGuildHandler>();
 builder.Services.AddTransient<GetGuildHandler>();
 builder.Services.AddHttpLogging();

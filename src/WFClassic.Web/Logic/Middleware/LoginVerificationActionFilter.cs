@@ -27,6 +27,9 @@ namespace WFClassic.Web.Logic.Middleware
             long nonce = long.Parse(context.HttpContext.Request.Query["nonce"].First());
             string ipAddress = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
+
+
+
             this._logger.LogInformation("LoginVerificationActionFilter=> accountId {accountId} nonce {nonce} ipAddress {ipAddress} ", accountId, nonce, ipAddress);
 
             bool userFound = this._inMemoryLoginTracking.LoggedInUserListing.TryGetValue(accountId, out InMemoryLoginTrackingItem foundUser);

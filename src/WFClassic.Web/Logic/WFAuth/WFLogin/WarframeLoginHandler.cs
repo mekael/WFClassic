@@ -149,7 +149,7 @@ namespace WFClassic.Web.Logic.WFAuth.WFLogin
                     id = user.Id.ToString(),
                     BuildLabel = buildLabel,
                     DisplayName = user.DisplayName,
-                    NatHash = "127.0.0.1:88",
+                    NatHash = Guid.NewGuid().ToString(),
                     Nonce = user.CurrentNonce,
                     SteamId = "0"
                 };

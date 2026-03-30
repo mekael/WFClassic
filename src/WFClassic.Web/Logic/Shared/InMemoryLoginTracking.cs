@@ -57,6 +57,8 @@ public class InMemoryLoginTracking
 
 public class InMemoryLoginTrackingItem
 {
+    public string SessionId { get; set; }
+    public string NatHash { get; set; }
     public Guid AccountId { get; set; }
     public long Nonce { get; set; }
     public string UserIpAddress { get; set; }
